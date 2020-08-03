@@ -1,7 +1,7 @@
-local Object = require("common/Object")
-local ObjectUtil = require("common/ObjectUtil")
-local StringUtil = require("common/StringUtil")
-local TableUtil = require("common/TableUtil")
+local Object = require("sebaestschjin-tts.src.Object")
+local ObjectUtil = require("sebaestschjin-tts.src.ObjectUtil")
+local StringUtil = require("sebaestschjin-tts.src.StringUtil")
+local TableUtil = require("sebaestschjin-tts.src.TableUtil")
 
 local Utils = {}
 
