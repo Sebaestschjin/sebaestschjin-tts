@@ -4,38 +4,49 @@ local TableUtil = {}
 
 --- Variant of pairs that also works for nil values.
 ---@generic K, V
----@param tab table<K, V>|nil
----@return fun(tbl: table<K, V>):K, V
+---@param tab nil | table<K, V>
+---@return fun(tab: table<K, V>):K, V
 function TableUtil.pairs(tab)
-  if tab then
-    return pairs(--[[---@not nil]]tab)
-  end
-  return pairs(--[[---@type table<K,V>]]{})
+    if tab then
+        return pairs(--[[---@not nil]]tab)
+    end
+    return pairs(--[[---@type table<K,V>]]{})
+end
+
+--- Variant of ipairs that also works for nil values.
+---@generic V
+---@param tab nil | table<number, V> | V[]
+---@return fun(tab: table<number, V>): number, V
+function TableUtil.ipairs(tab)
+    if tab then
+        return ipairs(--[[---@not nil]]tab)
+    end
+    return ipairs(--[[---@type V[] ]]{})
 end
 
 ---@generic K, V
 ---@param tab table<K, V>
 ---@return K[]
 function TableUtil.keys(tab)
-  local keys = {}
-  for key, _ in TableUtil.pairs(tab) do
-    table.insert(keys, key)
-  end
-  return keys
+    local keys = {}
+    for key, _ in TableUtil.pairs(tab) do
+        table.insert(keys, key)
+    end
+    return keys
 end
 
 --- Checks whether a table is empty. A nil value is also considered an empty table.
 ---@param tab table|nil
 ---@return boolean
 function TableUtil.isEmpty(tab)
-  return not tab or not next(--[[---@not nil]]tab)
+    return not tab or not next(--[[---@not nil]]tab)
 end
 
 --- Checks whether a table is not empty. A nil value is always considered an empty table.
 ---@param tab table|nil
 ---@return boolean
 function TableUtil.isNotEmpty(tab)
-  return not TableUtil.isEmpty(tab)
+    return not TableUtil.isEmpty(tab)
 end
 
 ---@generic K, V
@@ -43,21 +54,38 @@ end
 ---@param value V
 ---@return boolean
 function TableUtil.contains(tab, value)
-  for _, v in pairs(tab) do
-    if v == value then
-      return true
+    for _, v in pairs(tab) do
+        if v == value then
+            return true
+        end
     end
-  end
-  return false
+    return false
+end
+
+---@generic K, V
+---@param tab table<K,V>
+---@param key K
+---@return boolean
+function TableUtil.containsKey(tab, key)
+    return tab[key] ~= nil
 end
 
 ---@generic V
 ---@param tab V[]
 function TableUtil.shuffle(tab)
-  for i = #tab, 2, -1 do
-    local j = math.random(1, i)
-    tab[i], tab[j] = tab[j], tab[i]
-  end
+    for i = #tab, 2, -1 do
+        local j = math.random(1, i)
+        tab[i], tab[j] = tab[j], tab[i]
+    end
+end
+
+---@overload fun<V, MappedV>(tab: V[], func: fun(value: V, key: number): MappedV): MappedV[]
+---@generic K, V, MappedV
+---@param tab table<K, V>
+---@param func fun(value: V, key: K): MappedV
+---@return table<K, MappedV>
+function TableUtil.map(tab, func)
+    return GeTableUtils.map(tab, func)
 end
 
 ---@overload fun<V>(arr: V[], func: fun(value: V, index: number): boolean): V[]
@@ -66,23 +94,27 @@ end
 ---@param func fun(value: V, key: K): any
 ---@return table<K, V>
 function TableUtil.filter(tab, func)
-  return GeTableUtils.select(tab, func)
+    return GeTableUtils.select(tab, func)
 end
 
 ---@overload fun<T>(...: T): T
 ---@vararg table
 ---@return table
 function TableUtil.merge(...)
-  return GeTableUtils.merge(...)
+    return GeTableUtils.merge(...)
+end
+
+function TableUtil.copy(tab, recursive)
+    return GeTableUtils.copy(tab, recursive)
 end
 
 ---@param tab table
 ---@return table|nil
 function TableUtil.emptyToNil(tab)
-  if TableUtil.isEmpty(tab) then
-    return nil
-  end
-  return tab
+    if TableUtil.isEmpty(tab) then
+        return nil
+    end
+    return tab
 end
 
 ---@generic K, V
@@ -90,33 +122,51 @@ end
 ---@param key K
 ---@return V
 function TableUtil.removeKey(tab, key)
-  local element = tab[key]
-  tab[key] = nil
-  return element
+    local element = tab[key]
+    tab[key] = nil
+    return element
+end
+
+---@generic V
+---@param tab V[]
+---@param value V
+---@return nil | V
+function TableUtil.removeValue(tab, value)
+    local index = -1
+    for i, v in ipairs(tab) do
+        if v == value then
+            index = i
+            break
+        end
+    end
+    if index > 0 then
+        return table.remove(tab, index)
+    end
+    return nil
 end
 
 ---@generic K, V
 ---@param tab table<K,V>[]
 ---@param attributeName K
 function TableUtil.sortByAttribute(tab, attributeName)
-  return table.sort(tab, function(l, r)
-                            return l[attributeName] < r[attributeName]
-                         end)
+    return table.sort(tab, function(l, r)
+        return l[attributeName] < r[attributeName]
+    end)
 end
 
 ---@generic K
 ---@param set table<K,boolean>
 ---@return K[]
 function TableUtil.setToList(set)
-  ---@type K[]
-  list = {}
-  for entry, value in pairs(set) do
-    if value then
-      table.insert(list, entry)
+    ---@type K[]
+    list = {}
+    for entry, value in pairs(set) do
+        if value then
+            table.insert(list, entry)
+        end
     end
-  end
 
-  return list
+    return list
 end
 
 return TableUtil
