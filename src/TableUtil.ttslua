@@ -159,7 +159,7 @@ end
 ---@return K[]
 function TableUtil.setToList(set)
     ---@type K[]
-    list = {}
+    local list = {}
     for entry, value in pairs(set) do
         if value then
             table.insert(list, entry)

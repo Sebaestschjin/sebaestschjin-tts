@@ -57,7 +57,7 @@ function StringUtil.isBase64(text)
 end
 
 function StringUtil.findNearest(value, others, maxDistance)
-  local minDistance, otherValue = nil
+  local minDistance, otherValue
 
   for _, other in pairs(others) do
     local distance = StringUtil.distance(value, other)
