@@ -71,4 +71,10 @@ function Logger.debug(...)
     end
 end
 
+function Logger.verbose(...)
+    if logger.getFilterLevel() >= GeLogger.VERBOSE then
+        logger.log(buildMessage(...), GeLogger.VERBOSE)
+    end
+end
+
 return Logger
