@@ -2,6 +2,14 @@ local GeTableUtils = require("ge_tts/TableUtils")
 
 local TableUtil = {}
 
+function TableUtil.length(tab)
+    local len = 0
+    for _, _ in TableUtil.pairs(tab) do
+        len = len + 1
+    end
+    return len
+end
+
 --- Variant of pairs that also works for nil values.
 ---@generic K, V
 ---@param tab nil | table<K, V>
@@ -167,6 +175,62 @@ function TableUtil.setToList(set)
     end
 
     return list
+end
+
+local TYPE_STRINGIFIERS = {
+    ['nil'] = function(_) return 'nil' end,
+    boolean = function(v) return tostring(v) end,
+    number = function(v) return tostring(v) end,
+    string = function(v) return "'" .. v .. "'" end,
+    userdata = function(_) return 'userdata' end,
+    ['function'] = function(_) return 'function' end,
+    thread = function(_) return 'thread' end,
+    table = function(v) return tostring(v) end,
+}
+
+--- Taken from ge_tts.TableUtils with changed signature.
+---@overload fun(tab: table): string
+---@overload fun(tab: table, exclude: string[]): string
+---@param tab table
+---@param exclude string[]
+---@param depth number
+---@return string
+function TableUtil.dump(tab, exclude, depth)
+    depth = depth or 1
+
+    local indentation = string.rep('  ', depth)
+    local str = '{'
+
+    ---@type table<number, nil | boolean>
+    local ordered_keys = {}
+
+    for i, v in ipairs(--[[---@type any[] ]] tab) do
+        ordered_keys[i] = true
+        str = str .. '\n' .. indentation .. '[' .. i .. '] = '
+
+        if type(v) == 'table' then
+            str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
+        else
+            local a = TYPE_STRINGIFIERS['nil']
+            str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
+        end
+    end
+
+    for k, v in pairs(tab) do
+        if not ordered_keys[--[[---@type number]] k] and not TableUtil.containsKey(exclude, k) then
+            str = str .. '\n' .. indentation .. '[' .. TYPE_STRINGIFIERS[type(k)](k) .. '] = '
+
+            if type(v) == 'table' then
+                str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
+            else
+                str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
+            end
+        end
+    end
+
+    str = str .. '\n' .. string.rep('  ', depth - 1) .. '}'
+
+    return str
 end
 
 return TableUtil

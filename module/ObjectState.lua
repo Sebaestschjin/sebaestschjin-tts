@@ -1,5 +1,4 @@
 local Object = require('ge_tts.Object')
-local ObjectUtils = require('ge_tts.ObjectUtils')
 
 ---@shape se_tts__ObjectInfo
 ---@field name nil | string
@@ -41,7 +40,7 @@ function ObjectState.objectState(object, position, type)
         Locked = object.locked,
         Grid = object.snapToGrid,
         ColorDiffuse = object.tint,
-        Transform = ObjectUtils.transformState({
+        Transform = ObjectState.transformState({
             position = position,
             rotation = { 0, 0, 0 },
             scale = { 1, 1, 1 },
@@ -88,6 +87,91 @@ function ObjectState.modelState(model, position)
     }
 
     return modelState
+end
+
+--- Taken from ge_tts.ObjectUtils, but I don't want to always have the onObjectSpawn event registered.
+function ObjectState.transformState(transform)
+    ---@type tts__ObjectState_Transform
+    local state = {}
+
+    ---@type nil | tts__VectorShape
+    local position = transform.position
+    ---@type nil | tts__VectorShape
+    local rotation = transform.rotation
+    ---@type nil | tts__VectorShape
+    local scale = transform.scale
+
+    if position then
+        state.posX = (--[[---@type tts__CharVectorShape]] position).x or (--[[---@type tts__NumVectorShape]] position)[1]
+        state.posY = (--[[---@type tts__CharVectorShape]] position).y or (--[[---@type tts__NumVectorShape]] position)[2]
+        state.posZ = (--[[---@type tts__CharVectorShape]] position).z or (--[[---@type tts__NumVectorShape]] position)[3]
+    end
+
+    if rotation then
+        state.rotX = (--[[---@type tts__CharVectorShape]] rotation).x or (--[[---@type tts__NumVectorShape]] rotation)[1]
+        state.rotY = (--[[---@type tts__CharVectorShape]] rotation).y or (--[[---@type tts__NumVectorShape]] rotation)[2]
+        state.rotZ = (--[[---@type tts__CharVectorShape]] rotation).z or (--[[---@type tts__NumVectorShape]] rotation)[3]
+    end
+
+    if scale then
+        state.scaleX = (--[[---@type tts__CharVectorShape]] scale).x or (--[[---@type tts__NumVectorShape]] scale)[1]
+        state.scaleY = (--[[---@type tts__CharVectorShape]] scale).y or (--[[---@type tts__NumVectorShape]] scale)[2]
+        state.scaleZ = (--[[---@type tts__CharVectorShape]] scale).z or (--[[---@type tts__NumVectorShape]] scale)[3]
+    end
+
+    return state
+end
+
+---@param object tts__ObjectState
+---@param decal tts__Object_DecalParameters
+function ObjectState.addDecal(object, decal)
+    local attached = object.AttachedDecals
+    if not attached then
+        attached = {}
+        object.AttachedDecals = attached
+    end
+
+    local decalData = {
+        Transform = ObjectState.transformState({
+            position = decal.position,
+            rotation = decal.rotation,
+            scale = decal.scale,
+        }),
+        CustomDecal = {
+            Name = decal.name,
+            ImageURL = decal.url,
+        }
+    }
+    table.insert(attached, decalData)
+end
+
+function ObjectState.fixNumberedArray(state, key)
+    if state[key] then
+        local numbered = {}
+        for i, _ in pairs(state[key]) do
+            table.insert(numbered, i)
+        end
+
+        for _, v in ipairs(numbered) do
+            state[key][tostring(v)] = state[key][v]
+            state[key][v] = nil
+        end
+    end
+end
+
+function ObjectState.fixStates(state)
+    if not state then
+        return
+    end
+
+    ObjectState.fixNumberedArray(state, 'States')
+    ObjectState.fixNumberedArray(state, 'CustomDeck')
+
+    if state.ContainedObjects then
+        for _, contained in pairs(state.ContainedObjects) do
+            ObjectState.fixStates(contained)
+        end
+    end
 end
 
 return ObjectState
