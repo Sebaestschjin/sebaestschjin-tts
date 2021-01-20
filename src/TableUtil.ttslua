@@ -2,6 +2,7 @@ local GeTableUtils = require("ge_tts/TableUtils")
 
 local TableUtil = {}
 
+---@return number
 function TableUtil.length(tab)
     local len = 0
     for _, _ in TableUtil.pairs(tab) do
@@ -58,7 +59,7 @@ function TableUtil.isNotEmpty(tab)
 end
 
 ---@generic K, V
----@param tab table<K,V>
+---@param tab table<K,V> | V[]
 ---@param value V
 ---@return boolean
 function TableUtil.contains(tab, value)

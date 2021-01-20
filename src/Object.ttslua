@@ -4,7 +4,9 @@ local Object = {}
 
 Object.Tag = GeObject.Tag
 
----@param object tts__Object
+---@alias seb_ObjectLike tts__Object | common__WrappedObject
+
+---@param object seb_ObjectLike
 function Object.isCard(object)
     return object.tag == Object.Tag.Card
 end

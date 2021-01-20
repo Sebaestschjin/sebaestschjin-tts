@@ -56,6 +56,10 @@ function StringUtil.isBase64(text)
   return text:find("^[a-zA-Z0-9+/]+=?=?$")
 end
 
+---@param value string
+---@param others string[]
+---@param maxDistance number
+---@return nil | string
 function StringUtil.findNearest(value, others, maxDistance)
   local minDistance, otherValue
 
