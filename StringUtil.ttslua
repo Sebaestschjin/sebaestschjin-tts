@@ -1,4 +1,4 @@
-local TableUtil = require("sebaestschjin-tts.src.TableUtil")
+local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 local StringUtil = {}
 

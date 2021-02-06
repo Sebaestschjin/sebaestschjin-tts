@@ -1,7 +1,7 @@
-local Constant = require("sebaestschjin-tts.src.Constant")
-local Object = require("sebaestschjin-tts.src.Object")
-local TableUtil = require("sebaestschjin-tts.src.TableUtil")
-local Utils = require("sebaestschjin-tts.src.Utils")
+local Constant = require("sebaestschjin-tts.Constant")
+local Object = require("sebaestschjin-tts.Object")
+local TableUtil = require("sebaestschjin-tts.TableUtil")
+local Utils = require("sebaestschjin-tts.Utils")
 
 ---@shape common_DeckZone_Partial
 ---@field tag "Deck"

@@ -1,4 +1,4 @@
-local GeObject = require("ge_tts/Object")
+local GeObject = require("ge_tts.Object")
 
 local Object = {}
 

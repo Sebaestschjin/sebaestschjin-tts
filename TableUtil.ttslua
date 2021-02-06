@@ -1,4 +1,4 @@
-local GeTableUtils = require("ge_tts/TableUtils")
+local GeTableUtils = require("ge_tts.TableUtils")
 
 local TableUtil = {}
 
