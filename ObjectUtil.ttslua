@@ -26,12 +26,16 @@ local ObjectUtil = {}
 ---@return common__WrappedDeck
 function ObjectUtil.getContainedObjects(deck)
   local deckData = --[[---@type tts__ContainerState]] deck.getData()
+  return ObjectUtil.getContainedObjectsFromData(deckData)
+end
 
+---@param containerState tts__ContainerState
+function ObjectUtil.getContainedObjectsFromData(containerState)
   local objects = {}
-  for i, object in pairs(deckData.ContainedObjects) do
+  for i, object in pairs(containerState.ContainedObjects) do
     local wrappedObject = ObjectUtil.wrapObject(object)
     wrappedObject.index = i - 1
-    wrappedObject.getPosition = function() return ObjectUtil.wrapPosition(deckData.Transform) end
+    wrappedObject.getPosition = function() return ObjectUtil.wrapPosition(containerState.Transform) end
     table.insert(objects, wrappedObject)
   end
 
