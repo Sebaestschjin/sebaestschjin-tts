@@ -32,7 +32,10 @@ function Utils.waitForObject(guid, callback, timeout, timeoutCallback)
 end
 
 function Utils.waitForObjectInZone(zone, search, callback, timeout, timeout_callback)
-    local waiter = function() return Utils.findObjectIn(zone, search) ~= nil end
+    local waiter = function()
+        local obj = Utils.findObjectIn(zone, search)
+        return obj ~= nil and not obj.spawning
+    end
     Wait.condition(callback, waiter, timeout, timeout_callback)
 end
 
