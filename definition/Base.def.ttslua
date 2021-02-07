@@ -1,0 +1,2 @@
+---@alias URL string
+---@alias GUID string

@@ -159,9 +159,10 @@ function TableUtil.removeValue(tab, value)
     return nil
 end
 
----@generic K, V
----@param tab table<K,V>[]
----@param attributeName K
+---@generic T
+---@param tab T[]
+---@param attributeName string
+---@return T[]
 function TableUtil.sortByAttribute(tab, attributeName)
     return table.sort(tab, function(l, r)
         return l[attributeName] < r[attributeName]

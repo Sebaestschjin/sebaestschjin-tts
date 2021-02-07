@@ -29,6 +29,12 @@ end
 
 local ObjectState = {}
 
+---@param objectState tts__ObjectState
+---@return boolean
+function ObjectState.isCard(objectState)
+    return objectState ~= nil and (objectState.Name == Object.Name.Card or objectState.Name == Object.Name.CardCustom)
+end
+
 ---@param object se_tts__ObjectInfo
 ---@param position tts__VectorShape
 ---@return tts__ObjectState

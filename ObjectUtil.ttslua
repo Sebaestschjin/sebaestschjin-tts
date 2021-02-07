@@ -1,7 +1,5 @@
 local TableUtil = require("sebaestschjin-tts.TableUtil")
 
---- @alias GUID string
-
 local ObjectUtil = {}
 
 ---@shape common__WrappedObject
