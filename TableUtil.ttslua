@@ -122,8 +122,9 @@ function TableUtil.copy(tab, recursive)
     return GeTableUtils.copy(tab, recursive)
 end
 
----@param tab table
----@return table|nil
+---@generic K, V
+---@param tab table<K, V>
+---@return nil | table<K, V>
 function TableUtil.emptyToNil(tab)
     if TableUtil.isEmpty(tab) then
         return nil

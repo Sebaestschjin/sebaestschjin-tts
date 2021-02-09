@@ -1,0 +1,7 @@
+---@shape Finder_Search
+---@field name nil | string
+---@field description nil | string
+---@field guid nil | GUID
+---@field tag nil | tts__ObjectType
+---@field cardId nil | string
+---@field plain nil | boolean @Default false

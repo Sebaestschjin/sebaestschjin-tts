@@ -12,35 +12,35 @@ local Chain = {}
 
 ---@return common_Chain
 function Chain.create()
-  local chain = --[[---@type common_Chain]]{}
-  chain.callbacks = {}
-  chain.add = function(callback) Chain.add(chain, callback) end
-  chain.addNext = function(callback) Chain.addNext(chain, callback) end
-  chain.proceed = function() Chain.proceed(chain) end
+    local chain = --[[---@type common_Chain]]{}
+    chain.callbacks = {}
+    chain.add = function(callback) Chain.add(chain, callback) end
+    chain.addNext = function(callback) Chain.addNext(chain, callback) end
+    chain.proceed = function() Chain.proceed(chain) end
 
-  return chain
+    return chain
 end
 
 ---@param chain common_Chain
 ---@param callback common_ChainCallback
 function Chain.add(chain, callback)
-  table.insert(chain.callbacks, callback)
+    table.insert(chain.callbacks, callback)
 end
 
 ---@param chain common_Chain
 ---@param callback common_ChainCallback
 function Chain.addNext(chain, callback)
-  table.insert(chain.callbacks, 1, callback)
+    table.insert(chain.callbacks, 1, callback)
 end
 
 ---@param chain common_Chain
 function Chain.proceed(chain)
-  if TableUtil.isNotEmpty(chain.callbacks) then
-    local nextCallback = table.remove(chain.callbacks, 1)
-    if nextCallback(chain) then
-      Chain.proceed(chain)
+    if TableUtil.isNotEmpty(chain.callbacks) then
+        local nextCallback = table.remove(chain.callbacks, 1)
+        if nextCallback(chain) then
+            Chain.proceed(chain)
+        end
     end
-  end
 end
 
 return Chain

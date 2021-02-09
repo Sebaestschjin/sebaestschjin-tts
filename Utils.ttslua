@@ -17,8 +17,8 @@ function Utils.readNotebook(name)
     return nil
 end
 
----@overload fun(guid, callback: (fun(): void), timeout: number): void
----@overload fun(guid, callback: (fun(): void)): void
+---@overload fun(guid: GUID, callback: (fun(): void), timeout: number): void
+---@overload fun(guid: GUID, callback: (fun(): void)): void
 ---@param guid GUID
 ---@param callback fun(): void
 ---@param timeout number
@@ -31,15 +31,23 @@ function Utils.waitForObject(guid, callback, timeout, timeoutCallback)
     Wait.condition(callback, waiter, timeout, timeoutCallback)
 end
 
-function Utils.waitForObjectInZone(zone, search, callback, timeout, timeout_callback)
+---@overload fun(zone: GUID, search: Finder_Search, callback: fun(): void): void
+---@param zone GUID
+---@param search Finder_Search
+---@param callback fun(): void
+---@param timeout number
+---@param timeoutCallback fun(): void
+function Utils.waitForObjectInZone(zone, search, callback, timeout, timeoutCallback)
     local waiter = function()
         local obj = Utils.findObjectIn(zone, search)
-        return obj ~= nil and not obj.spawning
+        return obj ~= nil and not (--[[---@not nil]] obj).spawning
     end
-    Wait.condition(callback, waiter, timeout, timeout_callback)
+    Wait.condition(callback, waiter, timeout, timeoutCallback)
 end
 
 ---@param container GUID | tts__Container
+---@param search Finder_Search
+---@return nil | tts__Object
 function Utils.findObjectIn(container, search)
     local objects = Utils.getObjects(container)
 
@@ -50,9 +58,13 @@ function Utils.findObjectIn(container, search)
     end
 end
 
+---@param container GUID | tts__Container
+---@param name string
+---@param maxDistance number
+---@return (nil, nil) | (tts__Object, number)
 function Utils.findNearestObjectIn(container, name, maxDistance)
     local objects = Utils.getObjects(container)
-    local nearestDistance, nearestObject = nil
+    local nearestDistance, nearestObject
 
     for _, object in TableUtil.pairs(objects) do
         local distance = StringUtil.distance(object.getName(), name)
@@ -70,7 +82,7 @@ end
 ---@return tts__Object[]
 function Utils.getObjects(container)
     if StringUtil.isGuid(container) then
-        container = getObjectFromGUID(container)
+        container = --[[---@type tts__Container]] getObjectFromGUID(--[[---@type GUID]] container)
     end
 
     if Object.isContainer(container) then
@@ -82,6 +94,9 @@ function Utils.getObjects(container)
     return container
 end
 
+---@param object tts__Object
+---@param search Finder_Search
+---@return boolean
 function Utils.matchesSearch(object, search)
     return Utils.findNonEmpty(object.getName(), search.name, search.plain)
             and Utils.findNonEmpty(object.getDescription(), search.description, search.plain)
@@ -116,8 +131,12 @@ function Utils.findObjectInZone(zone_guid, search)
     return nil
 end
 
+---@param value string
+---@param pattern nil | string
+---@param plain nil | boolean
+---@return boolean
 function Utils.findNonEmpty(value, pattern, plain)
-    return pattern == nil or value:find(pattern, nil, plain)
+    return pattern == nil or value:find(--[[---@not nil]]pattern, 1, plain or false) ~= nil
 end
 
 ---@param object tts__Object
