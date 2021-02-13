@@ -1,4 +1,4 @@
-local Object = require('ge_tts.Object')
+local Object = require('sebaestschjin-tts.Object')
 
 ---@shape se_tts__ObjectInfo
 ---@field name nil | string
@@ -32,7 +32,15 @@ local ObjectState = {}
 ---@param objectState tts__ObjectState
 ---@return boolean
 function ObjectState.isCard(objectState)
-    return objectState ~= nil and (objectState.Name == Object.Name.Card or objectState.Name == Object.Name.CardCustom)
+    local type = Object.TypeForName[objectState.Name]
+    return type == Object.Type.Card
+end
+
+---@param objectState tts__ObjectState
+---@return boolean
+function ObjectState.isContainer(objectState)
+    local type = Object.TypeForName[objectState.Name]
+    return type == Object.Type.Bag or type == Object.Type.Deck
 end
 
 ---@param object se_tts__ObjectInfo
@@ -151,33 +159,22 @@ function ObjectState.addDecal(object, decal)
     table.insert(attached, decalData)
 end
 
-function ObjectState.fixNumberedArray(state, key)
-    if state[key] then
-        local numbered = {}
-        for i, _ in pairs(state[key]) do
-            table.insert(numbered, i)
-        end
-
-        for _, v in ipairs(numbered) do
-            state[key][tostring(v)] = state[key][v]
-            state[key][v] = nil
-        end
-    end
+---@param transform tts__ObjectState_Transform
+---@return tts__Vector
+function ObjectState.transformToPosition(transform)
+    return Vector(--[[---@not nil]] transform.posX, --[[---@not nil]] transform.posY, --[[---@not nil]] transform.posZ)
 end
 
-function ObjectState.fixStates(state)
-    if not state then
-        return
-    end
+---@param transform tts__ObjectState_Transform
+---@return tts__Vector
+function ObjectState.transformToRotation(transform)
+    return Vector(--[[---@not nil]] transform.rotX, --[[---@not nil]] transform.rotY, --[[---@not nil]] transform.rotZ)
+end
 
-    ObjectState.fixNumberedArray(state, 'States')
-    ObjectState.fixNumberedArray(state, 'CustomDeck')
-
-    if state.ContainedObjects then
-        for _, contained in pairs(state.ContainedObjects) do
-            ObjectState.fixStates(contained)
-        end
-    end
+---@param transform tts__ObjectState_Transform
+---@return tts__Vector
+function ObjectState.transformToScale(transform)
+    return Vector(--[[---@not nil]] transform.scaleX, --[[---@not nil]] transform.scaleY, --[[---@not nil]] transform.scaleZ)
 end
 
 return ObjectState

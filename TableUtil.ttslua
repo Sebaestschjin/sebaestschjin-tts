@@ -24,8 +24,8 @@ end
 
 --- Variant of ipairs that also works for nil values.
 ---@generic V
----@param tab nil | table<number, V> | V[]
----@return fun(tab: table<number, V>): number, V
+---@param tab nil | V[]
+---@return fun(tab: V[]): number, V
 function TableUtil.ipairs(tab)
     if tab then
         return ipairs(--[[---@not nil]]tab)
@@ -58,10 +58,8 @@ function TableUtil.isNotEmpty(tab)
     return not TableUtil.isEmpty(tab)
 end
 
----@generic K, V
----@param tab table<K,V> | V[]
----@param value V
----@return boolean
+---@overload fun<V>(tab: V[]): boolean
+---@overload fun<K, V>(tab: table<K, V>): boolean
 function TableUtil.contains(tab, value)
     for _, v in pairs(tab) do
         if v == value then
@@ -122,9 +120,9 @@ function TableUtil.copy(tab, recursive)
     return GeTableUtils.copy(tab, recursive)
 end
 
----@generic K, V
----@param tab table<K, V>
----@return nil | table<K, V>
+---@generic T
+---@param tab T
+---@return nil | T
 function TableUtil.emptyToNil(tab)
     if TableUtil.isEmpty(tab) then
         return nil

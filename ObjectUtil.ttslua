@@ -2,77 +2,64 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 local ObjectUtil = {}
 
----@shape common__WrappedObject
----@field tag string
----@field getGUID fun(): GUID
----@field getName fun(): string
----@field getDescription fun(): string
----@field getDecals fun(): common__WrappedDecals[]
----@field getData fun(): tts__ObjectState
-
----@shape common__WrappedDecals
----@field name string
----@field position tts__Vector
-
----@shape common__WrappedContainedObject : common__WrappedObject
----@field index number
----@field getPosition fun(): tts__Vector
-
----@alias common__WrappedDeck common__WrappedContainedObject[]
-
----@param deck tts__Container | common_DeckZone
----@return common__WrappedDeck
+---@param deck seb_ContainerLike
+---@return seb_WrappedContainedObject_old[]
 function ObjectUtil.getContainedObjects(deck)
-  local deckData = --[[---@type tts__ContainerState]] deck.getData()
-  return ObjectUtil.getContainedObjectsFromData(deckData)
+    local deckData = --[[---@type tts__ContainerState]] deck.getData()
+    return ObjectUtil.getContainedObjectsFromData(deckData)
 end
 
 ---@param containerState tts__ContainerState
+---@return seb_WrappedContainedObject_old[]
 function ObjectUtil.getContainedObjectsFromData(containerState)
-  local objects = {}
-  for i, object in pairs(containerState.ContainedObjects) do
-    local wrappedObject = ObjectUtil.wrapObject(object)
-    wrappedObject.index = i - 1
-    wrappedObject.getPosition = function() return ObjectUtil.wrapPosition(containerState.Transform) end
-    table.insert(objects, wrappedObject)
-  end
+    local objects = {}
+    for i, object in pairs(containerState.ContainedObjects) do
+        local wrappedObject = --[[---@type seb_WrappedContainedObject_old]] ObjectUtil.wrapObject(object)
+        wrappedObject.index = i - 1
+        wrappedObject.getPosition = function()
+            return ObjectUtil.wrapPosition(--[[---@not nil]] containerState.Transform)
+        end
+        table.insert(objects, wrappedObject)
+    end
 
-  return objects
+    return objects
 end
 
 ---@param objectData tts__ObjectState
----@return common__WrappedObject
+---@return seb_WrappedObject_old
 function ObjectUtil.wrapObject(objectData)
-  local object = --[[---@type common__WrappedObject]] {}
+    local object = --[[---@type seb_WrappedObject_old]] {}
 
-  object.tag = objectData.Name
-  object.getGUID = function() return objectData.GUID end
-  object.getName = function() return objectData.Nickname end
-  object.getDescription = function() return objectData.Description end
-  object.getDecals = function() return ObjectUtil.wrapDecals(--[[---@not nil]] objectData.AttachedDecals) end
-  object.getData = function() return objectData end
+    object.tag = objectData.Name
+    object.getGUID = function() return objectData.GUID or "" end
+    object.getName = function() return objectData.Nickname or "" end
+    object.getDescription = function() return objectData.Description or "" end
+    object.getDecals = function() return ObjectUtil.wrapDecals(objectData.AttachedDecals) end
+    object.getData = function() return objectData end
 
-  return object
+    return object
 end
 
----@param decalsData tts__AttachedDecalsState[]
----@return common__WrappedDecals[]
+---@param decalsData nil | tts__ObjectState_Decal[]
+---@return seb_WrappedDecal_old[]
 function ObjectUtil.wrapDecals(decalsData)
-  local decals = {}
-  for _, decalData in TableUtil.pairs(decalsData) do
-    local decal = {}
-    decal.name = decalData.CustomDecal.Name
-    decal.position = ObjectUtil.wrapPosition(decalData.Transform)
-    table.insert(decals, decal)
-  end
+    local decals = {}
+    for _, decalData in TableUtil.pairs(decalsData) do
+        local decal = {}
+        decal.name = decalData.CustomDecal.Name
+        decal.position = ObjectUtil.wrapPosition(decalData.Transform)
+        table.insert(decals, decal)
+    end
 
-  return decals
+    return decals
 end
 
 ---@param transform tts__ObjectState_Transform
 ---@return tts__Vector
 function ObjectUtil.wrapPosition(transform)
-  return Vector(transform.posX, transform.posY, transform.posZ)
+    return Vector(--[[---@not nil]] transform.posX,
+            --[[---@not nil]] transform.posY,
+            --[[---@not nil]] transform.posZ)
 end
 
 return ObjectUtil

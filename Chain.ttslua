@@ -6,7 +6,9 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 ---@field addNext fun(callback:common_ChainCallback) Adds the given callback to the front of the chain.
 ---@field proceed fun() Calls the next callback function in the chain
 
----@alias common_ChainCallback fun(chain:common_Chain, vararg any):boolean|fun(chain:common_Chain, vararg any):void
+---@alias common_ChainBoolCallback fun(chain: common_Chain, vararg any): boolean
+---@alias common_ChainVoidCallback fun(chain: common_Chain, vararg any): void
+---@alias common_ChainCallback common_ChainBoolCallback | common_ChainVoidCallback
 
 local Chain = {}
 
@@ -14,7 +16,9 @@ local Chain = {}
 function Chain.create()
     local chain = --[[---@type common_Chain]]{}
     chain.callbacks = {}
-    chain.add = function(callback) Chain.add(chain, callback) end
+    chain.add = function(--[[---@type common_ChainCallback]] callback)
+        Chain.add(chain, callback)
+    end
     chain.addNext = function(callback) Chain.addNext(chain, callback) end
     chain.proceed = function() Chain.proceed(chain) end
 

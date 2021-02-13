@@ -40,12 +40,14 @@ end
 function Utils.waitForObjectInZone(zone, search, callback, timeout, timeoutCallback)
     local waiter = function()
         local obj = Utils.findObjectIn(zone, search)
-        return obj ~= nil and not (--[[---@not nil]] obj).spawning
+        return obj ~= nil and not (--[[---@type tts__Object]] obj).spawning
     end
     Wait.condition(callback, waiter, timeout, timeoutCallback)
 end
 
----@param container GUID | tts__Container
+---@overload fun(container: tts__Container, search: Finder_Search): nil | tts__Object
+---@overload fun(container: common_DeckZone, search: Finder_Search): nil | tts__IndexedSimpleObjectState
+---@param container GUID
 ---@param search Finder_Search
 ---@return nil | tts__Object
 function Utils.findObjectIn(container, search)
@@ -58,7 +60,8 @@ function Utils.findObjectIn(container, search)
     end
 end
 
----@param container GUID | tts__Container
+---@overload fun(container: common_DeckZone, name: string, maxDistance: number): (nil, nil) | (tts__IndexedSimpleObjectState, number)
+---@param container GUID
 ---@param name string
 ---@param maxDistance number
 ---@return (nil, nil) | (tts__Object, number)
@@ -78,7 +81,7 @@ function Utils.findNearestObjectIn(container, name, maxDistance)
     return nearestObject, nearestDistance
 end
 
----@param container GUID | tts__Container | tts__Object[]
+---@param container GUID | seb_ContainerLike | tts__Object[]
 ---@return tts__Object[]
 function Utils.getObjects(container)
     if StringUtil.isGuid(container) then
@@ -106,6 +109,7 @@ function Utils.matchesSearch(object, search)
 end
 
 ---@deprecated Use findObjectIn (doesn't support functions yet, though)
+---@return nil | tts__Object
 function Utils.findObjectInZone(zone_guid, search)
     local zone = getObjectFromGUID(zone_guid)
     local plain = search.plain

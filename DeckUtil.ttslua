@@ -15,7 +15,7 @@ local Utils = require("sebaestschjin-tts.Utils")
 ---@field isDeck boolean
 ---@field isEmpty boolean
 ---@field getObjects fun():tts__IndexedSimpleObjectState[]
----@field getData fun(): tts__ObjectState|common_DeckZone_EmptyState
+---@field getData fun(): tts__ObjectState | common_DeckZone_EmptyState
 ---@field lastPosition tts__Vector|nil
 ---@field lastRotation tts__Vector|nil
 
@@ -24,7 +24,7 @@ local Utils = require("sebaestschjin-tts.Utils")
 
 local DeckUtil = {}
 
----@param object tts__Deck|tts__Card
+---@param object tts__Deck | tts__Card
 ---@return common_DeckZone
 function DeckUtil.wrap(object)
   local wrapped = DeckUtil.createWrapped()
@@ -44,7 +44,7 @@ end
 ---@return common_DeckZone
 function DeckUtil.wrapAt(position)
   local hit = Physics.cast({
-    origin = position + vector(0, 3, 0),
+    origin = position + Vector(0, 3, 0),
     direction = Constant.Direction.DOWN,
     type = Constant.Cast.RAY,
   })

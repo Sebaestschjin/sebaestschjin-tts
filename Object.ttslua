@@ -2,26 +2,58 @@ local GeObject = require("ge_tts.Object")
 
 local Object = {}
 
-Object.Tag = GeObject.Tag
+Object.Type = GeObject.Tag
+Object.Name = GeObject.Name
 
----@alias seb_ObjectLike tts__Object | common__WrappedObject
+---@type table<string, tts__ObjectType>
+Object.TypeForName = {
+    [GeObject.Name.Bag] = Object.Type.Bag,
+    [GeObject.Name.Board] = Object.Type.Board,
+    [GeObject.Name.Card] = Object.Type.Card,
+    [GeObject.Name.CardCustom] = Object.Type.Card,
+    [GeObject.Name.Deck] = Object.Type.Deck,
+    [GeObject.Name.DeckCustom] = Object.Type.Deck,
+    [GeObject.Name.Die4] = Object.Type.Die,
+    [GeObject.Name.Die6] = Object.Type.Die,
+    [GeObject.Name.Die6Rounded] = Object.Type.Die,
+    [GeObject.Name.Die8] = Object.Type.Die,
+    [GeObject.Name.Die10] = Object.Type.Die,
+    [GeObject.Name.Die12] = Object.Type.Die,
+    [GeObject.Name.Die20] = Object.Type.Die,
+    [GeObject.Name.DieCustom] = Object.Type.Die,
+    [GeObject.Name.FigurineCardBot] = Object.Type.Figurine,
+    [GeObject.Name.FigurineCustom] = Object.Type.Figurine,
+    [GeObject.Name.FigurineKimiKat] = Object.Type.Figurine,
+    [GeObject.Name.FigurineKnil] = Object.Type.Figurine,
+    [GeObject.Name.FigurineMara] = Object.Type.Figurine,
+    [GeObject.Name.FigurineSirLoin] = Object.Type.Figurine,
+    [GeObject.Name.FigurineZeke] = Object.Type.Figurine,
+    [GeObject.Name.FigurineZomblor] = Object.Type.Figurine,
+    [GeObject.Name.InfiniteBag] = Object.Type.Infinite,
+    [GeObject.Name.ScriptingTrigger] = Object.Type.Scripting,
+    [GeObject.Name.Tile] = Object.Type.Tile,
+}
 
 ---@param object seb_ObjectLike
+---@return boolean
 function Object.isCard(object)
-    return object.tag == Object.Tag.Card
+    return object.type == Object.Type.Card
 end
 
----@param object tts__Object
+---@param object seb_ObjectLike
+---@return boolean
 function Object.isDeck(object)
-    return object.tag == Object.Tag.Deck
+    return object.type == Object.Type.Deck
 end
 
----@param object tts__Object
+---@param object seb_ObjectLike
+---@return boolean
 function Object.isBag(object)
-    return object.tag == Object.Tag.Bag
-end
+    return object.type == Object.Type.Bag
 
----@param object tts__Object
+end
+---@param object seb_ObjectLike
+---@return boolean
 function Object.isContainer(object)
     return Object.isDeck(object) or Object.isBag(object)
 end
