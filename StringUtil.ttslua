@@ -2,6 +2,17 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 local StringUtil = {}
 
+
+---@overload fun(input: string, pattern: string): string
+---@param input string
+---@param pattern string
+---@param replacement string
+---@return string
+function StringUtil.replace(input, pattern, replacement)
+    local r, _ = input:gsub(pattern, replacement or "")
+    return r
+end
+
 ---@param text string
 ---@param separators string[]
 ---@return string[]

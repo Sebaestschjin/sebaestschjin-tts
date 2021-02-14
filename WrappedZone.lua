@@ -17,19 +17,15 @@ setmetatable(WrappedZone, TableUtil.merge(getmetatable(WrappedContainer), {
         ---@type tts__ScriptingTrigger
         local internal = zone
 
-        ---@param object tts__Object
-        ---@param containedIndex number
-        ---@return seb_WrappedObject
-        local function wrapContainedObject(object, containedIndex)
-            if Object.isContainer(object) then
-                return WrappedContainer(--[[---@type tts__ContainerState]] object.getData(), containedIndex)
-            end
-            return WrappedObject(object.getData(), containedIndex)
+        ---@param obj tts__Object
+        ---@return tts__ObjectState
+        local function toData(obj)
+            return obj.getData()
         end
 
-        ---@return seb_WrappedObject[]
-        function self.getObjects()
-            return TableUtil.map(--[[---@not nil]] internal.getObjects(), wrapContainedObject)
+        ---@return tts__ObjectState[]
+        function self.containedObjectsData()
+            return TableUtil.map(--[[---@not nil]] internal.getObjects(), toData)
         end
 
         return self

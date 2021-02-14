@@ -1,3 +1,4 @@
+local Search = require("sebaestschjin-tts.Search")
 local Object = require("sebaestschjin-tts.Object")
 local ObjectState = require("sebaestschjin-tts.ObjectState")
 local TableUtil = require("sebaestschjin-tts.TableUtil")
@@ -27,10 +28,25 @@ setmetatable(WrappedContainer, TableUtil.merge(getmetatable(WrappedObject), {
             return WrappedObject(objectState, containedIndex)
         end
 
+        ---@return tts__ObjectState[]
+        function self.containedObjectsData()
+            return internal.ContainedObjects or {}
+        end
+
+        ---@param search seb_Search
+        ---@return nil | seb_WrappedObject
+        function self.findObject(search)
+            local foundData, foundIndex = Search.findInObjectStates(--[[---@not nil]] self.containedObjectsData(), search)
+            if foundData then
+                return wrapContainedObject(--[[---@not nil]] foundData, foundIndex)
+            end
+            return nil
+        end
+
         ---@return seb_WrappedObject[]
         function self.getObjects()
-            if internal.ContainedObjects then
-                return TableUtil.map(--[[---@not nil]] internal.ContainedObjects, wrapContainedObject)
+            if self.containedObjectsData() then
+                return TableUtil.map(--[[---@not nil]] self.containedObjectsData(), wrapContainedObject)
             end
             return {}
         end

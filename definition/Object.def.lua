@@ -1,9 +1,11 @@
 
 ---@alias seb_ObjectLike tts__Object | seb_WrappedObject
+---@alias seb_ObjectLikeArray tts__Object[] | seb_WrappedObject[]
+---@alias seb_DeckLike tts__Deck | seb_WrappedDeck
 ---@alias seb_DecalLike tts__Object_Decal | seb_WrappedDecal
 
 ---@alias seb_ObjectLike_old tts__Object | seb_WrappedObject_old | seb_WrappedContainedObject_old
----@alias seb_ObjectLikeArray tts__Object[] | seb_WrappedObject_old[] | seb_WrappedContainedObject_old[]
+---@alias seb_ObjectLikeArray_old tts__Object[] | seb_WrappedObject_old[] | seb_WrappedContainedObject_old[]
 ---@alias seb_ContainerLike tts__Container | common_DeckZone
 
 ---@alias seb_DecalLike_old tts__Object_Decal | seb_WrappedDecal_old

@@ -1,4 +1,6 @@
 local Object = require("sebaestschjin-tts.Object")
+local TableUtil = require("sebaestschjin-tts.TableUtil")
+local WrappedObject = require("sebaestschjin-tts.WrappedObject")
 
 ---@class seb_WrappedDeck
 
@@ -9,7 +11,7 @@ local Object = require("sebaestschjin-tts.Object")
 local WrappedDeck = {}
 
 setmetatable(WrappedDeck, {
-    __call = function(obj)
+    __call = function(_, obj)
         local self = --[[---@type seb_WrappedDeck]] {}
 
         ---@type nil | tts__Deck | tts__Card
@@ -85,13 +87,13 @@ setmetatable(WrappedDeck, {
         end
 
         local function initialize()
-            if (--[[---@type tts__Object]] obj).tag == Object.Tag.Deck then
+            if (--[[---@type tts__Object]] obj).tag == Object.Type.Deck then
                 if obj.remainder then
                     makeCard(--[[---@type tts__Card]] obj)
                 else
                     makeDeck(--[[---@type tts__Deck]] obj)
                 end
-            elseif (--[[---@type tts__Object]] obj).tag == Object.Tag.Card then
+            elseif (--[[---@type tts__Object]] obj).tag == Object.Type.Card then
                 makeCard(--[[---@type tts__Card]] obj)
             else
                 local hit = Physics.cast({
@@ -103,10 +105,10 @@ setmetatable(WrappedDeck, {
                 if hit then
                     for _, hitInfo in pairs(hit) do
                         local hitObject = hitInfo.hit_object
-                        if hitObject.tag == Object.Tag.Deck then
+                        if hitObject.type == Object.Type.Deck then
                             makeDeck(--[[---@type tts__Deck]] hitObject)
                             return
-                        elseif hitObject.tag == Object.Tag.Card then
+                        elseif hitObject.type == Object.Type.Card then
                             makeCard(--[[---@type tts__Card]] hitObject)
                             return
                         end
@@ -117,35 +119,22 @@ setmetatable(WrappedDeck, {
         end
 
         ---@type tts__ObjectType
-        self.tag = Object.Tag.Deck
+        self.tag = Object.Type.Deck
 
-        ---@return tts__IndexedSimpleObjectState[]
-        function self.getObjects()
-            if isDeck then
-                return asDeck().getObjects()
-            elseif isCard then
-                local card = asCard()
-                return { {
-                             name = card.getName(),
-                             nickname = card.getName(),
-                             description = card.getDescription(),
-                             gm_notes = card.getGMNotes(),
-                             guid = card.getGUID(),
-                             lua_script = card.script_code,
-                             lua_script_state = card.script_state,
-                             index = 1,
-                         } }
-            else
-                return --[[---@type tts__IndexedSimpleObjectState[] ]] {}
-            end
+        function self.isEmpty()
+            return not isDeck and not isCard
         end
 
-        ---@return seb_WrappedContainedObject_old[]
-        function self.getContainedObjects()
+        ---@return seb_WrappedObject[]
+        function self.getObjects()
             if isDeck then
+                return TableUtil.map(asDeck().getData().ContainedObjects, function(v, i)
+                    return WrappedObject(v, i)
+                end)
             elseif isCard then
+                return { WrappedObject(asCard().getData(), 1) }
             else
-                return {}
+                return --[[---@type seb_WrappedObject[] ]] {}
             end
         end
 
