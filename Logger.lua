@@ -1,10 +1,10 @@
 local TableUtils = require('ge_tts.TableUtils')
 local GeLogger = require('ge_tts.Logger')
 
----@class se_tts__Logger : ge_tts__Logger
+---@class seb_Logger : ge_tts__Logger
 
----@class se_tts__static_Logger : ge_tts__static_Logger
----@overload fun(url: string): se_tts__Logger
+---@class seb_Logger_static
+---@overload fun(): seb_Logger
 local Logger = {}
 
 ---@type table<number, string>
@@ -16,6 +16,7 @@ local levelPrefixes = {
     [GeLogger.VERBOSE] = 'VERBOSE: ',
 }
 
+---@type table<ge_tts__Logger_LogLevel, string>
 local levelColors = {
     [GeLogger.ERROR] = 'Red',
     [GeLogger.WARNING] = 'Yellow',

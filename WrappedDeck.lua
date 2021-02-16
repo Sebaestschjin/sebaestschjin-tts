@@ -1,6 +1,4 @@
 local Object = require("sebaestschjin-tts.Object")
-local TableUtil = require("sebaestschjin-tts.TableUtil")
-local WrappedObject = require("sebaestschjin-tts.WrappedObject")
 
 ---@class seb_WrappedDeck
 
@@ -87,13 +85,13 @@ setmetatable(WrappedDeck, {
         end
 
         local function initialize()
-            if (--[[---@type tts__Object]] obj).tag == Object.Type.Deck then
+            if (--[[---@type tts__Object]] obj).type == Object.Type.Deck then
                 if obj.remainder then
                     makeCard(--[[---@type tts__Card]] obj)
                 else
                     makeDeck(--[[---@type tts__Deck]] obj)
                 end
-            elseif (--[[---@type tts__Object]] obj).tag == Object.Type.Card then
+            elseif (--[[---@type tts__Object]] obj).type == Object.Type.Card then
                 makeCard(--[[---@type tts__Card]] obj)
             else
                 local hit = Physics.cast({
@@ -125,16 +123,14 @@ setmetatable(WrappedDeck, {
             return not isDeck and not isCard
         end
 
-        ---@return seb_WrappedObject[]
+        ---@return tts__ObjectState[]
         function self.getObjects()
             if isDeck then
-                return TableUtil.map(asDeck().getData().ContainedObjects, function(v, i)
-                    return WrappedObject(v, i)
-                end)
+                return asDeck().getData().ContainedObjects
             elseif isCard then
-                return { WrappedObject(asCard().getData(), 1) }
+                return { asCard().getData() }
             else
-                return --[[---@type seb_WrappedObject[] ]] {}
+                return --[[---@type tts__ObjectState[] ]] {}
             end
         end
 
@@ -143,7 +139,7 @@ setmetatable(WrappedDeck, {
         function self.takeObject(parameters)
             if isDeck then
                 local result = asDeck().takeObject(parameters)
-                if asDeck().remainder then
+                if (--[[---@type tts__Deck]] wrappedObject).remainder then
                     makeCard(--[[---@type tts__Card]] asDeck().remainder)
                 end
                 return result
@@ -156,26 +152,36 @@ setmetatable(WrappedDeck, {
             end
         end
 
-        ---@param card tts__Card
+        ---@param cardOrDeck tts__Card | tts__Deck
         ---@return tts__Deck
-        function self.putObject(card)
+        function self.putObject(cardOrDeck)
             if isDeck then
-                return asDeck().putObject(card)
+                return asDeck().putObject(cardOrDeck)
             elseif isCard then
-                local formedDeck = asCard().putObject(card)
+                local formedDeck
+                if Object.isCard(cardOrDeck) then
+                    formedDeck = asCard().putObject(--[[---@type tts__Card]] cardOrDeck)
+                else
+                    formedDeck = (--[[---@type tts__Deck]] cardOrDeck).putObject(asCard())
+                end
                 makeDeck(formedDeck)
                 return formedDeck
             else
-                card.setPosition(--[[---@not nil]] lastPosition)
-                card.setRotation(--[[---@not nil]] lastRotation)
-                makeCard(card)
+                cardOrDeck.setPosition(--[[---@not nil]] lastPosition)
+                cardOrDeck.setRotation(--[[---@not nil]] lastRotation)
+                if Object.isCard(cardOrDeck) then
+                    makeCard(--[[---@type tts__Card]] cardOrDeck)
+                else
+                    makeDeck(--[[---@type tts__Deck]] cardOrDeck)
+                end
             end
         end
 
         ---@return tts__Vector
         function self.getPosition()
             if isDeck or isCard then
-                (--[[---@not nil]] wrappedObject).getPosition()
+                local position = (--[[---@not nil]] wrappedObject).getPosition()
+                return position
             end
             return --[[---@not nil]] lastPosition
         end
@@ -183,7 +189,8 @@ setmetatable(WrappedDeck, {
         ---@return tts__Vector
         function self.getRotation()
             if isDeck or isCard then
-                (--[[---@not nil]] wrappedObject).getRotation()
+                local rotation = (--[[---@not nil]] wrappedObject).getRotation()
+                return rotation
             end
             return --[[---@not nil]] lastRotation
         end

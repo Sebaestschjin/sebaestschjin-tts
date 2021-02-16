@@ -1,7 +1,4 @@
-local Object = require("sebaestschjin-tts.Object")
-local ObjectUtil = require("sebaestschjin-tts.ObjectUtil")
-local StringUtil = require("sebaestschjin-tts.StringUtil")
-local TableUtil = require("sebaestschjin-tts.TableUtil")
+local Search = require("sebaestschjin-tts.Search")
 
 local Utils = {}
 
@@ -31,116 +28,18 @@ function Utils.waitForObject(guid, callback, timeout, timeoutCallback)
     Wait.condition(callback, waiter, timeout, timeoutCallback)
 end
 
----@overload fun(zone: GUID, search: Finder_Search, callback: fun(): void): void
+---@overload fun(zone: GUID, search: seb_Search_Full, callback: fun(): void): void
 ---@param zone GUID
----@param search Finder_Search
+---@param search seb_Search_Full
 ---@param callback fun(): void
 ---@param timeout number
 ---@param timeoutCallback fun(): void
 function Utils.waitForObjectInZone(zone, search, callback, timeout, timeoutCallback)
     local waiter = function()
-        local obj = Utils.findObjectIn(zone, search)
+        local obj = Search.inZone(--[[---@type tts__ScriptingTrigger]] getObjectFromGUID(zone), search)
         return obj ~= nil and not (--[[---@type tts__Object]] obj).spawning
     end
     Wait.condition(callback, waiter, timeout, timeoutCallback)
-end
-
----@overload fun(container: tts__Container, search: Finder_Search): nil | tts__Object
----@overload fun(container: common_DeckZone, search: Finder_Search): nil | tts__IndexedSimpleObjectState
----@param container GUID
----@param search Finder_Search
----@return nil | tts__Object
-function Utils.findObjectIn(container, search)
-    local objects = Utils.getObjects(container)
-
-    for _, object in TableUtil.pairs(objects) do
-        if Utils.matchesSearch(object, search) then
-            return object
-        end
-    end
-end
-
----@overload fun(container: common_DeckZone, name: string, maxDistance: number): (nil, nil) | (tts__IndexedSimpleObjectState, number)
----@param container GUID
----@param name string
----@param maxDistance number
----@return (nil, nil) | (tts__Object, number)
-function Utils.findNearestObjectIn(container, name, maxDistance)
-    local objects = Utils.getObjects(container)
-    local nearestDistance, nearestObject
-
-    for _, object in TableUtil.pairs(objects) do
-        local distance = StringUtil.distance(object.getName(), name)
-        if (not maxDistance or distance <= maxDistance)
-                and (not nearestDistance or distance < nearestDistance) then
-            nearestDistance = distance
-            nearestObject = object
-        end
-    end
-
-    return nearestObject, nearestDistance
-end
-
----@param container GUID | seb_ContainerLike | tts__Object[]
----@return tts__Object[]
-function Utils.getObjects(container)
-    if StringUtil.isGuid(container) then
-        container = --[[---@type tts__Container]] getObjectFromGUID(--[[---@type GUID]] container)
-    end
-
-    if Object.isContainer(container) then
-        return ObjectUtil.getContainedObjects(container)
-    elseif container.getObjects then
-        return container.getObjects()
-    end
-
-    return container
-end
-
----@param object tts__Object
----@param search Finder_Search
----@return boolean
-function Utils.matchesSearch(object, search)
-    return Utils.findNonEmpty(object.getName(), search.name, search.plain)
-            and Utils.findNonEmpty(object.getDescription(), search.description, search.plain)
-            and Utils.findNonEmpty(object.getGUID(), search.guid, search.plain)
-            and Utils.findNonEmpty(object.tag, search.tag, search.plain)
-            and Utils.findNonEmpty(tostring(object.getData().CardID), search.cardId, search.plain)
-end
-
----@deprecated Use findObjectIn (doesn't support functions yet, though)
----@return nil | tts__Object
-function Utils.findObjectInZone(zone_guid, search)
-    local zone = getObjectFromGUID(zone_guid)
-    local plain = search.plain
-    if not plain then plain = false end
-
-    local tester
-    if search.func then
-        tester = search.func
-    else
-        tester = function(object)
-            return Utils.findNonEmpty(object.getGUID(), search.guid, plain)
-                    and Utils.findNonEmpty(object.getName(), search.name, plain)
-                    and Utils.findNonEmpty(object.getDescription(), search.description, plain)
-                    and Utils.findNonEmpty(object.tag, search.tag, plain)
-        end
-    end
-
-    for _, object in pairs(zone.getObjects()) do
-        if tester(object) then
-            return object
-        end
-    end
-    return nil
-end
-
----@param value string
----@param pattern nil | string
----@param plain nil | boolean
----@return boolean
-function Utils.findNonEmpty(value, pattern, plain)
-    return pattern == nil or value:find(--[[---@not nil]]pattern, 1, plain or false) ~= nil
 end
 
 ---@param object tts__Object

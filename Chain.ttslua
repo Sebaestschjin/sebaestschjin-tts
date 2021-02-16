@@ -4,7 +4,7 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 ---@field callbacks common_ChainCallback[]
 ---@field add fun(callback:common_ChainCallback) Adds the given callback to the end of the chain.
 ---@field addNext fun(callback:common_ChainCallback) Adds the given callback to the front of the chain.
----@field proceed fun() Calls the next callback function in the chain
+---@field proceed fun(): void Calls the next callback function in the chain
 
 ---@alias common_ChainBoolCallback fun(chain: common_Chain, vararg any): boolean
 ---@alias common_ChainVoidCallback fun(chain: common_Chain, vararg any): void

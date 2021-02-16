@@ -29,20 +29,6 @@ end
 
 local ObjectState = {}
 
----@param objectState tts__ObjectState
----@return boolean
-function ObjectState.isCard(objectState)
-    local type = Object.TypeForName[objectState.Name]
-    return type == Object.Type.Card
-end
-
----@param objectState tts__ObjectState
----@return boolean
-function ObjectState.isContainer(objectState)
-    local type = Object.TypeForName[objectState.Name]
-    return type == Object.Type.Bag or type == Object.Type.Deck
-end
-
 ---@param object se_tts__ObjectInfo
 ---@param position tts__VectorShape
 ---@return tts__ObjectState
@@ -157,24 +143,6 @@ function ObjectState.addDecal(object, decal)
         }
     }
     table.insert(attached, decalData)
-end
-
----@param transform tts__ObjectState_Transform
----@return tts__Vector
-function ObjectState.transformToPosition(transform)
-    return Vector(--[[---@not nil]] transform.posX, --[[---@not nil]] transform.posY, --[[---@not nil]] transform.posZ)
-end
-
----@param transform tts__ObjectState_Transform
----@return tts__Vector
-function ObjectState.transformToRotation(transform)
-    return Vector(--[[---@not nil]] transform.rotX, --[[---@not nil]] transform.rotY, --[[---@not nil]] transform.rotZ)
-end
-
----@param transform tts__ObjectState_Transform
----@return tts__Vector
-function ObjectState.transformToScale(transform)
-    return Vector(--[[---@not nil]] transform.scaleX, --[[---@not nil]] transform.scaleY, --[[---@not nil]] transform.scaleZ)
 end
 
 return ObjectState
