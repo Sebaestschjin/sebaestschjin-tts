@@ -1,50 +1,40 @@
 local TableUtil = require("sebaestschjin-tts.TableUtil")
 
----@shape common_Chain
----@field callbacks common_ChainCallback[]
----@field add fun(callback:common_ChainCallback) Adds the given callback to the end of the chain.
----@field addNext fun(callback:common_ChainCallback) Adds the given callback to the front of the chain.
----@field proceed fun(): void Calls the next callback function in the chain
+---@class seb_Chain
 
----@alias common_ChainBoolCallback fun(chain: common_Chain, vararg any): boolean
----@alias common_ChainVoidCallback fun(chain: common_Chain, vararg any): void
----@alias common_ChainCallback common_ChainBoolCallback | common_ChainVoidCallback
+---@alias seb_ChainCallback (fun(chain: seb_Chain): void) | (fun(chain: seb_Chain): boolean)
 
+---@class seb_Chain_static : seb_Chain
+---@overload fun(): seb_Chain
 local Chain = {}
 
----@return common_Chain
-function Chain.create()
-    local chain = --[[---@type common_Chain]]{}
-    chain.callbacks = {}
-    chain.add = function(--[[---@type common_ChainCallback]] callback)
-        Chain.add(chain, callback)
-    end
-    chain.addNext = function(callback) Chain.addNext(chain, callback) end
-    chain.proceed = function() Chain.proceed(chain) end
+setmetatable(Chain, {
+    __call = function(_)
+        local self = --[[---@type seb_Chain]] {}
 
-    return chain
-end
+        local callbacks = --[[---@type seb_ChainCallback[] ]]{}
 
----@param chain common_Chain
----@param callback common_ChainCallback
-function Chain.add(chain, callback)
-    table.insert(chain.callbacks, callback)
-end
-
----@param chain common_Chain
----@param callback common_ChainCallback
-function Chain.addNext(chain, callback)
-    table.insert(chain.callbacks, 1, callback)
-end
-
----@param chain common_Chain
-function Chain.proceed(chain)
-    if TableUtil.isNotEmpty(chain.callbacks) then
-        local nextCallback = table.remove(chain.callbacks, 1)
-        if nextCallback(chain) then
-            Chain.proceed(chain)
+        ---@param callback seb_ChainCallback
+        function self.add(callback)
+            table.insert(callbacks, callback)
         end
+
+        ---@param callback seb_ChainCallback
+        function self.addNext(callback)
+            table.insert(callbacks, 1, callback)
+        end
+
+        function self.proceed()
+            if TableUtil.isNotEmpty(callbacks) then
+                local nextCallback = table.remove(callbacks, 1)
+                if nextCallback(self) then
+                    self.proceed()
+                end
+            end
+        end
+
+        return self
     end
-end
+})
 
 return Chain

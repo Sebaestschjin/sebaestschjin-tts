@@ -49,4 +49,20 @@ function Utils.getSnapPosition(object, snapPoint)
     return object.positionToWorld(object.getSnapPoints()[snapPoint].position)
 end
 
+---@param zone tts__ScriptingTrigger
+---@param object tts__Object
+---@return boolean
+function Utils.isCenterInZone(zone, object)
+    local width = zone.getScale().x
+    local height = zone.getScale().z
+    local zoneCenter = zone.getBounds().center
+    local left = zoneCenter.x - width / 2
+    local right = zoneCenter.x + width / 2
+    local top = zoneCenter.z + height / 2
+    local bottom = zoneCenter.z - height / 2
+    local objectCenter = object.getBounds().center
+
+    return objectCenter.x > left and objectCenter.x < right and objectCenter.z > bottom and objectCenter.z < top
+end
+
 return Utils
