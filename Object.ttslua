@@ -36,7 +36,7 @@ Object.TypeForName = {
 
 ---@param object seb_Object_Identifiable
 ---@return boolean
-local function isObject(object)
+function Object.isObject(object)
     return type(object) == "userdata"
 end
 
@@ -73,7 +73,7 @@ end
 ---@param object seb_Object
 ---@return tts__ObjectType
 function Object.type(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).type
     end
     if isSimple(object) then
@@ -85,7 +85,7 @@ end
 ---@param object seb_Object_Identifiable
 ---@return GUID
 function Object.guid(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getGUID()
     end
     if isSimple(object) then
@@ -97,7 +97,7 @@ end
 ---@param object seb_Object_Identifiable
 ---@return string
 function Object.name(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getName()
     end
     if isSimple(object) then
@@ -109,7 +109,7 @@ end
 ---@param object seb_Object_Identifiable
 ---@return string
 function Object.description(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getDescription()
     end
     if isSimple(object) then
@@ -121,7 +121,7 @@ end
 ---@param object seb_Object
 ---@return tts__ObjectState
 function Object.data(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getData()
     end
     return --[[---@type tts__ObjectState]] object
@@ -130,7 +130,7 @@ end
 ---@param object seb_Object
 ---@return tts__VectorShape
 function Object.position(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getPosition()
     end
     return Object.transformToPosition(--[[---@not nil]] (--[[---@type tts__ObjectState]] object).Transform)
@@ -139,7 +139,7 @@ end
 ---@param object seb_Object_Container
 ---@return tts__Object[] | tts__ObjectState[]
 function Object.objects(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         if Object.type(object) == Object.Type.Scripting then
             return (--[[---@type tts__ScriptingTrigger]] object).getObjects()
         else
@@ -152,7 +152,7 @@ end
 ---@param object seb_Object
 ---@return tts__Object_Decal[]
 function Object.decals(object)
-    if isObject(object) then
+    if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getDecals() or {}
     end
 

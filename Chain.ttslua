@@ -6,12 +6,14 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 ---@class seb_Chain_static : seb_Chain
 ---@overload fun(): seb_Chain
+---@overload fun(name: string): seb_Chain
 local Chain = {}
 
 setmetatable(Chain, {
-    __call = function(_)
+    __call = function(_, name)
         local self = --[[---@type seb_Chain]] {}
 
+        local chainName = name or ""
         local callbacks = --[[---@type seb_ChainCallback[] ]]{}
 
         ---@param callback seb_ChainCallback
@@ -27,10 +29,16 @@ setmetatable(Chain, {
         function self.proceed()
             if TableUtil.isNotEmpty(callbacks) then
                 local nextCallback = table.remove(callbacks, 1)
-                if nextCallback(self) then
+                local res = nextCallback(self)
+                if res then
                     self.proceed()
                 end
             end
+        end
+
+        function self.dump()
+            print(chainName)
+            print(logString(callbacks))
         end
 
         return self

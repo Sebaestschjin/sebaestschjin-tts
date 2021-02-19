@@ -119,6 +119,11 @@ setmetatable(WrappedDeck, {
         ---@type tts__ObjectType
         self.tag = Object.Type.Deck
 
+        ---@return nil | tts__Card | tts__Deck
+        function self.unwrap()
+            return wrappedObject
+        end
+
         function self.isEmpty()
             return not isDeck and not isCard
         end

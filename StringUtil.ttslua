@@ -36,8 +36,10 @@ function StringUtil.escapePattern(text)
     return text:gsub("([-+()%[%]])", "%%%1")
 end
 
+---@param text string
+---@return number[]
 function StringUtil.bytes(text)
-    local bytes = {}
+    local bytes = --[[---@type number[] ]]{}
 
     for i = 1, #text do
         table.insert(bytes, text:byte(i))
@@ -86,6 +88,9 @@ function StringUtil.findNearest(value, others, maxDistance)
     return otherValue
 end
 
+---@param first string
+---@param second string
+---@return number
 function StringUtil.distance(first, second)
     local firstLength, secondLength = #first, #second
 
@@ -93,10 +98,10 @@ function StringUtil.distance(first, second)
     if secondLength == 0 then return firstLength end
     if first == second then return 0 end
 
-    first = StringUtil.bytes(first)
-    second = StringUtil.bytes(second)
+    local firstBytes = StringUtil.bytes(first)
+    local secondBytes = StringUtil.bytes(second)
 
-    local matrix = {}
+    local matrix = --[[---@type number[][] ]]{}
     for i = 0, firstLength do
         matrix[i] = { [0] = i }
     end
@@ -106,7 +111,7 @@ function StringUtil.distance(first, second)
 
     for i = 1, firstLength do
         for j = 1, secondLength do
-            if first[i] == second[j] then
+            if firstBytes[i] == secondBytes[j] then
                 matrix[i][j] = matrix[i - 1][j - 1]
             else
                 matrix[i][j] = math.min(matrix[i - 1][j] + 1,

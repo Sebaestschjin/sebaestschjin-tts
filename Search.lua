@@ -3,37 +3,39 @@ local StringUtil = require("sebaestschjin-tts.StringUtil")
 
 local Search = {}
 
----@shape seb_Search_Full
----@field guid nil | GUID
----@field name nil | string
----@field description nil | string
----@field cardId nil | number
----@field type nil | tts__ObjectType
----@field isPattern nil | boolean
-
 ---@shape seb_Search
 ---@field guid nil | GUID
 ---@field name nil | string
----@field cardId nil
+---@field description nil | string
 ---@field isPattern nil | boolean
 
+---@shape seb_Search_Full : seb_Search
+---@field cardId nil | number
+---@field type nil | tts__ObjectType
 
----@param searchField any
----@param searchValue any
+---@shape seb_Search_Minimal : seb_Search
+---@field cardId nil
+---@field type nil
+
+
+---@param searchField nil | string | number
+---@param searchValue nil | string | number
 ---@param isPattern nil | boolean
 ---@return boolean
 local function matches(searchField, searchValue, isPattern)
     local plain = not isPattern
-    return searchField == nil or string.find(searchValue, searchField, 1, plain) ~= nil
+    return searchField == nil or string.find(tostring(searchValue), tostring(searchField), 1, plain) ~= nil
 end
 
+--- Finds the first object in the given container that matches the given search.
 ---@param object tts__Container
----@param search seb_Search
+---@param search seb_Search_Minimal
 ---@return nil | tts__IndexedSimpleObjectState
 function Search.inContainer(object, search)
     for _, contained in ipairs(object.getObjects()) do
         if matches(search.guid, contained.guid, search.isPattern)
                 and matches(search.name, contained.name, search.isPattern)
+                and matches(search.description, contained.description, search.isPattern)
         then
             return contained
         end
@@ -42,6 +44,7 @@ function Search.inContainer(object, search)
     return nil
 end
 
+--- Finds the first object in the given scripting zone that matches the given search.
 ---@param zone tts__ScriptingTrigger
 ---@param search seb_Search_Full
 ---@return nil | tts__Object
@@ -60,6 +63,11 @@ function Search.inZone(zone, search)
     return nil
 end
 
+--- Finds the first object in the given container that matches the given search. Unlike Search.inContainer this search
+--- uses the internal representation of the container objects and thus can use more fields for searching. The returned
+--- object state also contains a lot more information
+--- Note: The returned index starts with 0! This was done to have the same behaviour as the index attribute in
+--- tts__IndexedSimpleObjectState.
 ---@param object tts__Container | seb_WrappedDeck
 ---@param search seb_Search_Full
 ---@return nil | (tts__ObjectState, number)
@@ -71,21 +79,24 @@ function Search.inContainedObjects(object, search)
                 and matches(search.cardId, contained.CardID, search.isPattern)
                 and matches(search.type, Object.type(contained), search.isPattern)
         then
-            return contained, i
+            return contained, i - 1
         end
     end
 
     return nil
 end
 
----@param container seb_WrappedDeck
+--- Finds the nearest object in the given container. The nearest object is determined by the Levenshtein distance on the
+--- given name. If maxDistance is given only objects with a distance lower than this value are considered.
+---@overload fun(container: tts__Container | seb_WrappedDeck, name: string): nil | (tts__ObjectState, number)
+---@param container tts__Container | seb_WrappedDeck
 ---@param name string
 ---@param maxDistance number
 ---@return nil | (tts__ObjectState, number)
-function Search.nearestInWrappedDeck(container, name, maxDistance)
+function Search.nearestInContainedObjects(container, name, maxDistance)
     local nearestDistance, nearestObject
 
-    for _, object in ipairs(container.getObjects()) do
+    for _, object in ipairs(container.getData().ContainedObjects) do
         local distance = StringUtil.distance(Object.name(object), name)
         if (not maxDistance or distance <= maxDistance)
                 and (not nearestDistance or distance < nearestDistance) then

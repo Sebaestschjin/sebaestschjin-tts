@@ -127,10 +127,11 @@ end
 function ObjectState.addDecal(object, decal)
     local attached = object.AttachedDecals
     if not attached then
-        attached = {}
+        attached = --[[---@type tts__ObjectState_Decal[] ]]{}
         object.AttachedDecals = attached
     end
 
+    ---@type tts__ObjectState_Decal
     local decalData = {
         Transform = ObjectState.transformState({
             position = decal.position,
