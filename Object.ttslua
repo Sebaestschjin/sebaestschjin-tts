@@ -42,7 +42,7 @@ end
 
 ---@param object seb_Object_Identifiable
 ---@return boolean
-local function isSimple(object)
+function Object.isSimple(object)
     return type(object) == "table" and (--[[---@type tts__IndexedSimpleObjectState]] object).name ~= nil
 end
 
@@ -76,7 +76,7 @@ function Object.type(object)
     if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).type
     end
-    if isSimple(object) then
+    if Object.isSimple(object) then
         return Object.Type.Card
     end
     return Object.TypeForName[(--[[---@type tts__ObjectState]] object).Name]
@@ -88,7 +88,7 @@ function Object.guid(object)
     if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getGUID()
     end
-    if isSimple(object) then
+    if Object.isSimple(object) then
         return (--[[---@type tts__IndexedSimpleObjectState]] object).guid
     end
     return --[[---@not nil]] (--[[---@type tts__ObjectState]] object).GUID
@@ -100,7 +100,7 @@ function Object.name(object)
     if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getName()
     end
-    if isSimple(object) then
+    if Object.isSimple(object) then
         return (--[[---@type tts__IndexedSimpleObjectState]] object).name
     end
     return --[[---@not nil]] (--[[---@type tts__ObjectState]] object).Nickname
@@ -112,7 +112,7 @@ function Object.description(object)
     if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getDescription()
     end
-    if isSimple(object) then
+    if Object.isSimple(object) then
         return (--[[---@type tts__IndexedSimpleObjectState]] object).description or ""
     end
     return (--[[---@type tts__ObjectState]] object).Description or ""

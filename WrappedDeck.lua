@@ -22,6 +22,8 @@ setmetatable(WrappedDeck, {
         local lastPosition
         ---@type nil | tts__Vector
         local lastRotation
+        ---@type nil | string
+        local lastName
 
         ---@return tts__Deck
         local function asDeck()
@@ -38,6 +40,9 @@ setmetatable(WrappedDeck, {
             wrappedObject = deck
             isDeck = true
             isCard = false
+            if lastName then
+                deck.setName(--[[---@not nil]] lastName)
+            end
         end
 
         ---@param card tts__Card
@@ -128,6 +133,23 @@ setmetatable(WrappedDeck, {
             return not isDeck and not isCard
         end
 
+        ---@return string
+        function self.getName()
+            if isDeck then
+                return asDeck().getName()
+            end
+            return lastName or ""
+        end
+
+        ---@param name string
+        function self.setName(name)
+            if isDeck then
+                asDeck().setName(name)
+            else
+                lastName = name
+            end
+        end
+
         ---@return tts__ObjectState[]
         function self.getObjects()
             if isDeck then
@@ -143,9 +165,11 @@ setmetatable(WrappedDeck, {
         ---@return nil | tts__Object
         function self.takeObject(parameters)
             if isDeck then
+                local deckName = asDeck().getName()
                 local result = asDeck().takeObject(parameters)
                 if (--[[---@type tts__Deck]] wrappedObject).remainder then
                     makeCard(--[[---@type tts__Card]] asDeck().remainder)
+                    lastName = deckName
                 end
                 return result
             elseif isCard then
@@ -163,6 +187,7 @@ setmetatable(WrappedDeck, {
             if isDeck then
                 return asDeck().putObject(cardOrDeck)
             elseif isCard then
+                --[[---@type tts__Deck]]
                 local formedDeck
                 if Object.isCard(cardOrDeck) then
                     formedDeck = asCard().putObject(--[[---@type tts__Card]] cardOrDeck)
