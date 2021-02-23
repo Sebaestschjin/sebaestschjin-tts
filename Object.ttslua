@@ -2,6 +2,15 @@ local GeObject = require("ge_tts.Object")
 
 local Object = {}
 
+--- Types for custom tiles.
+---@type table<string, tts__TileType>
+Object.TileType = {
+    Box = 0,
+    Hex = 1,
+    Circle = 2,
+    Rounded = 3,
+}
+
 Object.Type = GeObject.Tag
 Object.Name = GeObject.Name
 

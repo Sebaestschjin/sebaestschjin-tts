@@ -1,23 +1,5 @@
 local Object = require('sebaestschjin-tts.Object')
 
----@shape se_tts__ObjectInfo
----@field name nil | string
----@field description nil | string
----@field locked nil | boolean @Default false
----@field snapToGrid nil | boolean @Default true
----@field tint nil | tts__ColorShape
-
----@shape se_tts__CardInfo : se_tts__ObjectInfo
----@field imageUrl string
----@field backImageUrl string
-
----@shape se_tts__ModelInfo : se_tts__ObjectInfo
----@field mesh string
----@field diffuse nil | string
----@field collider nil | string
----@field type nil | tts__ModelType
----@field material nil | tts__MaterialType
-
 ---@type number
 local currentDeckId = 0
 
@@ -29,37 +11,34 @@ end
 
 local ObjectState = {}
 
----@param object se_tts__ObjectInfo
----@param position tts__VectorShape
+---@param type string
+---@param object seb_CustomObject
+---@param transform nil | seb_Transform
 ---@return tts__ObjectState
-function ObjectState.objectState(object, position, type)
+function ObjectState.object(type, object, transform)
     return {
         Name = type,
         Nickname = object.name,
         Description = object.description,
         Locked = object.locked,
         Grid = object.snapToGrid,
-        ColorDiffuse = object.tint,
-        Transform = ObjectState.transformState({
-            position = position,
-            rotation = { 0, 0, 0 },
-            scale = { 1, 1, 1 },
-        }),
+        Transform = ObjectState.transform(transform),
     }
 end
 
----@param card se_tts__CardInfo
----@param position tts__VectorShape
+---@overload fun(card: seb_CustomObject_Card): tts__CardCustomState
+---@param card seb_CustomObject_Card
+---@param transform seb_Transform
 ---@return tts__CardCustomState
-function ObjectState.cardState(card, position)
-    local cardState = --[[---@type tts__CardCustomState]] ObjectState.objectState(card, position, Object.Name.Card)
+function ObjectState.card(card, transform)
+    local cardState = --[[---@type tts__CardCustomState]] ObjectState.object(Object.Name.Card, card, transform)
 
     local deckId = nextDeckId()
     cardState.CardID = deckId * 100
     cardState.CustomDeck = {
-        [tostring(deckId)] = {
-            FaceURL = card.imageUrl,
-            BackURL = card.backImageUrl,
+        [deckId] = {
+            FaceURL = card.image,
+            BackURL = card.imageBack or card.image,
             NumWidth = 1,
             NumHeight = 1,
             BackIsHidden = true,
@@ -70,11 +49,11 @@ function ObjectState.cardState(card, position)
     return cardState
 end
 
----@param model se_tts__ModelInfo
----@param position tts__VectorShape
+---@param model seb_CustomObject_Model
+---@param transform seb_Transform
 ---@return tts__ModelCustomState
-function ObjectState.modelState(model, position)
-    local modelState = --[[---@type tts__ModelCustomState]] ObjectState.objectState(model, position, Object.Name.Model)
+function ObjectState.model(model, transform)
+    local modelState = --[[---@type tts__ModelCustomState]] ObjectState.object(Object.Name.Model, model, transform)
 
     modelState.CustomMesh = {
         MeshURL = model.mesh,
@@ -89,35 +68,83 @@ function ObjectState.modelState(model, position)
     return modelState
 end
 
+---@overload fun(token: seb_CustomObject_Token): tts__TokenState
+---@param token seb_CustomObject_Token
+---@param transform seb_Transform
+---@return tts__TokenState
+function ObjectState.token(token, transform)
+    local tokenState = --[[---@type tts__TokenState]] ObjectState.object(Object.Name.Token, token, transform)
+
+    tokenState.CustomImage = {
+        ImageURL = token.image,
+        CustomToken = {
+            Stackable = token.stackable,
+            MergeDistancePixels = token.mergeDistance or 15,
+            Thickness = token.thickness or 0.2
+        }
+    }
+
+    return tokenState
+end
+
+---@overload fun(token: seb_CustomObject_Token): tts__TileState
+---@param tile seb_CustomObject_Tile
+---@param transform seb_Transform
+---@return tts__TileState
+function ObjectState.tile(tile, transform)
+    local tokenState = --[[---@type tts__TileState]] ObjectState.object(Object.Name.Tile, tile, transform)
+
+    tokenState.CustomImage = {
+        ImageURL = tile.image,
+        ImageSecondaryURL = tile.imageBottom,
+        CustomTile = {
+            Type = tile.type or Object.TileType.Box,
+            Stackable = tile.stackable,
+            Thickness = tile.thickness or 0.5,
+            Stretch = tile.stretch or true,
+        }
+    }
+
+    return tokenState
+end
+
 --- Taken from ge_tts.ObjectUtils, but I don't want to always have the onObjectSpawn event registered.
-function ObjectState.transformState(transform)
+---@param transform nil | seb_Transform
+---@return tts__ObjectState_Transform
+function ObjectState.transform(transform)
     ---@type tts__ObjectState_Transform
     local state = {}
 
-    ---@type nil | tts__VectorShape
-    local position = transform.position
-    ---@type nil | tts__VectorShape
-    local rotation = transform.rotation
-    ---@type nil | tts__VectorShape
-    local scale = transform.scale
-
-    if position then
-        state.posX = (--[[---@type tts__CharVectorShape]] position).x or (--[[---@type tts__NumVectorShape]] position)[1]
-        state.posY = (--[[---@type tts__CharVectorShape]] position).y or (--[[---@type tts__NumVectorShape]] position)[2]
-        state.posZ = (--[[---@type tts__CharVectorShape]] position).z or (--[[---@type tts__NumVectorShape]] position)[3]
+    if not transform then
+        transform = {}
     end
 
-    if rotation then
-        state.rotX = (--[[---@type tts__CharVectorShape]] rotation).x or (--[[---@type tts__NumVectorShape]] rotation)[1]
-        state.rotY = (--[[---@type tts__CharVectorShape]] rotation).y or (--[[---@type tts__NumVectorShape]] rotation)[2]
-        state.rotZ = (--[[---@type tts__CharVectorShape]] rotation).z or (--[[---@type tts__NumVectorShape]] rotation)[3]
+    ---@type nil | tts__VectorShape
+    local position = (--[[---@not nil]] transform).position
+    if not position then
+        position = { 0, 3, 0 }
     end
+    state.posX = (--[[---@type tts__CharVectorShape]] position).x or (--[[---@type tts__NumVectorShape]] position)[1]
+    state.posY = (--[[---@type tts__CharVectorShape]] position).y or (--[[---@type tts__NumVectorShape]] position)[2]
+    state.posZ = (--[[---@type tts__CharVectorShape]] position).z or (--[[---@type tts__NumVectorShape]] position)[3]
 
-    if scale then
-        state.scaleX = (--[[---@type tts__CharVectorShape]] scale).x or (--[[---@type tts__NumVectorShape]] scale)[1]
-        state.scaleY = (--[[---@type tts__CharVectorShape]] scale).y or (--[[---@type tts__NumVectorShape]] scale)[2]
-        state.scaleZ = (--[[---@type tts__CharVectorShape]] scale).z or (--[[---@type tts__NumVectorShape]] scale)[3]
+    ---@type nil | tts__VectorShape
+    local rotation = (--[[---@not nil]] transform).rotation
+    if not rotation then
+        rotation = { 0, 0, 0 }
     end
+    state.rotX = (--[[---@type tts__CharVectorShape]] rotation).x or (--[[---@type tts__NumVectorShape]] rotation)[1]
+    state.rotY = (--[[---@type tts__CharVectorShape]] rotation).y or (--[[---@type tts__NumVectorShape]] rotation)[2]
+    state.rotZ = (--[[---@type tts__CharVectorShape]] rotation).z or (--[[---@type tts__NumVectorShape]] rotation)[3]
+
+    ---@type nil | tts__VectorShape
+    local scale = (--[[---@not nil]] transform).scale
+    if not scale then
+        scale = { 1, 1, 1 }
+    end
+    state.scaleX = (--[[---@type tts__CharVectorShape]] scale).x or (--[[---@type tts__NumVectorShape]] scale)[1]
+    state.scaleY = (--[[---@type tts__CharVectorShape]] scale).y or (--[[---@type tts__NumVectorShape]] scale)[2]
+    state.scaleZ = (--[[---@type tts__CharVectorShape]] scale).z or (--[[---@type tts__NumVectorShape]] scale)[3]
 
     return state
 end
@@ -133,7 +160,7 @@ function ObjectState.addDecal(object, decal)
 
     ---@type tts__ObjectState_Decal
     local decalData = {
-        Transform = ObjectState.transformState({
+        Transform = ObjectState.transform({
             position = decal.position,
             rotation = decal.rotation,
             scale = decal.scale,
@@ -143,7 +170,7 @@ function ObjectState.addDecal(object, decal)
             ImageURL = decal.url,
         }
     }
-    table.insert(attached, decalData)
+    table.insert(--[[---@not nil]] attached, decalData)
 end
 
 return ObjectState
