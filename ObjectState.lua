@@ -26,11 +26,44 @@ function ObjectState.object(type, object, transform)
     }
 end
 
----@overload fun(card: seb_CustomObject_Card): tts__CardCustomState
----@param card seb_CustomObject_Card
+---@overload fun(bag: seb_CustomObject_Bag): tts__BagState
+---@param bag seb_CustomObject_Bag
+---@param transform seb_Transform
+---@return tts__BagState
+function ObjectState.bag(bag, transform)
+    local bagState = --[[---@type tts__BagState]] ObjectState.object(Object.Name.Bag, bag, transform)
+
+    bagState.ContainedObjects = bag.objects or {}
+
+    return bagState
+end
+
+---@overload fun(deck: seb_CustomObject_DeckCustom): tts__DeckCustomState
+---@param deck seb_CustomObject_DeckCustom
+---@return tts__DeckCustomState
+function ObjectState.deckCustom(deck, transform)
+    local deckState = --[[---@type tts__DeckCustomState]] ObjectState.object(Object.Name.Deck, deck, transform)
+
+    deckState.DeckIDs = {}
+    deckState.ContainedObjects = {}
+    deckState.CustomDeck = {}
+
+    for _, card in ipairs(deck.cards) do
+        table.insert(deckState.ContainedObjects, card)
+        table.insert(deckState.DeckIDs, card.CardID)
+        for id, customDeck in pairs(card.CustomDeck) do
+            deckState.CustomDeck[id] = customDeck
+        end
+    end
+
+    return deckState
+end
+
+---@overload fun(card: seb_CustomObject_CardCustom): tts__CardCustomState
+---@param card seb_CustomObject_CardCustom
 ---@param transform seb_Transform
 ---@return tts__CardCustomState
-function ObjectState.card(card, transform)
+function ObjectState.cardCustom(card, transform)
     local cardState = --[[---@type tts__CardCustomState]] ObjectState.object(Object.Name.Card, card, transform)
 
     local deckId = nextDeckId()
@@ -131,7 +164,7 @@ function ObjectState.transform(transform)
     ---@type nil | tts__VectorShape
     local rotation = (--[[---@not nil]] transform).rotation
     if not rotation then
-        rotation = { 0, 0, 0 }
+        rotation = { 0, 180, 0 }
     end
     state.rotX = (--[[---@type tts__CharVectorShape]] rotation).x or (--[[---@type tts__NumVectorShape]] rotation)[1]
     state.rotY = (--[[---@type tts__CharVectorShape]] rotation).y or (--[[---@type tts__NumVectorShape]] rotation)[2]

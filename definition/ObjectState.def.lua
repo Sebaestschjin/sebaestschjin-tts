@@ -1,7 +1,7 @@
 ---@shape seb_
 
 ---@shape seb_CustomObject
----@field name string
+---@field name nil | string
 ---@field description nil | string
 ---@field locked nil | boolean @Default false
 ---@field snapToGrid nil | boolean @Default true
@@ -12,17 +12,13 @@
 ---@field rotation nil | tts__VectorShape
 ---@field scale nil | tts__VectorShape
 
----@shape seb_CustomObject_Deck
----@field face URL
----@field back URL
----@field uniqueBack nil | boolean @Defaults to false
----@field width nil | number @Defaults to 10
----@field height nil | number @Defaults to 7
----@field number nil | number @Defaults to 52
----@field sideways nil | boolean @Defaults to false
----@field backIsHidden nil | boolean @Defaults to false
+---@shape seb_CustomObject_Bag : seb_CustomObject
+---@field objects nil | tts__ObjectState[]
 
----@shape seb_CustomObject_Card : seb_CustomObject
+---@shape seb_CustomObject_DeckCustom : seb_CustomObject
+---@field cards tts__CardCustomState[]
+
+---@shape seb_CustomObject_CardCustom : seb_CustomObject
 ---@field image string
 ---@field imageBack nil | string @Defaults to the same image as the front image
 
