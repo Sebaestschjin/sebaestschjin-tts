@@ -120,7 +120,7 @@ function ObjectState.token(token, transform)
     return tokenState
 end
 
----@overload fun(token: seb_CustomObject_Token): tts__TileState
+---@overload fun(token: seb_CustomObject_Tile): tts__TileState
 ---@param tile seb_CustomObject_Tile
 ---@param transform seb_Transform
 ---@return tts__TileState
