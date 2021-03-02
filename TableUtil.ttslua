@@ -61,6 +61,10 @@ end
 ---@overload fun<V>(tab: V[]): boolean
 ---@overload fun<K, V>(tab: table<K, V>): boolean
 function TableUtil.contains(tab, value)
+    if not tab then
+        return false
+    end
+
     for _, v in pairs(tab) do
         if v == value then
             return true

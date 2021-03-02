@@ -35,21 +35,25 @@ setmetatable(WrappedDeck, {
             return --[[---@type tts__Card]] wrappedObject
         end
 
-        ---@param deck tts__Deck
-        local function makeDeck(deck)
-            wrappedObject = deck
-            isDeck = true
-            isCard = false
-            if lastName then
-                deck.setName(--[[---@not nil]] lastName)
-            end
-        end
-
         ---@param card tts__Card
         local function makeCard(card)
             wrappedObject = card
             isDeck = false
             isCard = true
+        end
+
+        ---@param deck tts__Deck
+        local function makeDeck(deck)
+            if deck.remainder then
+                --- we have a deck, but it going to be a single card soon makeCard(--[[---@type tts__Card]] deck.remainder)
+            else
+                wrappedObject = deck
+                isDeck = true
+                isCard = false
+                if lastName then
+                    deck.setName(--[[---@not nil]] lastName)
+                end
+            end
         end
 
         ---@param position tts__VectorShape
@@ -91,11 +95,7 @@ setmetatable(WrappedDeck, {
 
         local function initialize()
             if (--[[---@type tts__Object]] obj).type == Object.Type.Deck then
-                if obj.remainder then
-                    makeCard(--[[---@type tts__Card]] obj)
-                else
-                    makeDeck(--[[---@type tts__Deck]] obj)
-                end
+                makeDeck(--[[---@type tts__Deck]] obj)
             elseif (--[[---@type tts__Object]] obj).type == Object.Type.Card then
                 makeCard(--[[---@type tts__Card]] obj)
             else
