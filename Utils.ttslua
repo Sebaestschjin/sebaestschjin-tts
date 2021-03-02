@@ -2,18 +2,6 @@ local Search = require("sebaestschjin-tts.Search")
 
 local Utils = {}
 
---- Reads the body of the notebook with the given name.
----@param name string
----@return nil | string
-function Utils.readNotebook(name)
-    for _, notebook in pairs(Notes.getNotebookTabs()) do
-        if notebook.title == name then
-            return notebook.body
-        end
-    end
-    return nil
-end
-
 ---@overload fun(guid: GUID, callback: (fun(): void), timeout: number): void
 ---@overload fun(guid: GUID, callback: (fun(): void)): void
 ---@param guid GUID
