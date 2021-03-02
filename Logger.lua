@@ -7,6 +7,12 @@ local GeLogger = require('ge_tts.Logger')
 ---@overload fun(): seb_Logger
 local Logger = {}
 
+Logger.ERROR = GeLogger.ERROR
+Logger.WARNING = GeLogger.WARNING
+Logger.INFO = GeLogger.INFO
+Logger.DEBUG = GeLogger.DEBUG
+Logger.VERBOSE = GeLogger.VERBOSE
+
 ---@type table<number, string>
 local levelPrefixes = {
     [GeLogger.ERROR] = 'ERROR: ',
@@ -46,6 +52,11 @@ local function buildMessage(...)
         args[i] = logString(args[i])
     end
     return string.format(table.unpack(args))
+end
+
+---@param level ge_tts__Logger_LogLevel
+function Logger.setLevel(level)
+    logger.setFilterLevel(level)
 end
 
 function Logger.error(...)
