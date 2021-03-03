@@ -2,7 +2,6 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 local StringUtil = {}
 
-
 ---@overload fun(input: string, pattern: string): string
 ---@param input string
 ---@param pattern string
@@ -13,20 +12,18 @@ function StringUtil.replace(input, pattern, replacement)
     return r
 end
 
+---@overload fun(text: string, separator: string)
 ---@param text string
 ---@param separators string[]
 ---@return string[]
 function StringUtil.split(text, separators)
-    if not text then
-        return {}
-    end
-    if TableUtil.isEmpty(separators) then
-        return { text }
+    if type(separators) == "string" then
+        separators = { --[[---@type string]] separators }
     end
 
     local parts = {}
-    local seperatorExpression = "[^" .. table.concat(separators, "") .. "]+"
-    for part in string.gmatch(text, seperatorExpression) do
+    local separatorExpression = "[^" .. table.concat(separators, "") .. "]+"
+    for part in string.gmatch(text, separatorExpression) do
         table.insert(parts, part)
     end
     return parts
