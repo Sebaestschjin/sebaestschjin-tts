@@ -5,7 +5,7 @@ local Object = require("sebaestschjin-tts.Object")
 ---@class seb_WrappedDeck_static : seb_WrappedDeck
 ---@overload fun(deck: tts__Deck): seb_WrappedDeck
 ---@overload fun(card: tts__Card): seb_WrappedDeck
----@overload fun(card: tts__VectorShape): seb_WrappedDeck
+---@overload fun(card: tts__Vector): seb_WrappedDeck
 local WrappedDeck = {}
 
 setmetatable(WrappedDeck, {
@@ -56,7 +56,7 @@ setmetatable(WrappedDeck, {
             end
         end
 
-        ---@param position tts__VectorShape
+        ---@param position tts__Vector
         ---@param rotation tts__VectorShape
         local function makeEmpty(position, rotation)
             wrappedObject = nil
@@ -117,7 +117,7 @@ setmetatable(WrappedDeck, {
                         end
                     end
                 end
-                makeEmpty(--[[---@type tts__VectorShape]] obj, { 0, 180, 0 })
+                makeEmpty(--[[---@type tts__Vector]] obj, { 0, 180, 0 })
             end
         end
 
