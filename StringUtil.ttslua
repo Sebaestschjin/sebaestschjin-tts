@@ -1,6 +1,18 @@
-local TableUtil = require("sebaestschjin-tts.TableUtil")
+local Base64 = require("ge_tts.Base64")
 
 local StringUtil = {}
+
+---@param value nil | string
+---@return boolean
+function StringUtil.isEmpty(value)
+    return value == nil or value == ""
+end
+
+---@param value nil | string
+---@return boolean
+function StringUtil.isNotEmpty(value)
+    return not StringUtil.isEmpty(value)
+end
 
 ---@overload fun(input: string, pattern: string): string
 ---@param input string
@@ -29,8 +41,11 @@ function StringUtil.split(text, separators)
     return parts
 end
 
+---@param text string
+---@return string
 function StringUtil.escapePattern(text)
-    return text:gsub("([-+()%[%]])", "%%%1")
+    local escaped, _ = text:gsub("([-+()%[%]])", "%%%1")
+    return escaped
 end
 
 ---@param text string
@@ -55,13 +70,29 @@ function StringUtil.chars(bytes)
     return text
 end
 
+---@param text any
+---@return boolean
 function StringUtil.isGuid(text)
     return type(text) == "string"
-            and text:find("^[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]$")
+            and text:find("^[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]$") ~= nil
 end
 
+---@param text string
+---@return boolean
 function StringUtil.isBase64(text)
-    return text:find("^[a-zA-Z0-9+/]+=?=?$")
+    return text:find("^[a-zA-Z0-9+/]+=?=?$") ~= nil
+end
+
+---@param value string
+---@return string
+function StringUtil.encodeBase64(value)
+    return Base64.encode(StringUtil.bytes(value))
+end
+
+---@param value string
+---@return string
+function StringUtil.decodeBase64(value)
+    return StringUtil.chars(Base64.decode(value))
 end
 
 ---@param value string
