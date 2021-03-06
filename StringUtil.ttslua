@@ -25,10 +25,14 @@ function StringUtil.replace(input, pattern, replacement)
 end
 
 ---@overload fun(text: string, separator: string)
----@param text string
+---@param text nil | string
 ---@param separators string[]
 ---@return string[]
 function StringUtil.split(text, separators)
+    if not text then
+        return {}
+    end
+
     if type(separators) == "string" then
         separators = { --[[---@type string]] separators }
     end

@@ -27,6 +27,24 @@ local function matches(searchField, searchValue, isPattern)
     return searchField == nil or string.find(tostring(searchValue), tostring(searchField), 1, plain) ~= nil
 end
 
+--- Finds the first object in all objects that matches the given search.
+---@param search seb_Search_Full
+---@return nil | tts__Object
+function Search.inAllObjects(search)
+    for _, contained in ipairs(getObjects()) do
+        if matches(search.guid, contained.getGUID(), search.isPattern)
+                and matches(search.name, contained.getName(), search.isPattern)
+                and matches(search.description, contained.getDescription(), search.isPattern)
+                and matches(search.cardId, contained.getData().CardID, search.isPattern)
+                and matches(search.type, contained.type, search.isPattern)
+        then
+            return contained
+        end
+    end
+
+    return nil
+end
+
 --- Finds the first object in the given container that matches the given search.
 ---@param object tts__Container
 ---@param search seb_Search_Minimal
