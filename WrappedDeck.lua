@@ -225,6 +225,15 @@ setmetatable(WrappedDeck, {
             return --[[---@not nil]] lastRotation
         end
 
+        ---@param rotation tts__VectorShape
+        function self.setRotation(rotation)
+            if isDeck or isCard then
+                (--[[---@not nil]] wrappedObject).setRotation(rotation)
+            else
+                lastRotation = Vector(rotation)
+            end
+        end
+
         ---@return tts__DeckState
         function self.getData()
             if isDeck then
