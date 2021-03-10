@@ -1,6 +1,11 @@
 --- Helper methods to access to player notebooks within TTS.
 local Notebook = {}
 
+---@return tts__Notes_GetParameter[]
+function Notebook.getAll()
+    return Notes.getNotebookTabs()
+end
+
 --- Returns the content of the first notebook with the given title.
 ---@param title string
 ---@return nil | string
@@ -30,7 +35,15 @@ function Notebook.setContent(title, content, player)
             return
         end
     end
+    Notebook.addContent(title, content, player)
+end
 
+--- Adds a notebook with the given name.
+---@overload fun(name: string, content: string): void
+---@param title string
+---@param content string
+---@param player tts__PlayerColor
+function Notebook.addContent(title, content, player)
     Notes.addNotebookTab({
         title = title,
         body = content,
