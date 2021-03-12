@@ -24,7 +24,7 @@ function StringUtil.replace(input, pattern, replacement)
     return r
 end
 
----@overload fun(text: string, separator: string)
+---@overload fun(text: string, separator: string): string[]
 ---@param text nil | string
 ---@param separators string[]
 ---@return string[]
