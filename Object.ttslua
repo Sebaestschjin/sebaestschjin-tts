@@ -2,6 +2,13 @@ local GeObject = require("ge_tts.Object")
 
 local Object = {}
 
+---@type table<string, string>
+Object.Name = --[[---@type table<string, string>]] GeObject.Name
+Object.Name.LayoutZone = "LayoutZone"
+
+Object.Type = GeObject.Tag
+Object.ModelType = GeObject.ModelType
+
 --- Types for custom tiles.
 ---@type table<string, tts__TileType>
 Object.TileType = {
@@ -11,8 +18,43 @@ Object.TileType = {
     Rounded = 3,
 }
 
-Object.Type = GeObject.Tag
-Object.Name = GeObject.Name
+Object.LayoutZone = {
+    ---@type table<string, tts__LayoutZone_Direction>
+    Direction = {
+        RightDown = 0,
+        DownRight = 1,
+        LeftDown = 2,
+        DownLeft = 3,
+        RightUp = 4,
+        UpRight = 5,
+        LeftUp = 6,
+        UpLeft = 7,
+    },
+    ---@type table<string, tts__LayoutZone_Facing>
+    Facing = {
+        DoNotChange = 0,
+        FaceUp = 1,
+        FaceDown = 2,
+        GroupIsTipped = 3,
+    },
+    ---@type table<string, tts__LayoutZone_GroupDirection>
+    GroupDirection = {
+        Eastward = 0,
+        Westward = 1,
+        Northward = 2,
+        Southward = 3,
+    },
+    ---@type table<string, tts__LayoutZone_GroupSort>
+    GroupSort = {
+        None = 0,
+        AddedTime = 1,
+        Value = 2,
+        Name = 3,
+        Description = 4,
+        GmNotes = 5,
+        Memo = 6,
+    }
+}
 
 ---@type table<string, tts__ObjectType>
 Object.TypeForName = {

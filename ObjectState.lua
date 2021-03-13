@@ -1,4 +1,7 @@
+local Json = require('ge_tts.Json')
 local Object = require('sebaestschjin-tts.Object')
+
+local ObjectState = {}
 
 ---@type number
 local currentDeckId = 0
@@ -9,20 +12,42 @@ local function nextDeckId()
     return currentDeckId
 end
 
-local ObjectState = {}
+---@param value nil | boolean
+---@param default boolean
+---@return boolean
+local function bool(value, default)
+    if value == nil then
+        return default
+    end
+    return --[[---@not nil]] value
+end
 
----@param type string
+---@param objectType string
 ---@param object seb_CustomObject
 ---@param transform nil | seb_Transform
 ---@return tts__ObjectState
-function ObjectState.object(type, object, transform)
+function ObjectState.object(objectType, object, transform)
+    ---@type string | nil
+    local scriptState
+    if object.state ~= nil then
+        if type(object.state) == "string" then
+            scriptState = --[[---@type string]] object.state
+        else
+            scriptState = Json.encode(--[[---@type table]] object.state)
+        end
+    end
+
     return {
-        Name = type,
+        Name = objectType,
         Nickname = object.name,
         Description = object.description,
         Locked = object.locked,
         Grid = object.snapToGrid,
         Transform = ObjectState.transform(transform),
+        ColorDiffuse = ObjectState.color(object.tint),
+        LuaScript = object.script,
+        LuaScriptState = scriptState,
+        Tags = object.tags,
     }
 end
 
@@ -82,6 +107,7 @@ function ObjectState.cardCustom(card, transform)
     return cardState
 end
 
+---@overload fun(model: seb_CustomObject_Model): tts__ModelCustomState
 ---@param model seb_CustomObject_Model
 ---@param transform seb_Transform
 ---@return tts__ModelCustomState
@@ -134,11 +160,50 @@ function ObjectState.tile(tile, transform)
             Type = tile.type or Object.TileType.Box,
             Stackable = tile.stackable,
             Thickness = tile.thickness or 0.5,
-            Stretch = tile.stretch or true,
+            Stretch = bool(tile.stretch, true),
         }
     }
 
     return tokenState
+end
+
+---@overload fun(zone: seb_CustomObject_LayoutZone): tts__LayoutZoneState
+---@param zone seb_CustomObject_LayoutZone
+---@param transform seb_Transform
+---@return tts__LayoutZoneState
+function ObjectState.layoutZone(zone, transform)
+    local layoutZoneState = --[[---@type tts__LayoutZoneState]] ObjectState.object(Object.Name.LayoutZone, zone, transform)
+
+    layoutZoneState.LayoutZone = {
+        Options = {
+            TriggerForFaceUp = bool(zone.includeFaceUp, true),
+            TriggerForFaceDown = bool(zone.includeFaceDown, true),
+            TriggerForNonCards = bool(zone.includeNonCards, false),
+            SplitAddedDecks = bool(zone.splitDecks, true),
+            CombineIntoDecks = bool(zone.combineIntoDecks, false),
+            CardsPerDeck = zone.combineCardsPerDeck or 0,
+            Direction = zone.direction,
+            NewObjectFacing = zone.facing or 1,
+            HorizontalGroupPadding = zone.paddingHorizontal or 1,
+            VerticalGroupPadding = zone.paddingVertical or 1,
+            StickyCards = bool(zone.stickyCards, false),
+            InstantRefill = bool(zone.instantRefill, false),
+            Randomize = bool(zone.randomize, false),
+            ManualOnly = bool(zone.manualOnly, false),
+            MeldDirection = zone.groupDirection or 0,
+            MeldSort = zone.groupSort or 3,
+            MeldReverseSort = bool(zone.groupSortReverse, false),
+            MeldSortExisting = bool(zone.groupSortExisting, false),
+            HorizonalSpread = zone.spreadHorizontal or 0.6,
+            VerticalSpread = zone.spreadVertical or 0,
+            MaxObjectsPerGroup = zone.maxObjectsPerGroup or 13,
+            AlternateDirection = bool(zone.alternateDirection, false),
+            MaxObjectsPerNewGroup = zone.maxObjectsPerNewGroup or 0,
+            AllowSwapping = bool(zone.allowSwapping, false),
+        }
+    }
+
+    return layoutZoneState
 end
 
 --- Taken from ge_tts.ObjectUtils, but I don't want to always have the onObjectSpawn event registered.
@@ -180,6 +245,29 @@ function ObjectState.transform(transform)
     state.scaleZ = (--[[---@type tts__CharVectorShape]] scale).z or (--[[---@type tts__NumVectorShape]] scale)[3]
 
     return state
+end
+
+---@param color nil | tts__ColorShape
+---@return tts__CharColorShape
+function ObjectState.color(color)
+    ---@type tts__CharColorShape
+    local colorShape = { r = 1, g = 1, b = 1, a = 1 }
+
+    if not color then
+        return colorShape
+    end
+
+    colorShape.r = (--[[---@type tts__CharColorShape]] color).r or (--[[---@type tts__NumColorShape]] color)[1]
+    colorShape.g = (--[[---@type tts__CharColorShape]] color).g or (--[[---@type tts__NumColorShape]] color)[2]
+    colorShape.b = (--[[---@type tts__CharColorShape]] color).b or (--[[---@type tts__NumColorShape]] color)[3]
+
+    if (--[[---@type tts__CharColorShape]] color).a ~= nil then
+        colorShape.a = (--[[---@type tts__CharColorShape]] color).a
+    elseif #colorShape == 4 then
+        colorShape.a = (--[[---@type tts__NumColorShape]] color)[4]
+    end
+
+    return colorShape
 end
 
 ---@param object tts__ObjectState
