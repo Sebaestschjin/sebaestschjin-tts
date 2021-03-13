@@ -53,4 +53,26 @@ function Utils.isCenterInZone(zone, object)
     return objectCenter.x > left and objectCenter.x < right and objectCenter.z > bottom and objectCenter.z < top
 end
 
+--- This exists the circumvent a bug in TTS related to spawnObjectData. When spawning a bag or infinite bag the
+--- callback_function is not trigger. So this method tries to replicate this behaviour with a waiting condition to see
+--- whether the object was spawned already.
+---
+--- See https://tabletopsimulator.nolt.io/586
+---@param parameters tts__SpawnObjectDataParams
+function Utils.spawnObjectData(parameters)
+    local spawned = spawnObjectData({ data = parameters.data })
+    if spawned ~= nil then
+        local spawnedGuid = spawned.getGUID()
+        Wait.condition(function()
+            local obj = --[[---@not nil]] getObjectFromGUID(spawnedGuid)
+            if parameters.callback_function then
+                parameters.callback_function(obj)
+            end
+        end, function()
+            local obj = getObjectFromGUID(spawnedGuid)
+            return obj ~= nil and not (--[[---@not nil]] obj).spawning and (--[[---@not nil]] obj).resting
+        end)
+    end
+end
+
 return Utils
