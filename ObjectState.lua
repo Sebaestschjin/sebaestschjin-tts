@@ -73,11 +73,38 @@ function ObjectState.deckCustom(deck, transform)
     deckState.ContainedObjects = {}
     deckState.CustomDeck = {}
 
-    for _, card in ipairs(deck.cards) do
-        table.insert(deckState.ContainedObjects, card)
-        table.insert(deckState.DeckIDs, card.CardID)
-        for id, customDeck in pairs(card.CustomDeck) do
-            deckState.CustomDeck[id] = customDeck
+    if deck.deck then
+        local deckId = nextDeckId()
+        deckState.CustomDeck = {
+            [deckId] = {
+                FaceURL = (--[[---@not nil]] deck.deck).image,
+                BackURL = (--[[---@not nil]] deck.deck).imageBack,
+                NumWidth = (--[[---@not nil]] deck.deck).width,
+                NumHeight = (--[[---@not nil]] deck.deck).height,
+                BackIsHidden = (--[[---@not nil]] deck.deck).backIsHidden,
+                UniqueBack = false,
+            }
+        }
+
+        for i = 1, (--[[---@not nil]] deck.deck).number do
+            local cardId = --[[---@not nil]] tonumber(string.format("%d%02d", deckId, i - 1))
+            table.insert(deckState.ContainedObjects, {
+                Name = Object.Name.Card,
+                CardID = cardId,
+                CustomDeck = deckState.CustomDeck,
+                Transform = ObjectState.transform(transform),
+            })
+            table.insert(deckState.DeckIDs, cardId)
+        end
+    end
+
+    if deck.cards then
+        for _, card in ipairs(--[[---@not nil]] deck.cards) do
+            table.insert(deckState.ContainedObjects, card)
+            table.insert(deckState.DeckIDs, card.CardID)
+            for id, customDeck in pairs(card.CustomDeck) do
+                deckState.CustomDeck[id] = customDeck
+            end
         end
     end
 

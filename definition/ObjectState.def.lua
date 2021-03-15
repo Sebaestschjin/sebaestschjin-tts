@@ -19,7 +19,16 @@
 ---@field objects nil | tts__ObjectState[]
 
 ---@shape seb_CustomObject_DeckCustom : seb_CustomObject
----@field cards tts__CardCustomState[]
+---@field cards nil | tts__CardCustomState[]
+---@field deck nil | seb_CustomObject_DeckCustom_Deck
+
+---@shape seb_CustomObject_DeckCustom_Deck
+---@field image URL
+---@field imageBack URL
+---@field width number
+---@field height number
+---@field number number
+---@field backIsHidden nil | boolean
 
 ---@shape seb_CustomObject_CardCustom : seb_CustomObject
 ---@field image string
