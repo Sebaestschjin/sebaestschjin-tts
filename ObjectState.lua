@@ -112,7 +112,12 @@ end
 ---@param transform seb_Transform
 ---@return tts__ModelCustomState
 function ObjectState.model(model, transform)
-    local modelState = --[[---@type tts__ModelCustomState]] ObjectState.object(Object.Name.Model, model, transform)
+    local name = Object.Name.Model
+    if model.type == Object.ModelType.Bag or model.type == Object.ModelType.Infinite then
+        name = Object.Name.ModelBag
+    end
+
+    local modelState = --[[---@type tts__ModelCustomState]] ObjectState.object(name, model, transform)
 
     modelState.CustomMesh = {
         MeshURL = model.mesh,

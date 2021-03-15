@@ -5,6 +5,7 @@ local Object = {}
 ---@type table<string, string>
 Object.Name = --[[---@type table<string, string>]] GeObject.Name
 Object.Name.LayoutZone = "LayoutZone"
+Object.Name.ModelBag = "Custom_Model_Bag"
 
 Object.Type = GeObject.Tag
 Object.ModelType = GeObject.ModelType
