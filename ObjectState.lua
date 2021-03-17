@@ -1,5 +1,6 @@
 local Json = require('ge_tts.Json')
 local Object = require('sebaestschjin-tts.Object')
+local TableUtil = require('sebaestschjin-tts.TableUtil')
 
 local ObjectState = {}
 
@@ -324,6 +325,29 @@ function ObjectState.addDecal(object, decal)
         }
     }
     table.insert(--[[---@not nil]] attached, decalData)
+end
+
+--- !!!UNTESTED!!!
+---@param object tts__ObjectState
+---@param state number
+---@return tts__ObjectState
+function ObjectState.setState(object, state)
+    local currentObject = object
+    local allStates = (--[[---@not nil]] object.States)
+    currentObject.States = nil
+
+    local newObject = allStates[state]
+    newObject.States = {}
+
+    for i = 1, TableUtil.length(allStates) + 1 do
+        if allStates[i] == nil then
+            (--[[---@not nil]] newObject.States)[i] = currentObject
+        else
+            (--[[---@not nil]] newObject.States)[i] = allStates[i]
+        end
+    end
+
+    return newObject
 end
 
 return ObjectState
