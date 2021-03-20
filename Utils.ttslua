@@ -32,9 +32,14 @@ end
 
 ---@param object tts__Object
 ---@param snapPoint number
----@return tts__Vector
+---@return nil | tts__Vector
 function Utils.getSnapPosition(object, snapPoint)
-    return object.positionToWorld(object.getSnapPoints()[snapPoint].position)
+    local snapPoints = object.getSnapPoints()
+    if not snapPoints[snapPoint] then
+        return nil
+    end
+
+    return object.positionToWorld(snapPoints[snapPoint].position)
 end
 
 ---@param zone tts__ScriptingTrigger
