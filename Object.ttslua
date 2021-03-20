@@ -180,7 +180,7 @@ function Object.data(object)
 end
 
 ---@param object seb_Object
----@return tts__VectorShape
+---@return tts__Vector
 function Object.position(object)
     if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getPosition()
