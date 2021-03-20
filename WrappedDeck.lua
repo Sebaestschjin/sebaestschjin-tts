@@ -45,7 +45,8 @@ setmetatable(WrappedDeck, {
         ---@param deck tts__Deck
         local function makeDeck(deck)
             if deck.remainder then
-                --- we have a deck, but it going to be a single card soon makeCard(--[[---@type tts__Card]] deck.remainder)
+                -- we have a deck, but it going to be a single card soon
+                makeCard(--[[---@type tts__Card]] deck.remainder)
             else
                 wrappedObject = deck
                 isDeck = true
