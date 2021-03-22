@@ -240,4 +240,20 @@ function Object.transformToScale(transform)
     return Vector(--[[---@not nil]] transform.scaleX, --[[---@not nil]] transform.scaleY, --[[---@not nil]] transform.scaleZ)
 end
 
+---@overload fun(state: tts__ObjectState): void
+---@param state tts__ObjectState
+---@param callback tts__ObjectCallbackFunction
+function Object.respawn(state, callback)
+    if state.GUID then
+        local obj = getObjectFromGUID(--[[---@not nil]] state.GUID)
+        if obj then
+            (--[[---@not nil]] obj).destruct()
+        end
+    end
+    spawnObjectData({
+        data = state,
+        callback_function = callback
+    })
+end
+
 return Object
