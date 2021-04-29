@@ -9,6 +9,7 @@ Object.Name.ModelBag = "Custom_Model_Bag"
 
 Object.Type = GeObject.Tag
 Object.ModelType = GeObject.ModelType
+Object.MaterialType = GeObject.MaterialType
 
 --- Types for custom tiles.
 ---@type table<string, tts__TileType>
