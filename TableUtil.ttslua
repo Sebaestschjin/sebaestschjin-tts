@@ -206,6 +206,7 @@ local TYPE_STRINGIFIERS = {
 ---@param depth number
 ---@return string
 function TableUtil.dump(tab, exclude, depth)
+    exclude = exclude or {}
     depth = depth or 1
 
     local indentation = string.rep('  ', depth)
@@ -221,7 +222,6 @@ function TableUtil.dump(tab, exclude, depth)
         if type(v) == 'table' then
             str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
         else
-            local a = TYPE_STRINGIFIERS['nil']
             str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
         end
     end
