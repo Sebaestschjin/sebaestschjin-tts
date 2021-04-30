@@ -1,5 +1,6 @@
 local Object = require("sebaestschjin-tts.Object")
 local StringUtil = require("sebaestschjin-tts.StringUtil")
+local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 local Search = {}
 
@@ -90,7 +91,7 @@ end
 ---@param search seb_Search_Full
 ---@return nil | (tts__ObjectState, number)
 function Search.inContainedObjects(object, search)
-    for i, contained in ipairs(object.getData().ContainedObjects) do
+    for i, contained in TableUtil.ipairs(object.getData().ContainedObjects) do
         if matches(search.guid, contained.GUID, search.isPattern)
                 and matches(search.name, contained.Nickname, search.isPattern)
                 and matches(search.description, contained.Description, search.isPattern)
@@ -114,7 +115,7 @@ end
 function Search.nearestInContainedObjects(container, name, maxDistance)
     local nearestDistance, nearestObject
 
-    for _, object in ipairs(container.getData().ContainedObjects) do
+    for _, object in TableUtil.ipairs(container.getData().ContainedObjects) do
         local distance = StringUtil.distance(Object.name(object), name)
         if (not maxDistance or distance <= maxDistance)
                 and (not nearestDistance or distance < nearestDistance) then
