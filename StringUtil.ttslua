@@ -45,6 +45,13 @@ function StringUtil.split(text, separators)
     return parts
 end
 
+--- Replaces whitespace at the start and end of the string.
+---@param text string
+---@return string
+function StringUtil.strip(text)
+    return StringUtil.replace(StringUtil.replace(text, "^%s+"), "%s+$")
+end
+
 ---@param text string
 ---@return string
 function StringUtil.escapePattern(text)
@@ -126,9 +133,15 @@ end
 function StringUtil.distance(first, second)
     local firstLength, secondLength = #first, #second
 
-    if firstLength == 0 then return secondLength end
-    if secondLength == 0 then return firstLength end
-    if first == second then return 0 end
+    if firstLength == 0 then
+        return secondLength
+    end
+    if secondLength == 0 then
+        return firstLength
+    end
+    if first == second then
+        return 0
+    end
 
     local firstBytes = StringUtil.bytes(first)
     local secondBytes = StringUtil.bytes(second)
