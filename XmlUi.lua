@@ -13,6 +13,18 @@ local XmlUi = {}
 ---@overload fun(element: tts__UIElement): seb_XmlUi_Element
 local XmlUiElement = {}
 
+---@class seb_XmlUi_Defaults_Static
+---@overload fun(element: tts__UIDefaultsElement): seb_XmlUi_Defaults
+local XmlUiDefaults = {}
+
+---@class seb_XmlUi_Text_Static
+---@overload fun(element: tts__UITextElement): seb_XmlUi_Text
+local XmlUiText = {}
+
+---@class seb_XmlUi_InputField_Static
+---@overload fun(element: tts__UIInputFieldElement): seb_XmlUi_InputField
+local XmlUiInputField = {}
+
 ---@class seb_XmlUi_Button_Static
 ---@overload fun(element: tts__UIButtonElement): seb_XmlUi_Button
 local XmlUiButton = {}
@@ -20,6 +32,34 @@ local XmlUiButton = {}
 ---@class seb_XmlUi_Image_Static
 ---@overload fun(element: tts__UIImageElement): seb_XmlUi_Image
 local XmlUiImage = {}
+
+---@class seb_XmlUi_Toggle_Static
+---@overload fun(element: tts__UIToggleElement): seb_XmlUi_Toggle
+local XmlUiToggle = {}
+
+---@class seb_XmlUi_ToggleButton_Static
+---@overload fun(element: tts__UIToggleButtonElement): seb_XmlUi_ToggleButton
+local XmlUiToggleButton = {}
+
+---@class seb_XmlUi_ToggleGroup_Static
+---@overload fun(element: tts__UIToggleGroupElement): seb_XmlUi_ToggleGroup
+local XmlUiToggleGroup = {}
+
+---@class seb_XmlUi_DropDown_Static
+---@overload fun(element: tts__UIDropdownElement): seb_XmlUi_Dropdown
+local XmlUiDropdown = {}
+
+---@class seb_XmlUi_Option_Static
+---@overload fun(element: tts__UIOptionElement): seb_XmlUi_Option
+local XmlUiOption = {}
+
+---@class seb_XmlUi_ProgressBar_Static
+---@overload fun(element: tts__UIProgressBarElement): seb_XmlUi_ProgressBar
+local XmlUiProgressBar = {}
+
+---@class seb_XmlUi_Slider_Static
+---@overload fun(element: tts__UISliderElement): seb_XmlUi_Slider
+local XmlUiSlider = {}
 
 ---@class seb_XmlUi_Panel_Static
 ---@overload fun(element: tts__UIPanelElement): seb_XmlUi_Panel
@@ -37,9 +77,26 @@ XmlUi.Alignment = {
     UpperLeft = "UpperLeft",
 }
 
+--- Parameters available for animation attributes
 XmlUi.Animation = {
-    Grow = "Grow",
-    Shrink = "Shrink",
+    Show = {
+        None = "None",
+        Grow = "Grow",
+        FadeIn = "FadeIn",
+        SlideInLeft = "SlideIn_Left",
+        SlideInRight = "SlideIn_Right",
+        SlideInTop = "SlideIn_Top",
+        SlideInBottom = "SlideIn_Bottom",
+    },
+    Hide = {
+        None = "None",
+        Shrink = "Shrink",
+        FadeOut = "FadeOut",
+        SlideOut_Left = "SlideOut_Left",
+        SlideOutRight = "SlideOutRight",
+        SlideOutTop = "SlideOut_Top",
+        SlideOutBottom = "SlideOutBottom",
+    },
 }
 
 XmlUi.GridLayout = {
@@ -49,10 +106,24 @@ XmlUi.GridLayout = {
 ---@alias seb_XmlUi_FactoryMethod fun(element: tts__UIElement): seb_XmlUi_Element
 ---@shape seb_XmlUi_Factory
 ---@field [tts__UIElement_Tag] seb_XmlUi_FactoryMethod
+
 local ElementFactory = {
-    Button = --[[---@type seb_XmlUi_FactoryMethod]] XmlUiButton,
-    Image = --[[---@type seb_XmlUi_FactoryMethod]] XmlUiImage,
-    GridLayout = --[[---@type seb_XmlUi_FactoryMethod]] XmlUiGridLayout
+    Defaults = XmlUiDefaults,
+    Text = XmlUiText,
+    InputField = XmlUiInputField,
+    Button = XmlUiButton,
+    Image = XmlUiImage,
+    Toggle = XmlUiPanel,
+    ToggleButton = XmlUiToggle,
+    ToggleGroup = XmlUiToggleGroup,
+    Dropdown = XmlUiDropdown,
+    Option = XmlUiOption,
+    Slider = XmlUiSlider,
+    ProgressBar = XmlUiProgressBar,
+    Panel = XmlUiPanel,
+    HorizontalLayout = XmlUiAxisLayout,
+    VerticalLayout = XmlUiAxisLayout,
+    GridLayout = XmlUiGridLayout
 }
 
 ---@param value tts__ColorParameter
@@ -97,14 +168,14 @@ setmetatable(XmlUiContainer, {
         function self._wrapChildren(unwrappedElements)
             local elements = --[[---@type seb_XmlUi_Element[] ]] {}
             for _, element in TableUtil.ipairs(unwrappedElements) do
-                local factory = ElementFactory[element.tag]
+                local factory = --[[---@type seb_XmlUi_FactoryMethod]] ElementFactory[element.tag]
                 ---@type seb_XmlUi_Element
                 local uiElement
                 if factory then
                     uiElement = factory(element)
                 else
                     uiElement = XmlUiElement(element)
-                    Logger.verbose("No factory found for element of type %s. Using default one.", element.tag)
+                    Logger.debug("No factory found for element of type %s. Using default one.", element.tag)
                 end
                 --uiElement.bindUi(self) -- TODO !!!
                 table.insert(elements, uiElement)
@@ -112,14 +183,21 @@ setmetatable(XmlUiContainer, {
             return elements
         end
 
-        ---@param uiElement seb_XmlUi_Element
-        function self.addChild(uiElement) end
+        ---@param _ seb_XmlUi_Element
+        function self.addChild(_)
+            Logger.error("Not implemented exception!")
+        end
 
-        ---@param child number
+        ---@param _ number
         ---@return seb_XmlUi_Element
-        function self.getChild(child) end
+        function self.getChild(_)
+            Logger.error("Not implemented exception!")
+            return --[[---@type seb_XmlUi_Element]] nil
+        end
 
-        function self.clearElements() end
+        function self.clearElements()
+            Logger.error("Not implemented exception!")
+        end
 
         ---@param attributes seb_XmlUi_ButtonAttributes
         ---@return seb_XmlUi_Button
@@ -234,7 +312,7 @@ setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
         ---@return nil | string | number | boolean
         local function getAttribute(name)
             if boundElement.attributes then
-                return (--[[---@not nil]] boundElement.attributes)[name]
+                return (--[[---@type table<string, nil | string | number | boolean>]] boundElement.attributes)[name]
             end
             return nil
         end
@@ -253,9 +331,9 @@ setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
         ---@param value number | string | boolean
         function self.setAttribute(name, value)
             if not boundElement.attributes then
-                boundElement.attributes = {}
+                (--[[---@type table<string, any>]] boundElement).attributes = {}
             end
-            (--[[---@not nil]] boundElement.attributes)[name] = value
+            (--[[---@type table<string, any>]] boundElement.attributes)[name] = value
 
             onBoundId(function(ui, id) ui.setAttribute(id, name, value) end)
         end
@@ -287,7 +365,8 @@ setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
 
         ---@return tts__UIElement
         function self.getXmlElement()
-            local unwrappedElement = boundElement
+            -- the type cast is obviously bogus, but I didn't find another clear way to get rid of the wrong type error
+            local unwrappedElement = --[[---@type tts__UILayoutElement]] boundElement
             unwrappedElement.children = TableUtil.map(children, function(c) return c.getXmlElement() end)
             return unwrappedElement
         end
@@ -314,6 +393,33 @@ setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
     end
 }))
 
+setmetatable(XmlUiDefaults, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIDefaultsElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiText, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UITextElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiInputField, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIInputFieldElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
 setmetatable(XmlUiButton, TableUtil.merge(getmetatable(XmlUiElement), {
     ---@param element tts__UIButtonElement
     __call = function(_, element)
@@ -325,6 +431,69 @@ setmetatable(XmlUiButton, TableUtil.merge(getmetatable(XmlUiElement), {
 
 setmetatable(XmlUiImage, TableUtil.merge(getmetatable(XmlUiElement), {
     ---@param element tts__UIImageElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiToggle, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIToggleElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiToggleButton, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIToggleButtonElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiToggleGroup, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIToggleGroupElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiDropdown, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIDropdownElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiOption, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIOptionElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiSlider, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UISliderElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiProgressBar, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIProgressBarElement
     __call = function(_, element)
         local self = XmlUiElement(element)
 
@@ -399,7 +568,7 @@ local function copyBaseAttributes(element, attributes)
     ---@return string
     local function toHandlerFunction(value)
         if type(value) == "table" then
-            local asTable = --[[---@type seb_XmlUi_CoolEventHandler]] value
+            local asTable = --[[---@type seb_XmlUi_ObjectEventHandler]] value
             return asTable[1].getGUID() .. "/" .. asTable[2]
         end
         return --[[---@type string]] value
@@ -413,19 +582,61 @@ local function copyBaseAttributes(element, attributes)
         return asConcatenatedString(value, "|")
     end
 
-    copyAttribute(element, attributes, "id")
+    local function identity(value)
+        return value
+    end
 
-    copyAttribute(element, attributes, "height")
-    copyAttribute(element, attributes, "width")
-    copyAttribute(element, attributes, "offsetXY", toList)
-    copyAttribute(element, attributes, "minWidth")
-    copyAttribute(element, attributes, "rectAlignment")
+    local Attributes = {
+        id = identity,
+        -- Appearance
+        shadow = toColor,
+        shadowDistance = toList,
+        outline = toColor,
+        outlineSize = toList,
+        -- Layout
+        ignoreLayout = identity,
+        minWidth = identity,
+        minHeight = identity,
+        preferredWidth = identity,
+        preferredHeight = identity,
+        flexibleWidth = identity,
+        flexibleHeight = identity,
+        -- Position/Size
+        rectAlignment = identity,
+        width = identity,
+        height = identity,
+        offsetXY = identity,
+        --
+        horizontalOverflow = identity,
+        verticalOverflow = identity,
+        -- Dragging
+        allowDragging = identity,
+        restrictDraggingToParentBounds = identity,
+        returnToOriginalPositionWhenReleased = identity,
+        -- Animation
+        showAnimation = identity,
+        hideAnimation = identity,
+        showAnimationDelay = identity,
+        hideAnimationDelay = identity,
+        animationDuration = identity,
+    }
+
+    for name, mapper in pairs(Attributes) do
+        copyAttribute(element, attributes, name, mapper)
+    end
+
+    copyAttribute(element, attributes, "alignment")
 
     copyAttribute(element, attributes, "active")
     copyAttribute(element, attributes, "visibility", toPlayerColors)
 
-    copyAttribute(element, attributes, "class")
+    copyAttribute(element, attributes, "class", toList)
     copyAttribute(element, attributes, "color", toColor)
+    copyAttribute(element, attributes, "fontStyle")
+    copyAttribute(element, attributes, "fontSize")
+    copyAttribute(element, attributes, "resizeTextForBestFit")
+    copyAttribute(element, attributes, "resizeTextMinSize")
+    copyAttribute(element, attributes, "resizeTextMaxSize")
     copyAttribute(element, attributes, "showAnimation")
     copyAttribute(element, attributes, "hideAnimation")
 
@@ -437,10 +648,6 @@ local function copyBaseAttributes(element, attributes)
     copyAttribute(element, attributes, "onMouseExit", toHandlerFunction)
     copyAttribute(element, attributes, "onMouseDown", toHandlerFunction)
     copyAttribute(element, attributes, "onMouseUp", toHandlerFunction)
-
-    copyAttribute(element, attributes, "allowDragging")
-    copyAttribute(element, attributes, "restrictDraggingToParentBounds")
-    copyAttribute(element, attributes, "returnToOriginalPositionWhenReleased")
 end
 
 ---@param attributes seb_XmlUi_ButtonAttributes
