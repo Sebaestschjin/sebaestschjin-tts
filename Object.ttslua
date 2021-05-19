@@ -181,6 +181,17 @@ function Object.data(object)
 end
 
 ---@param object seb_Object
+---@return nil | number
+function Object.cardIndex(object)
+    local cardId = Object.data(object).CardID
+    if not cardId then
+        return nil
+    end
+
+    return tonumber(tostring(cardId):sub(-2, -1))
+end
+
+---@param object seb_Object
 ---@return tts__Vector
 function Object.position(object)
     if Object.isObject(object) then

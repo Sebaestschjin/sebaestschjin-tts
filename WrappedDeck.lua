@@ -250,6 +250,12 @@ setmetatable(WrappedDeck, {
             end
         end
 
+        function self.shuffle()
+            if isDeck then
+                asDeck().shuffle()
+            end
+        end
+
         initialize()
 
         return self
