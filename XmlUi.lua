@@ -611,7 +611,7 @@ local function copyBaseAttributes(element, attributes)
         rectAlignment = identity,
         width = identity,
         height = identity,
-        offsetXY = identity,
+        offsetXY = toList,
         --
         horizontalOverflow = identity,
         verticalOverflow = identity,
