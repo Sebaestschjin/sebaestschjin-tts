@@ -115,8 +115,14 @@ end
 ---@return boolean
 function Object.isBag(object)
     return Object.type(object) == Object.Type.Bag
-
 end
+
+---@param object seb_Object
+---@return boolean
+function Object.isFigurine(object)
+    return Object.type(object) == Object.Type.Figurine
+end
+
 ---@param object seb_Object
 ---@return boolean
 function Object.isContainer(object)
