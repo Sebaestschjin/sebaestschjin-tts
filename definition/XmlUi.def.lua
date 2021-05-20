@@ -87,6 +87,9 @@
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_AxisLayoutAttributes : seb_XmlUi_Attributes
+---@field childAlignment nil | tts__UIElement_Alignment
+---@field childForceExpandWidth nil | boolean
+---@field childForceExpandHeight nil | boolean
 
 ---@alias seb_XmlUi_VisibilityTarget tts__PlayerColor | tts__PlayerTeam | tts__PlayerRole
 

@@ -126,6 +126,29 @@ local ElementFactory = {
     GridLayout = XmlUiGridLayout
 }
 
+---@overload fun(value: any, separator: string): string
+---@param value any
+---@param separator string
+---@param multiple number
+---@return nil | string
+local function toConcatenatedString(value, separator, multiple)
+    if not value then
+        return nil
+    end
+    multiple = multiple or 1
+
+    local values = {}
+    if type(value) ~= "table" then
+        for _ = 1, multiple do
+            table.insert(values, value)
+        end
+    else
+        values = value
+    end
+
+    return table.concat(--[[---@type string[] ]] values, separator)
+end
+
 ---@param value tts__ColorParameter
 ---@return string
 local function toColor(value)
@@ -146,6 +169,28 @@ local function toColor(value)
     end
 end
 
+---@param value nil | seb_XmlUi_EventHandler
+---@return string
+local function toHandlerFunction(value)
+    if type(value) == "table" then
+        local asTable = --[[---@type seb_XmlUi_ObjectEventHandler]] value
+        return asTable[1].getGUID() .. "/" .. asTable[2]
+    end
+    return --[[---@type string]] value
+end
+
+local function toList(value)
+    return toConcatenatedString(value, " ")
+end
+
+local function toPlayerColors(value)
+    return toConcatenatedString(value, "|")
+end
+
+local function identity(value)
+    return value
+end
+
 ---@overload fun(element, attributes, name: string): void
 ---@param name string
 ---@param mapper fun(value: any): any
@@ -156,6 +201,12 @@ local function copyAttribute(element, attributes, name, mapper)
             value = mapper(value)
         end
         (--[[---@not nil]] element.attributes)[name] = value
+    end
+end
+
+local function copyAttributes(element, attributes, values)
+    for value, mapper in pairs(values) do
+        copyAttribute(element, attributes, value, mapper)
     end
 end
 
@@ -175,7 +226,7 @@ setmetatable(XmlUiContainer, {
                     uiElement = factory(element)
                 else
                     uiElement = XmlUiElement(element)
-                    Logger.debug("No factory found for element of type %s. Using default one.", element.tag)
+                    Logger.verbose("No factory found for element of type %s. Using default one.", element.tag)
                 end
                 --uiElement.bindUi(self) -- TODO !!!
                 table.insert(elements, uiElement)
@@ -541,51 +592,6 @@ setmetatable(XmlUiGridLayout, TableUtil.merge(getmetatable(XmlUiElement), {
 ---@param element tts__UIElement
 ---@param attributes seb_XmlUi_Attributes
 local function copyBaseAttributes(element, attributes)
-    ---@overload fun(value: any, separator: string): string
-    ---@param value any
-    ---@param separator string
-    ---@param multiple number
-    ---@return nil | string
-    local function asConcatenatedString(value, separator, multiple)
-        if not value then
-            return nil
-        end
-        multiple = multiple or 1
-
-        local values = {}
-        if type(value) ~= "table" then
-            for _ = 1, multiple do
-                table.insert(values, value)
-            end
-        else
-            values = value
-        end
-
-        return table.concat(--[[---@type string[] ]] values, separator)
-    end
-
-    ---@param value nil | seb_XmlUi_EventHandler
-    ---@return string
-    local function toHandlerFunction(value)
-        if type(value) == "table" then
-            local asTable = --[[---@type seb_XmlUi_ObjectEventHandler]] value
-            return asTable[1].getGUID() .. "/" .. asTable[2]
-        end
-        return --[[---@type string]] value
-    end
-
-    local function toList(value)
-        return asConcatenatedString(value, " ")
-    end
-
-    local function toPlayerColors(value)
-        return asConcatenatedString(value, "|")
-    end
-
-    local function identity(value)
-        return value
-    end
-
     local Attributes = {
         id = identity,
         -- Appearance
@@ -621,10 +627,7 @@ local function copyBaseAttributes(element, attributes)
         animationDuration = identity,
     }
 
-    for name, mapper in pairs(Attributes) do
-        copyAttribute(element, attributes, name, mapper)
-    end
-
+    copyAttributes(element, attributes, Attributes)
     copyAttribute(element, attributes, "alignment")
 
     copyAttribute(element, attributes, "active")
@@ -722,7 +725,15 @@ local function createAxisLayout(attributes, direction)
         attributes = {},
         children = --[[---@type tts__UIElement[] ]]{},
     }
+
+    local Attributes = {
+        childAlignment = identity,
+        childForceExpandWidth = identity,
+        childForceExpandHeight = identity,
+    }
+
     copyBaseAttributes(element, attributes)
+    copyAttributes(element, attributes, Attributes)
 
     return XmlUiAxisLayout(element)
 end
