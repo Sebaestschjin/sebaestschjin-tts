@@ -90,6 +90,13 @@ function TableUtil.shuffle(tab)
     end
 end
 
+---@generic V
+---@param tab V[]
+---@return V
+function TableUtil.getRandom(tab)
+    return tab[math.random(TableUtil.length(tab))]
+end
+
 ---@overload fun<V, MappedV>(tab: V[], func: fun(value: V, key: number): MappedV): MappedV[]
 ---@generic K, V, MappedV
 ---@param tab table<K, V>
