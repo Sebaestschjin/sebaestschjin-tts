@@ -345,6 +345,17 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
             table.insert(assets, { name = assetName, url = assetUrl, })
         end
 
+        ---@param assetName string
+        ---@return boolean
+        function self.hasAsset(assetName)
+            for _, asset in ipairs(assets) do
+                if asset.name == assetName then
+                    return true
+                end
+            end
+            return false
+        end
+
         return self
     end
 }))
