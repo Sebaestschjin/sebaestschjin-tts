@@ -86,7 +86,8 @@ setmetatable(WrappedDeck, {
             if parameters.rotation then
                 card.setRotation(--[[---@type tts__VectorShape]] parameters.rotation)
             elseif parameters.flip then
-                card.setRotation(card.getRotation() * Vector(1, -1, 1))
+                local newRotation = card.getRotation():add(Vector(0, 0, 180))
+                card.setRotation(newRotation)
             end
 
             if parameters.callback_function then
@@ -176,9 +177,10 @@ setmetatable(WrappedDeck, {
             elseif isCard then
                 local position = asCard().getPosition()
                 local rotation = asCard().getRotation()
+                local cardObject = asCard()
                 takeObjectSingle(asCard(), parameters)
                 makeEmpty(position, rotation)
-                return asCard()
+                return cardObject
             end
         end
 
@@ -193,7 +195,11 @@ setmetatable(WrappedDeck, {
                 if Object.isCard(cardOrDeck) then
                     formedDeck = asCard().putObject(--[[---@type tts__Card]] cardOrDeck)
                 else
+                    local currentPosition = asCard().getPosition()
+                    local currentRotation = asCard().getRotation()
                     formedDeck = (--[[---@type tts__Deck]] cardOrDeck).putObject(asCard())
+                    formedDeck.setPosition(currentPosition)
+                    formedDeck.setRotation(currentRotation)
                 end
                 makeDeck(formedDeck)
                 return formedDeck
