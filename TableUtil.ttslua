@@ -44,6 +44,19 @@ function TableUtil.keys(tab)
     return keys
 end
 
+---@generic K, V
+---@param tab nil | table<K, V>
+---@return V[]
+function TableUtil.values(tab)
+    local values = {}
+
+    for _, value in TableUtil.pairs(tab) do
+        table.insert(values, value)
+    end
+
+    return values
+end
+
 --- Checks whether a table is empty. A nil value is also considered an empty table.
 ---@param tab table|nil
 ---@return boolean

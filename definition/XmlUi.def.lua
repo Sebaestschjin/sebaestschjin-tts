@@ -39,7 +39,7 @@
 ---@field onMouseEnter nil | seb_XmlUi_EventHandler
 ---@field onMouseExit nil | seb_XmlUi_EventHandler
 ---@field class nil | string | string[] @A list of classes. An element will inherit attributes from any of its classes defined in Defaults.
----@field color nil | tts__ColorParameter @Color of the text. Elements that also take an image color use textColor for this.
+---@field color nil | seb_XmlUi_Color @Color of the text. Elements that also take an image color use textColor for this.
 ---@field fontStyle nil | tts__UIElement_FontStyle @Typographic emphasis on the text.
 ---@field fontSize nil | number @Height of the text in pixels.
 ---@field shadow nil | tts__ColorShape @Defines the shadow color of this element.
@@ -62,14 +62,41 @@
 ---@field flexibleWidth nil | number @If there is additional space after preferredWidths are sized, defines how much the element expands to fill the available horizontal space, relative to other elements.
 ---@field flexibleHeight nil | number @If there is additional space after preferredHeightss are sized, defines how much the element expands to fill the available vertical space, relative to other elements.
 
+---@shape seb_XmlUi_TextAttributes : seb_XmlUi_Attributes
+---@field value nil | string
+---@field [any] nil @All other fields are invalid
+
 ---@shape seb_XmlUi_ButtonAttributes : seb_XmlUi_Attributes
 ---@field value nil | string
----@field textColor nil | tts__ColorParameter
+---@field textColor nil | seb_XmlUi_Color
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_ImageAttributes : seb_XmlUi_Attributes
 ---@field image URL
 ---@field preserveAspect nil | boolean
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_ToggleAttributes : seb_XmlUi_Attributes
+---@field onValueChanged nil | seb_XmlUi_EventHandler
+---@field isOn nil | boolean
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_DropdownAttributes : seb_XmlUi_Attributes
+---@field onValueChanged nil | seb_XmlUi_EventHandler
+---@field selected nil | string
+---@field itemHeight nil | number
+---@field itemBackgroundColors nil | seb_XmlUi_ColorBlock
+---@field itemTextColor nil | seb_XmlUi_Color
+---@field checkColor nil | seb_XmlUi_Color
+---@field dropdownBackgroundColor nil | seb_XmlUi_Color
+---@field textColor nil | seb_XmlUi_Color
+---@field arrowColor nil | seb_XmlUi_Color
+---@field scrollbarColors nil | seb_XmlUi_ColorBlock
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_OptionAttributes : seb_XmlUi_Attributes
+---@field value number | string
+---@field selected nil | boolean
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_PanelAttributes : seb_XmlUi_Attributes
@@ -97,7 +124,7 @@
 
 ---@shape seb_XmlUi_ObjectEventHandler
 ---@field [1] tts__Object @The object on which the function should be called.
----@field [2] string @The function to call.
+---@field [2] tts__UIElement_CallbackFunctionName @The function to call.
 
 ---@shape seb_XmlUi_Vector2
 ---@field [1] number
@@ -111,3 +138,5 @@
 
 ---@alias seb_XmlUi_Padding number | seb_XmlUi_Vector4
 ---@alias seb_XmlUi_Size number | seb_XmlUi_Vector2
+---@alias seb_XmlUi_Color tts__ColorParameter
+---@alias seb_XmlUi_ColorBlock tts__ColorParameter[]

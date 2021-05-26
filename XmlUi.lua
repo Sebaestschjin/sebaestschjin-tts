@@ -149,7 +149,7 @@ local function toConcatenatedString(value, separator, multiple)
     return table.concat(--[[---@type string[] ]] values, separator)
 end
 
----@param value tts__ColorParameter
+---@param value seb_XmlUi_Color
 ---@return string
 local function toColor(value)
     if (--[[---@type tts__CharColorShape]] value).r ~= nil then
@@ -167,6 +167,12 @@ local function toColor(value)
     else
         return --[[---@type string]] value
     end
+end
+
+---@param value seb_XmlUi_ColorBlock
+---@return string
+local function toColorBlock(value)
+    return table.concat(TableUtil.map(value, toColor), "|")
 end
 
 ---@param value nil | seb_XmlUi_EventHandler
@@ -191,7 +197,129 @@ local function identity(value)
     return value
 end
 
----@overload fun(element, attributes, name: string): void
+local AttributeType = {
+    boolean = "boolean",
+    string = "string",
+    integer = "integer",
+    float = "float",
+    handler = "handler",
+    color = "color",
+    colorBlock = "colorBlock",
+    players = "players",
+    vector2 = "vector2",
+}
+
+---@type table<string, fun(value: any): any>
+local AttributeTypeMapper = {
+    [AttributeType.string] = identity,
+    [AttributeType.integer] = identity,
+    [AttributeType.float] = identity,
+    [AttributeType.boolean] = identity,
+    [AttributeType.handler] = toHandlerFunction,
+    [AttributeType.color] = toColor,
+    [AttributeType.colorBlock] = toColorBlock,
+    [AttributeType.players] = toPlayerColors,
+    [AttributeType.vector2] = toList,
+}
+
+local Attributes = {
+    Basic = {
+        -- General
+        id = AttributeType.string,
+        class = AttributeType.string,
+        active = AttributeType.boolean,
+        visibility = AttributeType.players,
+        -- Text
+        text = AttributeType.string,
+        alignment = AttributeType.string,
+        color = AttributeType.color,
+        fontStyle = AttributeType.string,
+        fontSize = AttributeType.integer,
+        resizeTextForBestFit = AttributeType.boolean,
+        resizeTextMinSize = AttributeType.integer,
+        resizeTextMaxSize = AttributeType.integer,
+        horizontalOverflow = AttributeType.string,
+        verticalOverflow = AttributeType.string,
+        -- Appearance
+        shadow = AttributeType.color,
+        shadowDistance = AttributeType.vector2,
+        outline = AttributeType.color,
+        outlineSize = AttributeType.vector2,
+        -- Layout
+        ignoreLayout = AttributeType.boolean,
+        minWidth = AttributeType.integer,
+        minHeight = AttributeType.integer,
+        preferredWidth = AttributeType.integer,
+        preferredHeight = AttributeType.integer,
+        flexibleWidth = AttributeType.integer,
+        flexibleHeight = AttributeType.integer,
+        -- Position/Size
+        rectAlignment = AttributeType.string,
+        width = AttributeType.integer,
+        height = AttributeType.integer,
+        offsetXY = AttributeType.vector2,
+        -- Dragging
+        allowDragging = AttributeType.boolean,
+        restrictDraggingToParentBounds = AttributeType.boolean,
+        returnToOriginalPositionWhenReleased = AttributeType.boolean,
+        -- Animation
+        showAnimation = AttributeType.string,
+        hideAnimation = AttributeType.string,
+        showAnimationDelay = AttributeType.float,
+        hideAnimationDelay = AttributeType.float,
+        animationDuration = AttributeType.float,
+        -- Tooltip
+        tooltip = AttributeType.string,
+        tooltipBackgroundColor = AttributeType.color,
+        -- Event
+        onClick = AttributeType.handler,
+        onMouseEnter = AttributeType.handler,
+        onMouseExit = AttributeType.handler,
+        onMouseDown = AttributeType.handler,
+        onMouseUp = AttributeType.handler,
+    },
+    HorizontalLayout = {
+        childAlignment = AttributeType.string,
+        childForceExpandWidth = AttributeType.boolean,
+        childForceExpandHeight = AttributeType.boolean,
+    },
+    Button = {
+        textColor = AttributeType.color,
+    },
+    Dropdown = {
+        itemHeight = AttributeType.integer,
+        arrowColor = AttributeType.color,
+        checkColor = AttributeType.color,
+        dropdownBackgroundColor = AttributeType.color,
+        itemBackgroundColors = AttributeType.colorBlock,
+        itemTextColor = AttributeType.color,
+        scrollbarColors = AttributeType.color,
+        textColor = AttributeType.color,
+        onValueChanged = AttributeType.handler,
+    },
+    GridLayout = {
+        constraint = AttributeType.string,
+        constraintCount = AttributeType.integer,
+    },
+    Image = {
+        image = AttributeType.string,
+        preserveAspect = AttributeType.boolean,
+    },
+    Toggle = {
+        isOn = AttributeType.boolean,
+    },
+    Option = {
+        selected = AttributeType.boolean,
+    },
+    VerticalLayout = {
+        childAlignment = AttributeType.string,
+        childForceExpandWidth = AttributeType.boolean,
+        childForceExpandHeight = AttributeType.boolean,
+    },
+}
+
+---@param element table
+---@param attributes seb_XmlUi_Attributes
 ---@param name string
 ---@param mapper fun(value: any): any
 local function copyAttribute(element, attributes, name, mapper)
@@ -204,9 +332,12 @@ local function copyAttribute(element, attributes, name, mapper)
     end
 end
 
-local function copyAttributes(element, attributes, values)
-    for value, mapper in pairs(values) do
-        copyAttribute(element, attributes, value, mapper)
+---@param element table
+---@param attributes seb_XmlUi_Attributes
+---@param availableAttributes table<string, string>
+local function copyAttributes(element, attributes, availableAttributes)
+    for attribute, attributeType in pairs(availableAttributes) do
+        copyAttribute(element, attributes, attribute, AttributeTypeMapper[attributeType])
     end
 end
 
@@ -250,6 +381,14 @@ setmetatable(XmlUiContainer, {
             Logger.error("Not implemented exception!")
         end
 
+        ---@param attributes seb_XmlUi_TextAttributes
+        ---@return seb_XmlUi_Text
+        function self.addText(attributes)
+            local button = XmlUi.createText(attributes)
+            self.addChild(button)
+            return button
+        end
+
         ---@param attributes seb_XmlUi_ButtonAttributes
         ---@return seb_XmlUi_Button
         function self.addButton(attributes)
@@ -264,6 +403,38 @@ setmetatable(XmlUiContainer, {
             local image = XmlUi.createImage(attributes)
             self.addChild(image)
             return image
+        end
+
+        ---@param attributes seb_XmlUi_ToggleAttributes
+        ---@return seb_XmlUi_Toggle
+        function self.addToggle(attributes)
+            local toggle = XmlUi.createToggle(attributes)
+            self.addChild(toggle)
+            return toggle
+        end
+
+        ---@param attributes seb_XmlUi_DropdownAttributes
+        ---@return seb_XmlUi_Dropdown
+        function self.addDropdown(attributes)
+            local dropdown = XmlUi.createDropdown(attributes)
+            self.addChild(dropdown)
+            return dropdown
+        end
+
+        ---@param attributes seb_XmlUi_AxisLayoutAttributes
+        ---@return seb_XmlUi_AxisLayout
+        function self.addVerticalLayout(attributes)
+            local layout = XmlUi.createVerticalLayout(attributes)
+            self.addChild(layout)
+            return layout
+        end
+
+        ---@param attributes seb_XmlUi_AxisLayoutAttributes
+        ---@return seb_XmlUi_AxisLayout
+        function self.addHorizontalLayout(attributes)
+            local layout = XmlUi.createHorizontalLayout(attributes)
+            self.addChild(layout)
+            return layout
         end
 
         ---@param attributes seb_XmlUi_GridLayoutAttributes
@@ -311,7 +482,7 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
         end
 
         ---@param element seb_XmlUi_Element
-        function self.addElement(element)
+        function self.addChild(element)
             element.bindUi(self) -- TODO propagate to children
             table.insert(children, element)
         end
@@ -532,6 +703,13 @@ setmetatable(XmlUiDropdown, TableUtil.merge(getmetatable(XmlUiElement), {
     __call = function(_, element)
         local self = XmlUiElement(element)
 
+        ---@param value seb_XmlUi_OptionAttributes
+        function self.addOption(attributes)
+            local option = XmlUi.createOption(attributes)
+            self.addChild(option)
+            return option
+        end
+
         return self
     end
 }))
@@ -600,167 +778,82 @@ setmetatable(XmlUiGridLayout, TableUtil.merge(getmetatable(XmlUiElement), {
     end
 }))
 
----@param element tts__UIElement
+---@param tag tts__UIElement_Tag
 ---@param attributes seb_XmlUi_Attributes
-local function copyBaseAttributes(element, attributes)
-    local Attributes = {
-        id = identity,
-        -- Appearance
-        shadow = toColor,
-        shadowDistance = toList,
-        outline = toColor,
-        outlineSize = toList,
-        -- Layout
-        ignoreLayout = identity,
-        minWidth = identity,
-        minHeight = identity,
-        preferredWidth = identity,
-        preferredHeight = identity,
-        flexibleWidth = identity,
-        flexibleHeight = identity,
-        -- Position/Size
-        rectAlignment = identity,
-        width = identity,
-        height = identity,
-        offsetXY = toList,
-        --
-        horizontalOverflow = identity,
-        verticalOverflow = identity,
-        -- Dragging
-        allowDragging = identity,
-        restrictDraggingToParentBounds = identity,
-        returnToOriginalPositionWhenReleased = identity,
-        -- Animation
-        showAnimation = identity,
-        hideAnimation = identity,
-        showAnimationDelay = identity,
-        hideAnimationDelay = identity,
-        animationDuration = identity,
-    }
+---@return seb_XmlUi_Element
+local function createElement(tag, attributes)
+    local ttsElement = { tag = tag, attributes = {}, children = {} }
+    copyAttributes(ttsElement, attributes, Attributes.Basic)
+    if Attributes[tag] ~= nil then
+        copyAttributes(ttsElement, attributes, Attributes[tag])
+    end
+    if attributes.value then
+        ttsElement.value = attributes.value
+    end
 
-    copyAttributes(element, attributes, Attributes)
-    copyAttribute(element, attributes, "alignment")
+    return ElementFactory[tag](ttsElement)
+end
 
-    copyAttribute(element, attributes, "active")
-    copyAttribute(element, attributes, "visibility", toPlayerColors)
-
-    copyAttribute(element, attributes, "class", toList)
-    copyAttribute(element, attributes, "color", toColor)
-    copyAttribute(element, attributes, "fontStyle")
-    copyAttribute(element, attributes, "fontSize")
-    copyAttribute(element, attributes, "resizeTextForBestFit")
-    copyAttribute(element, attributes, "resizeTextMinSize")
-    copyAttribute(element, attributes, "resizeTextMaxSize")
-    copyAttribute(element, attributes, "showAnimation")
-    copyAttribute(element, attributes, "hideAnimation")
-
-    copyAttribute(element, attributes, "tooltip")
-    copyAttribute(element, attributes, "tooltipBackgroundColor")
-
-    copyAttribute(element, attributes, "onClick", toHandlerFunction)
-    copyAttribute(element, attributes, "onMouseEnter", toHandlerFunction)
-    copyAttribute(element, attributes, "onMouseExit", toHandlerFunction)
-    copyAttribute(element, attributes, "onMouseDown", toHandlerFunction)
-    copyAttribute(element, attributes, "onMouseUp", toHandlerFunction)
+---@param attributes seb_XmlUi_TextAttributes
+---@return seb_XmlUi_Text
+function XmlUi.createText(attributes)
+    return --[[---@type seb_XmlUi_Text]] createElement("Text", attributes)
 end
 
 ---@param attributes seb_XmlUi_ButtonAttributes
 ---@return seb_XmlUi_Button
 function XmlUi.createButton(attributes)
-    local element = {
-        tag = "Button",
-        attributes = --[[---@type tts__UIButtonElement_Attributes]] {
-        },
-    }
-    copyBaseAttributes(element, attributes)
-    copyAttribute(element, attributes, "textColor", toColor)
-
-    if attributes.value then
-        element.value = attributes.value
-    end
-
-    return XmlUiButton(element)
+    return --[[---@type seb_XmlUi_Button]] createElement("Button", attributes)
 end
 
 ---@param attributes seb_XmlUi_ImageAttributes
 ---@return seb_XmlUi_Image
 function XmlUi.createImage(attributes)
-    local element = {
-        tag = "Image",
-        attributes = --[[---@type tts__UIImageElement_Attributes]] {
-            image = attributes.image,
-            preserveAspect = attributes.preserveAspect,
-        },
-    }
-    copyBaseAttributes(element, attributes)
+    return --[[---@type seb_XmlUi_Image]] createElement("Image", attributes)
+end
 
-    return XmlUiImage(element)
+---@param attributes seb_XmlUi_ToggleAttributes
+---@return seb_XmlUi_Toggle
+function XmlUi.createToggle(attributes)
+    return --[[---@type seb_XmlUi_Toggle]] createElement("Toggle", attributes)
+end
+
+---@param attributes seb_XmlUi_DropdownAttributes
+---@return seb_XmlUi_Dropdown
+function XmlUi.createDropdown(attributes)
+    return --[[---@type seb_XmlUi_Dropdown]] createElement("Dropdown", attributes)
+end
+
+---@param attributes seb_XmlUi_OptionAttributes
+---@return seb_XmlUi_Option
+function XmlUi.createOption(attributes)
+    return --[[---@type seb_XmlUi_Option]] createElement("Option", attributes)
 end
 
 ---@param attributes seb_XmlUi_PanelAttributes
 ---@return seb_XmlUi_Panel
 function XmlUi.createPanel(attributes)
-    local element = {
-        tag = "Panel",
-        attributes = --[[---@type tts__UIPanelElement_Attributes]] {
-        },
-        children = --[[---@type tts__UIElement[] ]]{},
-    }
-    copyBaseAttributes(element, attributes)
-
-    return XmlUiPanel(element)
+    return --[[---@type seb_XmlUi_Panel]] createElement("Panel", attributes)
 end
 
 ---@param attributes seb_XmlUi_GridLayoutAttributes
 ---@return seb_XmlUi_GridLayout
 function XmlUi.createGridLayout(attributes)
-    local element = {
-        tag = "GridLayout",
-        attributes = --[[---@type tts__UIGridLayoutElement_Attributes]] {
-            constraint = attributes.constraint,
-            constraintCount = attributes.constraintCount,
-        },
-        children = --[[---@type tts__UIElement[] ]]{},
-    }
-    copyBaseAttributes(element, attributes)
-
-    return XmlUiGridLayout(element)
-end
-
----@param attributes seb_XmlUi_AxisLayoutAttributes
----@param direction "Horizontal" | "Vertical"
----@return seb_XmlUi_AxisLayout
-local function createAxisLayout(attributes, direction)
-    local element = --[[---@type tts__UILayoutElement]] {
-        tag = direction .. "Layout",
-        attributes = {},
-        children = --[[---@type tts__UIElement[] ]]{},
-    }
-
-    local Attributes = {
-        childAlignment = identity,
-        childForceExpandWidth = identity,
-        childForceExpandHeight = identity,
-    }
-
-    copyBaseAttributes(element, attributes)
-    copyAttributes(element, attributes, Attributes)
-
-    return XmlUiAxisLayout(element)
+    return --[[---@type seb_XmlUi_GridLayout]] createElement("GridLayout", attributes)
 end
 
 ---@overload fun(): seb_XmlUi_AxisLayout
 ---@param attributes seb_XmlUi_AxisLayoutAttributes
 ---@return seb_XmlUi_AxisLayout
 function XmlUi.createHorizontalLayout(attributes)
-    return createAxisLayout(attributes or {}, "Horizontal")
+    return --[[---@type seb_XmlUi_AxisLayout]] createElement("HorizontalLayout", attributes)
 end
 
 ---@overload fun(): seb_XmlUi_AxisLayout
 ---@param attributes seb_XmlUi_AxisLayoutAttributes
 ---@return seb_XmlUi_AxisLayout
 function XmlUi.createVerticalLayout(attributes)
-    return createAxisLayout(attributes or {}, "Vertical")
+    return --[[---@type seb_XmlUi_AxisLayout]] createElement("VerticalLayout", attributes)
 end
 
 return XmlUi
