@@ -307,6 +307,7 @@ local Attributes = {
     },
     Toggle = {
         isOn = AttributeType.boolean,
+        onValueChanged = AttributeType.handler,
     },
     Option = {
         selected = AttributeType.boolean,
@@ -789,6 +790,12 @@ local function createElement(tag, attributes)
     end
     if attributes.value then
         ttsElement.value = attributes.value
+    end
+
+    for name, value in pairs(attributes) do
+        if name ~= "value" and value ~= nil and ttsElement.attributes[name] == nil then
+            Logger.warn("Unmapped attribute '%s'!", name)
+        end
     end
 
     return ElementFactory[tag](ttsElement)
