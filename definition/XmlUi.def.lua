@@ -16,6 +16,9 @@
 ---@class seb_XmlUi_Panel : seb_XmlUi_Element
 ---@class seb_XmlUi_AxisLayout : seb_XmlUi_Element
 ---@class seb_XmlUi_GridLayout : seb_XmlUi_Element
+---@class seb_XmlUi_TableLayout : seb_XmlUi_Element
+---@class seb_XmlUi_Row : seb_XmlUi_Element
+---@class seb_XmlUi_Cell : seb_XmlUi_Element
 
 ---@shape seb_XmlUi_Attributes
 ---@field id nil | string @A unique string used to identify the element from Lua scripting.
@@ -117,6 +120,20 @@
 ---@field childAlignment nil | tts__UIElement_Alignment
 ---@field childForceExpandWidth nil | boolean
 ---@field childForceExpandHeight nil | boolean
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_TableLayoutAttributes : seb_XmlUi_Attributes
+---@field columnWidths nil | number[]
+---@field rowBackgroundColor nil | seb_XmlUi_Color | 'clear'
+---@field cellBackgroundColor nil | seb_XmlUi_Color | 'clear'
+---@field cellPadding nil | seb_XmlUi_Padding
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_RowAttributes : seb_XmlUi_Attributes
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_CellAttributes : seb_XmlUi_Attributes
+---@field [any] nil @All other fields are invalid
 
 ---@alias seb_XmlUi_VisibilityTarget tts__PlayerColor | tts__PlayerTeam | tts__PlayerRole
 

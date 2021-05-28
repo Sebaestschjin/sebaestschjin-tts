@@ -73,8 +73,28 @@ local XmlUiAxisLayout = {}
 ---@overload fun(element: tts__UIGridLayoutElement): seb_XmlUi_GridLayout
 local XmlUiGridLayout = {}
 
+---@class seb_XmlUi_TableLayout_Static
+---@overload fun(element: tts__UITableLayoutElement): seb_XmlUi_TableLayout
+local XmlUiTableLayout = {}
+
+---@class seb_XmlUi_Row_Static
+---@overload fun(element: tts__UIRowElement): seb_XmlUi_Row
+local XmlUiRow = {}
+
+---@class seb_XmlUi_Cell_Static
+---@overload fun(element: tts__UICellElement): seb_XmlUi_Cell
+local XmlUiCell = {}
+
 XmlUi.Alignment = {
     UpperLeft = "UpperLeft",
+    UpperCenter = "UpperCenter",
+    UpperRight = "UpperRight",
+    MiddleLeft = "MiddleLeft",
+    MiddleCenter = "MiddleCenter",
+    MiddleRight = "MiddleRight",
+    LowerLeft = "LowerLeft",
+    LowerCenter = "LowerCenter",
+    LowerRight = "LowerRight",
 }
 
 --- Parameters available for animation attributes
@@ -123,7 +143,10 @@ local ElementFactory = {
     Panel = XmlUiPanel,
     HorizontalLayout = XmlUiAxisLayout,
     VerticalLayout = XmlUiAxisLayout,
-    GridLayout = XmlUiGridLayout
+    GridLayout = XmlUiGridLayout,
+    TableLayout = XmlUiTableLayout,
+    Row = XmlUiRow,
+    Cell = XmlUiCell,
 }
 
 ---@overload fun(value: any, separator: string): string
@@ -202,11 +225,13 @@ local AttributeType = {
     string = "string",
     integer = "integer",
     float = "float",
+    floats = "floats",
     handler = "handler",
     color = "color",
     colorBlock = "colorBlock",
     players = "players",
     vector2 = "vector2",
+    vector4 = "vector4",
 }
 
 ---@type table<string, fun(value: any): any>
@@ -214,12 +239,14 @@ local AttributeTypeMapper = {
     [AttributeType.string] = identity,
     [AttributeType.integer] = identity,
     [AttributeType.float] = identity,
+    [AttributeType.floats] = toList,
     [AttributeType.boolean] = identity,
     [AttributeType.handler] = toHandlerFunction,
     [AttributeType.color] = toColor,
     [AttributeType.colorBlock] = toColorBlock,
     [AttributeType.players] = toPlayerColors,
     [AttributeType.vector2] = toList,
+    [AttributeType.vector4] = toList,
 }
 
 local Attributes = {
@@ -312,6 +339,12 @@ local Attributes = {
     Option = {
         selected = AttributeType.boolean,
     },
+    TableLayout = {
+      cellBackgroundColor = AttributeType.color,
+      cellPadding = AttributeType.vector4,
+      columnWidths = AttributeType.floats,
+      rowBackgroundColor = AttributeType.color,
+    },
     VerticalLayout = {
         childAlignment = AttributeType.string,
         childForceExpandWidth = AttributeType.boolean,
@@ -382,6 +415,7 @@ setmetatable(XmlUiContainer, {
             Logger.error("Not implemented exception!")
         end
 
+        ---@overload fun(): seb_XmlUi_Text
         ---@param attributes seb_XmlUi_TextAttributes
         ---@return seb_XmlUi_Text
         function self.addText(attributes)
@@ -779,10 +813,56 @@ setmetatable(XmlUiGridLayout, TableUtil.merge(getmetatable(XmlUiElement), {
     end
 }))
 
+setmetatable(XmlUiTableLayout, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UITableLayoutElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        ---@overload fun(): seb_XmlUi_Row
+        ---@param attributes seb_XmlUi_RowAttributes
+        ---@return seb_XmlUi_Row
+        function self.addRow(attributes)
+            local row = XmlUi.createRow(attributes)
+            self.addChild(row)
+            return row
+        end
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiRow, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIRowElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        local super_addChild = self.addChild
+
+        ---@param uiElement seb_XmlUi_Element
+        function self.addChild(uiElement)
+            local cell = XmlUi.createCell()
+            cell.addChild(uiElement)
+            super_addChild(cell)
+        end
+
+        return self
+    end
+}))
+
+setmetatable(XmlUiCell, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UICellElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
 ---@param tag tts__UIElement_Tag
----@param attributes seb_XmlUi_Attributes
+---@param attributes nil | seb_XmlUi_Attributes
 ---@return seb_XmlUi_Element
 local function createElement(tag, attributes)
+    attributes = attributes or {}
     local ttsElement = { tag = tag, attributes = {}, children = {} }
     copyAttributes(ttsElement, attributes, Attributes.Basic)
     if Attributes[tag] ~= nil then
@@ -801,6 +881,7 @@ local function createElement(tag, attributes)
     return ElementFactory[tag](ttsElement)
 end
 
+---@overload fun(): seb_XmlUi_Text
 ---@param attributes seb_XmlUi_TextAttributes
 ---@return seb_XmlUi_Text
 function XmlUi.createText(attributes)
@@ -861,6 +942,27 @@ end
 ---@return seb_XmlUi_AxisLayout
 function XmlUi.createVerticalLayout(attributes)
     return --[[---@type seb_XmlUi_AxisLayout]] createElement("VerticalLayout", attributes)
+end
+
+---@overload fun(): seb_XmlUi_TableLayout
+---@param attributes seb_XmlUi_TableLayoutAttributes
+---@return seb_XmlUi_TableLayout
+function XmlUi.createTableLayout(attributes)
+    return --[[---@type seb_XmlUi_TableLayout]] createElement("TableLayout", attributes)
+end
+
+---@overload fun(): seb_XmlUi_Row
+---@param attributes seb_XmlUi_RowAttributes
+---@return seb_XmlUi_Row
+function XmlUi.createRow(attributes)
+    return --[[---@type seb_XmlUi_Row]] createElement("Row", attributes)
+end
+
+---@overload fun(): seb_XmlUi_Cell
+---@param attributes seb_XmlUi_CellAttributes
+---@return seb_XmlUi_Cell
+function XmlUi.createCell(attributes)
+    return --[[---@type seb_XmlUi_Cell]] createElement("Cell", attributes)
 end
 
 return XmlUi
