@@ -343,6 +343,7 @@ local Attributes = {
       cellBackgroundColor = AttributeType.color,
       cellPadding = AttributeType.vector4,
       columnWidths = AttributeType.floats,
+      padding = AttributeType.vector4,
       rowBackgroundColor = AttributeType.color,
     },
     VerticalLayout = {

@@ -124,6 +124,7 @@
 
 ---@shape seb_XmlUi_TableLayoutAttributes : seb_XmlUi_Attributes
 ---@field columnWidths nil | number[]
+---@field padding nil | seb_XmlUi_Padding
 ---@field rowBackgroundColor nil | seb_XmlUi_Color | 'clear'
 ---@field cellBackgroundColor nil | seb_XmlUi_Color | 'clear'
 ---@field cellPadding nil | seb_XmlUi_Padding

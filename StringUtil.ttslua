@@ -54,6 +54,13 @@ end
 
 ---@param text string
 ---@return string
+function StringUtil.capitalize(text)
+    local first = text:sub(1, 1):upper()
+    return first .. text:sub(2)
+end
+
+---@param text string
+---@return string
 function StringUtil.escapePattern(text)
     local escaped, _ = text:gsub("([-+()%[%]])", "%%%1")
     return escaped
