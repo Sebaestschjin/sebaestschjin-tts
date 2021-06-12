@@ -85,6 +85,10 @@ local XmlUiRow = {}
 ---@overload fun(element: tts__UICellElement): seb_XmlUi_Cell
 local XmlUiCell = {}
 
+---@class seb_XmlUi_ScrollView_Static
+---@overload fun(element: tts__UIScrollViewElement): seb_XmlUi_ScrollView
+local XmlUiScrollView = {}
+
 XmlUi.Alignment = {
     UpperLeft = "UpperLeft",
     UpperCenter = "UpperCenter",
@@ -119,6 +123,13 @@ XmlUi.Animation = {
     },
 }
 
+XmlUi.FontStyle = {
+    Bold = "Bold",
+    BoldAndItalic = "BoldAndItalic",
+    Italic = "Italic",
+    Normal = "Normal",
+}
+
 XmlUi.GridLayout = {
     FixedColumnCount = "FixedColumnCount"
 }
@@ -147,6 +158,8 @@ local ElementFactory = {
     TableLayout = XmlUiTableLayout,
     Row = XmlUiRow,
     Cell = XmlUiCell,
+    HorizontalScrollView = XmlUiScrollView,
+    VerticalScrollView = XmlUiScrollView,
 }
 
 ---@overload fun(value: any, separator: string): string
@@ -309,6 +322,8 @@ local Attributes = {
         childAlignment = AttributeType.string,
         childForceExpandWidth = AttributeType.boolean,
         childForceExpandHeight = AttributeType.boolean,
+        padding = AttributeType.vector4,
+        spacing = AttributeType.integer,
     },
     Button = {
         textColor = AttributeType.color,
@@ -340,16 +355,18 @@ local Attributes = {
         selected = AttributeType.boolean,
     },
     TableLayout = {
-      cellBackgroundColor = AttributeType.color,
-      cellPadding = AttributeType.vector4,
-      columnWidths = AttributeType.floats,
-      padding = AttributeType.vector4,
-      rowBackgroundColor = AttributeType.color,
+        cellBackgroundColor = AttributeType.color,
+        cellPadding = AttributeType.vector4,
+        columnWidths = AttributeType.floats,
+        padding = AttributeType.vector4,
+        rowBackgroundColor = AttributeType.color,
     },
     VerticalLayout = {
         childAlignment = AttributeType.string,
         childForceExpandWidth = AttributeType.boolean,
         childForceExpandHeight = AttributeType.boolean,
+        padding = AttributeType.vector4,
+        spacing = AttributeType.integer,
     },
 }
 
@@ -416,69 +433,79 @@ setmetatable(XmlUiContainer, {
             Logger.error("Not implemented exception!")
         end
 
+        ---@generic E: seb_XmlUi_Element
+        ---@param element E
+        ---@return E
+        local function addToChildren(element)
+            self.addChild(element)
+            return element
+        end
+
         ---@overload fun(): seb_XmlUi_Text
         ---@param attributes seb_XmlUi_TextAttributes
         ---@return seb_XmlUi_Text
         function self.addText(attributes)
-            local button = XmlUi.createText(attributes)
-            self.addChild(button)
-            return button
+            return addToChildren(XmlUi.createText(attributes))
         end
 
         ---@param attributes seb_XmlUi_ButtonAttributes
         ---@return seb_XmlUi_Button
         function self.addButton(attributes)
-            local button = XmlUi.createButton(attributes)
-            self.addChild(button)
-            return button
+            return addToChildren(XmlUi.createButton(attributes))
         end
 
         ---@param attributes seb_XmlUi_ImageAttributes
         ---@return seb_XmlUi_Image
         function self.addImage(attributes)
-            local image = XmlUi.createImage(attributes)
-            self.addChild(image)
-            return image
+            return addToChildren(XmlUi.createImage(attributes))
         end
 
         ---@param attributes seb_XmlUi_ToggleAttributes
         ---@return seb_XmlUi_Toggle
         function self.addToggle(attributes)
-            local toggle = XmlUi.createToggle(attributes)
-            self.addChild(toggle)
-            return toggle
+            return addToChildren(XmlUi.createToggle(attributes))
         end
 
         ---@param attributes seb_XmlUi_DropdownAttributes
         ---@return seb_XmlUi_Dropdown
         function self.addDropdown(attributes)
-            local dropdown = XmlUi.createDropdown(attributes)
-            self.addChild(dropdown)
-            return dropdown
+            return addToChildren(XmlUi.createDropdown(attributes))
+        end
+
+        ---@param attributes seb_XmlUi_PanelAttributes
+        ---@return seb_XmlUi_Panel
+        function self.addPanel(attributes)
+            return addToChildren(XmlUi.createPanel(attributes))
         end
 
         ---@param attributes seb_XmlUi_AxisLayoutAttributes
         ---@return seb_XmlUi_AxisLayout
         function self.addVerticalLayout(attributes)
-            local layout = XmlUi.createVerticalLayout(attributes)
-            self.addChild(layout)
-            return layout
+            return addToChildren(XmlUi.createVerticalLayout(attributes))
         end
 
         ---@param attributes seb_XmlUi_AxisLayoutAttributes
         ---@return seb_XmlUi_AxisLayout
         function self.addHorizontalLayout(attributes)
-            local layout = XmlUi.createHorizontalLayout(attributes)
-            self.addChild(layout)
-            return layout
+            return addToChildren(XmlUi.createHorizontalLayout(attributes))
         end
 
         ---@param attributes seb_XmlUi_GridLayoutAttributes
         ---@return seb_XmlUi_GridLayout
         function self.addGridLayout(attributes)
-            local gridLayout = XmlUi.createGridLayout(attributes)
-            self.addChild(gridLayout)
-            return gridLayout
+            return addToChildren(XmlUi.createGridLayout(attributes))
+        end
+
+        ---@param attributes seb_XmlUi_ScrollViewAttributes
+        ---@return seb_XmlUi_ScrollView
+        function self.addHorizontalScrollView(attributes)
+            return addToChildren(XmlUi.createHorizontalScrollView(attributes))
+        end
+
+        ---@param attributes seb_XmlUi_ScrollViewAttributes
+        ---@return seb_XmlUi_ScrollView
+        function self.addVerticalScrollView(attributes)
+            return addToChildren(XmlUi.createVerticalScrollView(attributes))
         end
 
         return self
@@ -859,6 +886,15 @@ setmetatable(XmlUiCell, TableUtil.merge(getmetatable(XmlUiElement), {
     end
 }))
 
+setmetatable(XmlUiScrollView, TableUtil.merge(getmetatable(XmlUiElement), {
+    ---@param element tts__UIScrollViewElement
+    __call = function(_, element)
+        local self = XmlUiElement(element)
+
+        return self
+    end
+}))
+
 ---@param tag tts__UIElement_Tag
 ---@param attributes nil | seb_XmlUi_Attributes
 ---@return seb_XmlUi_Element
@@ -964,6 +1000,20 @@ end
 ---@return seb_XmlUi_Cell
 function XmlUi.createCell(attributes)
     return --[[---@type seb_XmlUi_Cell]] createElement("Cell", attributes)
+end
+
+---@overload fun(): seb_XmlUi_ScrollView
+---@param attributes seb_XmlUi_ScrollViewAttributes
+---@return seb_XmlUi_ScrollView
+function XmlUi.createHorizontalScrollView(attributes)
+    return --[[---@type seb_XmlUi_ScrollView]] createElement("HorizontalScrollView", attributes)
+end
+
+---@overload fun(): seb_XmlUi_ScrollView
+---@param attributes seb_XmlUi_ScrollViewAttributes
+---@return seb_XmlUi_ScrollView
+function XmlUi.createVerticalScrollView(attributes)
+    return --[[---@type seb_XmlUi_ScrollView]] createElement("VerticalScrollView", attributes)
 end
 
 return XmlUi

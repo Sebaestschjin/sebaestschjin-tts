@@ -1,2 +1,4 @@
 ---@alias URL string
 ---@alias GUID string
+---@alias integer number
+---@alias float number

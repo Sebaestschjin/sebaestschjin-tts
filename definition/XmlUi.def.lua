@@ -19,6 +19,7 @@
 ---@class seb_XmlUi_TableLayout : seb_XmlUi_Element
 ---@class seb_XmlUi_Row : seb_XmlUi_Element
 ---@class seb_XmlUi_Cell : seb_XmlUi_Element
+---@class seb_XmlUi_ScrollView : seb_XmlUi_Element
 
 ---@shape seb_XmlUi_Attributes
 ---@field id nil | string @A unique string used to identify the element from Lua scripting.
@@ -66,10 +67,12 @@
 ---@field flexibleHeight nil | number @If there is additional space after preferredHeightss are sized, defines how much the element expands to fill the available vertical space, relative to other elements.
 
 ---@shape seb_XmlUi_TextAttributes : seb_XmlUi_Attributes
+---@field text nil | string
 ---@field value nil | string
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_ButtonAttributes : seb_XmlUi_Attributes
+---@field text nil | string
 ---@field value nil | string
 ---@field textColor nil | seb_XmlUi_Color
 ---@field [any] nil @All other fields are invalid
@@ -120,6 +123,8 @@
 ---@field childAlignment nil | tts__UIElement_Alignment
 ---@field childForceExpandWidth nil | boolean
 ---@field childForceExpandHeight nil | boolean
+---@field padding nil | seb_XmlUi_Padding
+---@field spacing nil | integer
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_TableLayoutAttributes : seb_XmlUi_Attributes
@@ -134,6 +139,9 @@
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_CellAttributes : seb_XmlUi_Attributes
+---@field [any] nil @All other fields are invalid
+
+---@shape seb_XmlUi_ScrollViewAttributes : seb_XmlUi_Attributes
 ---@field [any] nil @All other fields are invalid
 
 ---@alias seb_XmlUi_VisibilityTarget tts__PlayerColor | tts__PlayerTeam | tts__PlayerRole
