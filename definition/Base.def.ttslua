@@ -2,3 +2,18 @@
 ---@alias GUID string
 ---@alias integer number
 ---@alias float number
+
+---@shape seb_Vector2
+---@field [1] number
+---@field [2] number
+
+---@shape seb_Vector3
+---@field [1] number
+---@field [2] number
+---@field [3] number
+
+---@shape seb_Vector4
+---@field [1] number
+---@field [2] number
+---@field [3] number
+---@field [4] number
