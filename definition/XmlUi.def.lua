@@ -27,7 +27,7 @@
 ---@field rectAlignment nil | tts__UIElement_Alignment @The element's anchor and pivot point, relative to its parent element.
 ---@field width nil | number @ 	The width of this element in pixels or as a percentage of the width of its parent.
 ---@field height nil | number @The height of this element in pixels or as a percentage of the height of its parent.
----@field offsetXY nil | seb_XmlUi_Vector2 @An offset to the position of this element, e.g. a value of -32 10 will cause this element to be 10 pixels up and 32 pixels to the left of where it would otherwise be.
+---@field offsetXY nil | seb_Vector2 @An offset to the position of this element, e.g. a value of -32 10 will cause this element to be 10 pixels up and 32 pixels to the left of where it would otherwise be.
 ---@field alignment nil | tts__UIElement_Alignment @Typographic alignment of the text within its bounding box.
 ---@field visibility nil | seb_XmlUi_VisibilityTarget | seb_XmlUi_VisibilityTarget[] @A list of visibility targets. An element is always treated as inactive to players not specified here.
 ---@field showAnimation nil | tts__UIElement_ShowAnimation @Animation to play when show() is called for the element.
@@ -47,9 +47,9 @@
 ---@field fontStyle nil | tts__UIElement_FontStyle @Typographic emphasis on the text.
 ---@field fontSize nil | number @Height of the text in pixels.
 ---@field shadow nil | tts__ColorShape @Defines the shadow color of this element.
----@field shadowDistance nil | seb_XmlUi_Vector2 @Defines the distance of the shadow for this element.
+---@field shadowDistance nil | seb_Vector2 @Defines the distance of the shadow for this element.
 ---@field outline nil | tts__ColorShape @Defines the outline color of this element.
----@field outlineSize nil | seb_XmlUi_Vector2 @Defines the size of this elements outline.
+---@field outlineSize nil | seb_Vector2 @Defines the size of this elements outline.
 ---@field resizeTextForBestFit nil | boolean @If set then fontSize is ignored and the text will be sized to be as large as possible while still fitting within its bounding box.
 ---@field resizeTextMinSize nil | number @When resizeTextForBestFit is set, text will not be sized smaller than this.
 ---@field resizeTextMaxSize nil | number @When resizeTextForBestFit is set, text will not be sized larger than this.
@@ -75,6 +75,7 @@
 ---@field text nil | string
 ---@field value nil | string
 ---@field textColor nil | seb_XmlUi_Color
+---@field colors nil | seb_XmlUi_ColorBlock
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_ImageAttributes : seb_XmlUi_Attributes
@@ -139,9 +140,17 @@
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_CellAttributes : seb_XmlUi_Attributes
+---@field columnSpan nil | integer @Default 1
+---@field dontUseTableCellBackground nil |  boolean @Default false
+---@field cellBackgroundImage nil | string
+---@field cellBackgroundColor nil | seb_XmlUi_Color
+---@field overrideGlobalCellPadding nil | boolean @Default false
+---@field padding nil | seb_XmlUi_Padding
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_ScrollViewAttributes : seb_XmlUi_Attributes
+---@field scrollbarBackgroundColor nil | seb_XmlUi_Color
+---@field scrollbarColors nil | seb_XmlUi_ColorBlock
 ---@field [any] nil @All other fields are invalid
 
 ---@alias seb_XmlUi_VisibilityTarget tts__PlayerColor | tts__PlayerTeam | tts__PlayerRole
@@ -152,17 +161,7 @@
 ---@field [1] tts__Object @The object on which the function should be called.
 ---@field [2] tts__UIElement_CallbackFunctionName @The function to call.
 
----@shape seb_XmlUi_Vector2
----@field [1] number
----@field [2] number
-
----@shape seb_XmlUi_Vector4
----@field [1] number
----@field [2] number
----@field [3] number
----@field [4] number
-
----@alias seb_XmlUi_Padding number | seb_XmlUi_Vector4
----@alias seb_XmlUi_Size number | seb_XmlUi_Vector2
----@alias seb_XmlUi_Color tts__ColorParameter
----@alias seb_XmlUi_ColorBlock tts__ColorParameter[]
+---@alias seb_XmlUi_Padding number | seb_Vector4
+---@alias seb_XmlUi_Size number | seb_Vector4
+---@alias seb_XmlUi_Color tts__ColorParameter | string
+---@alias seb_XmlUi_ColorBlock seb_XmlUi_Color[]

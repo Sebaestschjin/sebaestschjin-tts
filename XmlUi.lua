@@ -188,20 +188,29 @@ end
 ---@param value seb_XmlUi_Color
 ---@return string
 local function toColor(value)
+    if type(value) == "string" then
+        return --[[---@type string]] value
+    end
+
+    ---@type tts__NumColorShape
+    local numColor
     if (--[[---@type tts__CharColorShape]] value).r ~= nil then
         local charColor = --[[---@type tts__CharColorShape]] value
-        if charColor.a == nil then
-            return string.format("rgb(%s,%s,%s)", charColor.r, charColor.g, charColor.b)
+        numColor = { charColor.r, charColor.g, charColor.b, charColor.a }
+    else
+        numColor = --[[---@type tts__NumColorShape]] value
+    end
+
+    for i, v in ipairs(numColor) do
+        if v > 1 then
+            numColor[i] = v / 255
         end
-        return string.format("rgba(%s,%s,%s)", charColor.r, charColor.g, charColor.b, charColor.a)
-    elseif (--[[---@type tts__NumColorShape]] value)[1] ~= nil then
-        local numColor = --[[---@type tts__NumColorShape]] value
-        if numColor[4] == nil then
-            return string.format("rgb(%s,%s,%s)", numColor[1], numColor[2], numColor[3])
-        end
+    end
+
+    if numColor[4] ~= nil then
         return string.format("rgba(%s,%s,%s,%s)", numColor[1], numColor[2], numColor[3], numColor[4])
     else
-        return --[[---@type string]] value
+        return string.format("rgb(%s,%s,%s)", numColor[1], numColor[2], numColor[3])
     end
 end
 
@@ -318,15 +327,17 @@ local Attributes = {
         onMouseDown = AttributeType.handler,
         onMouseUp = AttributeType.handler,
     },
-    HorizontalLayout = {
-        childAlignment = AttributeType.string,
-        childForceExpandWidth = AttributeType.boolean,
-        childForceExpandHeight = AttributeType.boolean,
-        padding = AttributeType.vector4,
-        spacing = AttributeType.integer,
-    },
     Button = {
         textColor = AttributeType.color,
+        colors = AttributeType.colorBlock,
+    },
+    Cell = {
+        columnSpan = AttributeType.integer,
+        dontUseTableCellBackground = AttributeType.boolean,
+        cellBackgroundImage = AttributeType.string,
+        cellBackgroundColor = AttributeType.color,
+        overrideGlobalCellPadding = AttributeType.boolean,
+        padding = AttributeType.vector4,
     },
     Dropdown = {
         itemHeight = AttributeType.integer,
@@ -342,6 +353,17 @@ local Attributes = {
     GridLayout = {
         constraint = AttributeType.string,
         constraintCount = AttributeType.integer,
+    },
+    HorizontalLayout = {
+        childAlignment = AttributeType.string,
+        childForceExpandWidth = AttributeType.boolean,
+        childForceExpandHeight = AttributeType.boolean,
+        padding = AttributeType.vector4,
+        spacing = AttributeType.integer,
+    },
+    HorizontalScrollView = {
+        scrollbarBackgroundColor = AttributeType.color,
+        scrollbarColors = AttributeType.colorBlock,
     },
     Image = {
         image = AttributeType.string,
@@ -367,6 +389,10 @@ local Attributes = {
         childForceExpandHeight = AttributeType.boolean,
         padding = AttributeType.vector4,
         spacing = AttributeType.integer,
+    },
+    VerticalScrollView = {
+        scrollbarBackgroundColor = AttributeType.color,
+        scrollbarColors = AttributeType.colorBlock,
     },
 }
 
@@ -685,6 +711,11 @@ setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
             self.setAttribute("height", value)
         end
 
+        ---@return tts__UIElement_Tag
+        function self.getType()
+            return boundElement.tag
+        end
+
         return self
     end
 }))
@@ -866,11 +897,24 @@ setmetatable(XmlUiRow, TableUtil.merge(getmetatable(XmlUiElement), {
 
         local super_addChild = self.addChild
 
+        ---@overload fun(): seb_XmlUi_Cell
+        ---@param attributes seb_XmlUi_CellAttributes
+        ---@return seb_XmlUi_Cell
+        function self.addCell(attributes)
+            local cell = XmlUi.createCell(attributes)
+            self.addChild(cell)
+            return cell
+        end
+
         ---@param uiElement seb_XmlUi_Element
         function self.addChild(uiElement)
-            local cell = XmlUi.createCell()
-            cell.addChild(uiElement)
-            super_addChild(cell)
+            if uiElement.getType() ~= "Cell" then
+                local cell = XmlUi.createCell()
+                cell.addChild(uiElement)
+                super_addChild(cell)
+            else
+                super_addChild(uiElement)
+            end
         end
 
         return self
