@@ -36,7 +36,13 @@
 ---@field hideAnimationDelay nil | number @Time in seconds to wait before playing this element's hide animation. Useful for staggering the animations of multiple elements.
 ---@field animationDuration nil | number @Time in seconds that show/hide animations take to play.
 ---@field tooltip nil | string
----@field tooltipBackgroundColor nil | tts__UIElement_Color
+---@field tooltipBackgroundColor nil | seb_XmlUi_Color
+---@field tooltipBackgroundImage nil | tts__UIAssetName
+---@field tooltipBorderColor nil | seb_XmlUi_Color
+---@field tooltipBorderImage nil | tts__UIAssetName
+---@field tooltipOffset nil | integer
+---@field tooltipPosition nil | tts__UITooltipPosition
+---@field tooltipTextColor nil | seb_XmlUi_Color
 ---@field onClick nil | seb_XmlUi_EventHandler
 ---@field onMouseDown nil | seb_XmlUi_EventHandler
 ---@field onMouseUp nil | seb_XmlUi_EventHandler
@@ -89,16 +95,19 @@
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_DropdownAttributes : seb_XmlUi_Attributes
----@field onValueChanged nil | seb_XmlUi_EventHandler
----@field selected nil | string
----@field itemHeight nil | number
----@field itemBackgroundColors nil | seb_XmlUi_ColorBlock
----@field itemTextColor nil | seb_XmlUi_Color
----@field checkColor nil | seb_XmlUi_Color
----@field dropdownBackgroundColor nil | seb_XmlUi_Color
----@field textColor nil | seb_XmlUi_Color
 ---@field arrowColor nil | seb_XmlUi_Color
+---@field arrowImage nil | tts__UIAssetName
+---@field checkColor nil | seb_XmlUi_Color
+---@field checkImage nil | tts__UIAssetName
+---@field dropdownBackgroundColor nil | seb_XmlUi_Color
+---@field dropdownBackgroundImage nil | tts__UIAssetName
+---@field itemBackgroundColors nil | seb_XmlUi_ColorBlock
+---@field itemHeight nil | number
+---@field itemTextColor nil | seb_XmlUi_Color
+---@field onValueChanged nil | seb_XmlUi_EventHandler
 ---@field scrollbarColors nil | seb_XmlUi_ColorBlock
+---@field scrollbarImage nil | tts__UIAssetName
+---@field textColor nil | seb_XmlUi_Color
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_OptionAttributes : seb_XmlUi_Attributes
@@ -132,18 +141,22 @@
 ---@field columnWidths nil | number[]
 ---@field padding nil | seb_XmlUi_Padding
 ---@field rowBackgroundColor nil | seb_XmlUi_Color | 'clear'
+---@field rowBackgroundImage nil | tts__UIAssetName
 ---@field cellBackgroundColor nil | seb_XmlUi_Color | 'clear'
+---@field cellBackgroundImage nil | tts__UIAssetName
 ---@field cellPadding nil | seb_XmlUi_Padding
+---@field autoCalculateHeight nil | boolean
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_RowAttributes : seb_XmlUi_Attributes
+---@field dontUseTableRowBackground nil | boolean
+---@field image nil | tts__UIAssetName
 ---@field [any] nil @All other fields are invalid
 
 ---@shape seb_XmlUi_CellAttributes : seb_XmlUi_Attributes
 ---@field columnSpan nil | integer @Default 1
 ---@field dontUseTableCellBackground nil |  boolean @Default false
----@field cellBackgroundImage nil | string
----@field cellBackgroundColor nil | seb_XmlUi_Color
+---@field image nil | string
 ---@field overrideGlobalCellPadding nil | boolean @Default false
 ---@field padding nil | seb_XmlUi_Padding
 ---@field [any] nil @All other fields are invalid
@@ -161,7 +174,17 @@
 ---@field [1] tts__Object @The object on which the function should be called.
 ---@field [2] tts__UIElement_CallbackFunctionName @The function to call.
 
----@alias seb_XmlUi_Padding number | seb_Vector4
+---@alias seb_XmlUi_Padding number | seb_Vector4 | seb_XmlUi_Padding_Char | seb_XmlUi_Padding_AxisChar
 ---@alias seb_XmlUi_Size number | seb_Vector4
 ---@alias seb_XmlUi_Color tts__ColorParameter | string
 ---@alias seb_XmlUi_ColorBlock seb_XmlUi_Color[]
+
+---@shape seb_XmlUi_Padding_Char
+---@field l integer
+---@field r integer
+---@field t integer
+---@field b integer
+
+---@shape seb_XmlUi_Padding_AxisChar
+---@field h integer
+---@field v integer

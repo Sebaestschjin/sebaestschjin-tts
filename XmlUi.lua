@@ -1,4 +1,5 @@
 local Logger = require("sebaestschjin-tts.Logger")
+local Math = require("sebaestschjin-tts.Math")
 local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 ---@class seb_XmlUi_Container_Static
@@ -185,6 +186,10 @@ local function toConcatenatedString(value, separator, multiple)
     return table.concat(--[[---@type string[] ]] values, separator)
 end
 
+local function toList(value)
+    return toConcatenatedString(value, " ")
+end
+
 ---@param value seb_XmlUi_Color
 ---@return string
 local function toColor(value)
@@ -203,7 +208,7 @@ local function toColor(value)
 
     for i, v in ipairs(numColor) do
         if v > 1 then
-            numColor[i] = v / 255
+            numColor[i] = Math.round(v / 255, 2)
         end
     end
 
@@ -220,6 +225,26 @@ local function toColorBlock(value)
     return table.concat(TableUtil.map(value, toColor), "|")
 end
 
+---@param value seb_XmlUi_Padding
+---@return string
+local function toPadding(value)
+    if type(value) == "number" then
+        return toList({ value, value, value, value })
+    end
+
+    if value.l ~= nil then
+        local charPadding = --[[---@type seb_XmlUi_Padding_Char]] value
+        return toList({ charPadding.l, charPadding.r, charPadding.t, charPadding.b })
+    end
+
+    if value.h ~= nil then
+        local charPadding = --[[---@type seb_XmlUi_Padding_AxisChar]] value
+        return toList({ charPadding.h, charPadding.h, charPadding.v, charPadding.v })
+    end
+
+    return toList(value)
+end
+
 ---@param value nil | seb_XmlUi_EventHandler
 ---@return string
 local function toHandlerFunction(value)
@@ -228,10 +253,6 @@ local function toHandlerFunction(value)
         return asTable[1].getGUID() .. "/" .. asTable[2]
     end
     return --[[---@type string]] value
-end
-
-local function toList(value)
-    return toConcatenatedString(value, " ")
 end
 
 local function toPlayerColors(value)
@@ -251,6 +272,7 @@ local AttributeType = {
     handler = "handler",
     color = "color",
     colorBlock = "colorBlock",
+    padding = "padding",
     players = "players",
     vector2 = "vector2",
     vector4 = "vector4",
@@ -266,6 +288,7 @@ local AttributeTypeMapper = {
     [AttributeType.handler] = toHandlerFunction,
     [AttributeType.color] = toColor,
     [AttributeType.colorBlock] = toColorBlock,
+    [AttributeType.padding] = toPadding,
     [AttributeType.players] = toPlayerColors,
     [AttributeType.vector2] = toList,
     [AttributeType.vector4] = toList,
@@ -320,6 +343,12 @@ local Attributes = {
         -- Tooltip
         tooltip = AttributeType.string,
         tooltipBackgroundColor = AttributeType.color,
+        tooltipBackgroundImage = AttributeType.string,
+        tooltipBorderColor = AttributeType.color,
+        tooltipBorderImage = AttributeType.string,
+        tooltipOffset = AttributeType.integer,
+        tooltipPosition = AttributeType.string,
+        tooltipTextColor = AttributeType.color,
         -- Event
         onClick = AttributeType.handler,
         onMouseEnter = AttributeType.handler,
@@ -334,21 +363,24 @@ local Attributes = {
     Cell = {
         columnSpan = AttributeType.integer,
         dontUseTableCellBackground = AttributeType.boolean,
-        cellBackgroundImage = AttributeType.string,
-        cellBackgroundColor = AttributeType.color,
+        image = AttributeType.string,
         overrideGlobalCellPadding = AttributeType.boolean,
-        padding = AttributeType.vector4,
+        padding = AttributeType.padding,
     },
     Dropdown = {
-        itemHeight = AttributeType.integer,
         arrowColor = AttributeType.color,
+        arrowImage = AttributeType.string,
         checkColor = AttributeType.color,
+        checkImage = AttributeType.string,
         dropdownBackgroundColor = AttributeType.color,
+        dropdownBackgroundImage = AttributeType.string,
         itemBackgroundColors = AttributeType.colorBlock,
+        itemHeight = AttributeType.integer,
         itemTextColor = AttributeType.color,
-        scrollbarColors = AttributeType.color,
-        textColor = AttributeType.color,
         onValueChanged = AttributeType.handler,
+        scrollbarColors = AttributeType.color,
+        scrollbarImage = AttributeType.string,
+        textColor = AttributeType.color,
     },
     GridLayout = {
         constraint = AttributeType.string,
@@ -358,7 +390,7 @@ local Attributes = {
         childAlignment = AttributeType.string,
         childForceExpandWidth = AttributeType.boolean,
         childForceExpandHeight = AttributeType.boolean,
-        padding = AttributeType.vector4,
+        padding = AttributeType.padding,
         spacing = AttributeType.integer,
     },
     HorizontalScrollView = {
@@ -376,18 +408,25 @@ local Attributes = {
     Option = {
         selected = AttributeType.boolean,
     },
+    Row = {
+        dontUseTableRowBackground = AttributeType.boolean,
+        image = AttributeType.string,
+    },
     TableLayout = {
+        autoCalculateHeight = AttributeType.boolean,
         cellBackgroundColor = AttributeType.color,
-        cellPadding = AttributeType.vector4,
+        cellBackgroundImage = AttributeType.string,
+        cellPadding = AttributeType.padding,
         columnWidths = AttributeType.floats,
-        padding = AttributeType.vector4,
+        padding = AttributeType.padding,
         rowBackgroundColor = AttributeType.color,
+        rowBackgroundImage = AttributeType.string,
     },
     VerticalLayout = {
         childAlignment = AttributeType.string,
         childForceExpandWidth = AttributeType.boolean,
         childForceExpandHeight = AttributeType.boolean,
-        padding = AttributeType.vector4,
+        padding = AttributeType.padding,
         spacing = AttributeType.integer,
     },
     VerticalScrollView = {
@@ -498,22 +537,31 @@ setmetatable(XmlUiContainer, {
             return addToChildren(XmlUi.createDropdown(attributes))
         end
 
+        ---@overload fun(): seb_XmlUi_Panel
         ---@param attributes seb_XmlUi_PanelAttributes
         ---@return seb_XmlUi_Panel
         function self.addPanel(attributes)
             return addToChildren(XmlUi.createPanel(attributes))
         end
 
+        ---@overload fun(): seb_XmlUi_AxisLayout
         ---@param attributes seb_XmlUi_AxisLayoutAttributes
         ---@return seb_XmlUi_AxisLayout
         function self.addVerticalLayout(attributes)
             return addToChildren(XmlUi.createVerticalLayout(attributes))
         end
 
+        ---@overload fun(): seb_XmlUi_AxisLayout
         ---@param attributes seb_XmlUi_AxisLayoutAttributes
         ---@return seb_XmlUi_AxisLayout
         function self.addHorizontalLayout(attributes)
             return addToChildren(XmlUi.createHorizontalLayout(attributes))
+        end
+
+        ---@param attributes seb_XmlUi_TableLayoutAttributes
+        ---@return seb_XmlUi_TableLayout
+        function self.addTableLayout(attributes)
+            return addToChildren(XmlUi.createTableLayout(attributes))
         end
 
         ---@param attributes seb_XmlUi_GridLayoutAttributes
@@ -709,6 +757,26 @@ setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
         ---@param value number
         function self.setHeight(value)
             self.setAttribute("height", value)
+        end
+
+        ---@param value string
+        function self.setTooltip(value)
+            self.setAttribute("tooltip", value)
+        end
+
+        ---@param value seb_XmlUi_Color
+        function self.setTooltipBackgroundColor(value)
+            self.setAttribute("tooltipBackgroundColor", toColor(value))
+        end
+
+        ---@param value seb_XmlUi_Color
+        function self.setTooltipBorderColor(value)
+            self.setAttribute("tooltipBorderColor", toColor(value))
+        end
+
+        ---@param value seb_XmlUi_Color
+        function self.setTooltipTextColor(value)
+            self.setAttribute("tooltipTextColor", toColor(value))
         end
 
         ---@return tts__UIElement_Tag
@@ -999,6 +1067,7 @@ function XmlUi.createOption(attributes)
     return --[[---@type seb_XmlUi_Option]] createElement("Option", attributes)
 end
 
+---@overload fun(): seb_XmlUi_Panel
 ---@param attributes seb_XmlUi_PanelAttributes
 ---@return seb_XmlUi_Panel
 function XmlUi.createPanel(attributes)
