@@ -374,6 +374,7 @@ local Attributes = {
         checkImage = AttributeType.string,
         dropdownBackgroundColor = AttributeType.color,
         dropdownBackgroundImage = AttributeType.string,
+        image = AttributeType.string,
         itemBackgroundColors = AttributeType.colorBlock,
         itemHeight = AttributeType.integer,
         itemTextColor = AttributeType.color,

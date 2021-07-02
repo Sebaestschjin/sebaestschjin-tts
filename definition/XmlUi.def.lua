@@ -101,6 +101,7 @@
 ---@field checkImage nil | tts__UIAssetName
 ---@field dropdownBackgroundColor nil | seb_XmlUi_Color
 ---@field dropdownBackgroundImage nil | tts__UIAssetName
+---@field image nil | tts__UIAssetName @The image used as the background for a closed dropdown.
 ---@field itemBackgroundColors nil | seb_XmlUi_ColorBlock
 ---@field itemHeight nil | number
 ---@field itemTextColor nil | seb_XmlUi_Color
