@@ -7,7 +7,7 @@
 ---@field [2] tts__UIElement_CallbackFunctionName @The function to call.
 
 ---@alias seb_XmlUi_Padding number | seb_Vector4 | seb_XmlUi_Padding_Char | seb_XmlUi_Padding_AxisChar
----@alias seb_XmlUi_Size number | seb_Vector4
+---@alias seb_XmlUi_Size number | seb_Vector2
 ---@alias seb_XmlUi_Color tts__ColorParameter | string
 ---@alias seb_XmlUi_ColorBlock seb_XmlUi_Color[]
 

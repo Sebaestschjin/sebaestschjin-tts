@@ -9,8 +9,8 @@ local XmlUiElement = require("sebaestschjin-tts.xmlui.XmlUiElement")
 local XmlUiButton = {}
 
 local Attributes = {
-    textColor = XmlUiFactory.AttributeType.color,
     colors = XmlUiFactory.AttributeType.colorBlock,
+    textColor = XmlUiFactory.AttributeType.color,
 }
 
 ---@shape seb_XmlUi_ButtonAttributes : seb_XmlUi_Attributes

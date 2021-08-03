@@ -21,8 +21,12 @@ local XmlUiGridLayout = {}
 
 
 local Attributes = {
+    cellSize = XmlUiFactory.AttributeType.vector2,
     constraint = XmlUiFactory.AttributeType.string,
     constraintCount = XmlUiFactory.AttributeType.integer,
+    spacing = XmlUiFactory.AttributeType.vector2,
+    startAxis = XmlUiFactory.AttributeType.string,
+    startCorner = XmlUiFactory.AttributeType.string,
 }
 
 setmetatable(XmlUiGridLayout, TableUtil.merge(getmetatable(XmlUiElement), {

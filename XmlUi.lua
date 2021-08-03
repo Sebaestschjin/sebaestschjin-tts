@@ -30,6 +30,7 @@ local XmlUi = {}
 
 XmlUi.Factory = XmlUiFactory
 
+--- Values available for alignment attributes.
 XmlUi.Alignment = {
     UpperLeft = "UpperLeft",
     UpperCenter = "UpperCenter",
@@ -42,7 +43,7 @@ XmlUi.Alignment = {
     LowerRight = "LowerRight",
 }
 
---- Parameters available for animation attributes
+--- Values available for animation attributes.
 XmlUi.Animation = {
     Show = {
         None = "None",
@@ -64,6 +65,7 @@ XmlUi.Animation = {
     },
 }
 
+--- Values available for fontStyle attributes.
 XmlUi.FontStyle = {
     Bold = "Bold",
     BoldAndItalic = "BoldAndItalic",
@@ -143,6 +145,13 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
             local xmlTable = createXmlTable()
             boundObject.UI.setCustomAssets(assets)
             boundObject.UI.setXmlTable(xmlTable)
+        end
+
+        ---@param assetList tts__UIAsset[]
+        function self.updateAssets(assetList)
+            for _, asset in ipairs(assetList) do
+                self.updateAsset(asset.name, asset.url)
+            end
         end
 
         ---@param assetName string
