@@ -29,6 +29,10 @@ local levelColors = {
     [GeLogger.INFO] = 'Blue',
 }
 
+--- Logger instances registered on other objects.
+---@type GUID[]
+local objectLoggers = {}
+
 setmetatable(Logger, TableUtils.merge(getmetatable(GeLogger), {
     __call = function()
         local self = GeLogger()
@@ -54,9 +58,25 @@ local function buildMessage(...)
     return string.format(table.unpack(args))
 end
 
+---@param functionName string
+local function notifyObjectLoggers(functionName, parameter)
+    if self == Global then
+        for i = #objectLoggers, 1, -1 do
+            local objectLogger = objectLoggers[i]
+            local obj = getObjectFromGUID(objectLogger)
+            if obj then
+                (--[[---@not nil]] obj).call(functionName, parameter)
+            else
+                table.remove(objectLoggers, i)
+            end
+        end
+    end
+end
+
 ---@param level ge_tts__Logger_LogLevel
 function Logger.setLevel(level)
     logger.setFilterLevel(level)
+    notifyObjectLoggers("__set_logger_level", level)
 end
 
 function Logger.error(...)
@@ -86,6 +106,18 @@ end
 function Logger.verbose(...)
     if logger.getFilterLevel() >= GeLogger.VERBOSE then
         logger.log(buildMessage(...), GeLogger.VERBOSE)
+    end
+end
+
+if self == Global then
+    ---@param guid GUID
+    _G.__register_object_logger = function(guid)
+        table.insert(objectLoggers, guid)
+    end
+else
+    Global.call("__register_object_logger", self.getGUID())
+    _G.__set_logger_level = function(level)
+        Logger.setLevel(level)
     end
 end
 
