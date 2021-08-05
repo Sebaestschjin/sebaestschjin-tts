@@ -77,6 +77,15 @@ XmlUi.GridLayout = {
     FixedColumnCount = "FixedColumnCount"
 }
 
+XmlUi.MouseEvent = {
+    LeftClick = "-1",
+    RightClick = "-2",
+    MiddleClick = "-3",
+    SingleTouch = "1",
+    DoubleTouch = "2",
+    TripleTouch = "3",
+}
+
 setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
     ---@param object tts__Object
     __call = function(_, object)

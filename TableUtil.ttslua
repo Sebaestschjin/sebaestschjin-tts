@@ -58,28 +58,54 @@ function TableUtil.values(tab)
 end
 
 --- Checks whether a table is empty. A nil value is also considered an empty table.
----@param tab table|nil
+---@param tab nil | table
 ---@return boolean
 function TableUtil.isEmpty(tab)
     return not tab or not next(--[[---@not nil]]tab)
 end
 
 --- Checks whether a table is not empty. A nil value is always considered an empty table.
----@param tab table|nil
+---@param tab nil | table
 ---@return boolean
 function TableUtil.isNotEmpty(tab)
     return not TableUtil.isEmpty(tab)
 end
 
----@overload fun<V>(tab: V[]): boolean
----@overload fun<K, V>(tab: table<K, V>): boolean
-function TableUtil.contains(tab, value)
+---@param a table
+---@param b table
+---@return boolean
+function TableUtil.areEqual(a, b)
+    if TableUtil.length(a) ~= TableUtil.length(b) then
+        return false
+    end
+
+    for key, value in pairs(a) do
+        if type(value) == "table" then
+            if not TableUtil.areEqual(value, b[key]) then
+                return false
+            end
+        else
+            if b[key] == nil or value ~= b[key] then
+                return false
+            end
+        end
+    end
+
+    return true
+end
+
+---@overload fun<V>(tab: V[], value: V): boolean
+---@overload fun<V>(tab: V[], value: V, comparator: fun(a: V, b: V): boolean): boolean
+---@overload fun<K, V>(tab: table<K, V>, value: V): boolean
+---@overload fun<K, V>(tab: table<K, V>, value: V, comparator: fun(a: V, b: V): boolean): boolean
+function TableUtil.contains(tab, value, comparator)
     if not tab then
         return false
     end
 
+    comparator = comparator or function(a, b) return a == b end
     for _, v in pairs(tab) do
-        if v == value then
+        if comparator(v, value) then
             return true
         end
     end
