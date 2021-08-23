@@ -240,6 +240,15 @@ function Object.decals(object)
     return decals
 end
 
+---@param object seb_Object
+---@return tts__Object_Tag[]
+function Object.tags(object)
+    if Object.isObject(object) then
+        return (--[[---@type tts__Object]] object).getTags()
+    end
+    return (--[[---@type tts__ObjectState]] object).Tags or {}
+end
+
 ---@param transform tts__ObjectState_Transform
 ---@return tts__Vector
 function Object.transformToPosition(transform)
