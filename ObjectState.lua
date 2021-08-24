@@ -327,14 +327,48 @@ function ObjectState.addDecal(object, decal)
     table.insert(--[[---@not nil]] attached, decalData)
 end
 
---- !!!UNTESTED!!!
 ---@param object tts__ObjectState
----@param state number
+---@param tag tts__Object_Tag
+function ObjectState.addTag(object, tag)
+    if not object.Tags then
+        object.Tags = { tag }
+    elseif not TableUtil.contains(object.Tags, tag) then
+        table.insert(--[[---@not nil]] object.Tags, tag)
+    end
+end
+
+---@param object tts__ObjectState
+---@param useGravity boolean
+function ObjectState.setUseGravity(object, useGravity)
+    if not object.Rigidbody then
+        object.Rigidbody = {}
+    end
+    object.Rigidbody.UseGravity = useGravity
+end
+
+---@param object tts__ObjectState
+function ObjectState.getStateId(object)
+    if not object.States then
+        return -1
+    end
+
+    for i = 1, TableUtil.length(object.States) + 1 do
+        if (--[[---@not nil]] object.States)[i] == nil then
+            return i
+        end
+    end
+end
+
+---@param object tts__ObjectState
+---@param state integer
 ---@return tts__ObjectState
 function ObjectState.setState(object, state)
-    local currentObject = object
-    local allStates = (--[[---@not nil]] object.States)
-    currentObject.States = nil
+    if not object.States or not (--[[---@not nil]] object.States)[state] then
+        return object
+    end
+
+    local currentObject = TableUtil.copy(object, true)
+    local allStates = --[[---@not nil]] currentObject.States
 
     local newObject = allStates[state]
     newObject.States = {}
@@ -342,10 +376,11 @@ function ObjectState.setState(object, state)
     for i = 1, TableUtil.length(allStates) + 1 do
         if allStates[i] == nil then
             (--[[---@not nil]] newObject.States)[i] = currentObject
-        else
+        elseif i ~= state then
             (--[[---@not nil]] newObject.States)[i] = allStates[i]
         end
     end
+    currentObject.States = nil
 
     return newObject
 end
