@@ -109,6 +109,12 @@ function Logger.verbose(...)
     end
 end
 
+function Logger.assert(value, ...)
+    if not value then
+        logger.assert(value, buildMessage(...))
+    end
+end
+
 if self == Global then
     ---@param guid GUID
     _G.__register_object_logger = function(guid)
