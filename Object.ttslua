@@ -129,6 +129,11 @@ function Object.isContainer(object)
     return Object.isDeck(object) or Object.isBag(object)
 end
 
+---@param object tts__Object
+function Object.isLoaded(object)
+    return not object.spawning and not object.loading_custom
+end
+
 ---@param object seb_Object
 ---@return tts__ObjectType
 function Object.type(object)
