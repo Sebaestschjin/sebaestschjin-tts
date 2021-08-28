@@ -17,3 +17,8 @@
 ---@field [2] number
 ---@field [3] number
 ---@field [4] number
+
+---@shape seb_Version
+---@field [1] integer
+---@field [2] integer
+---@field [3] nil | integer
