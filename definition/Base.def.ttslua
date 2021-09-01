@@ -3,6 +3,8 @@
 ---@alias integer number
 ---@alias float number
 
+---@alias set<T> table<T, boolean>
+
 ---@shape seb_Vector2
 ---@field [1] number
 ---@field [2] number
