@@ -145,6 +145,27 @@ function TableUtil.map(tab, func)
     return GeTableUtils.map(tab, func)
 end
 
+---@overload fun<R, K, V: R>(tab: table<K, V>, func: fun(memo: R, value: V, key: K): R): nil | R
+---@generic K, V, R
+---@param tab table<K, V>
+---@param initial R
+---@param func fun(memo: R, value: V, key: K): R
+---@return R
+function TableUtil.reduce(tab, initial, func)
+    return GeTableUtils.reduce(tab, initial, func)
+end
+
+---@overload fun<V>(arr: std__Packed<V>, start: number): std__Packed<V>
+---@overload fun<V>(arr: V[], start: number): V[]
+---@generic V
+---@param arr V[]
+---@param start number
+---@param finish number
+---@return V[]
+function TableUtil.range(arr, start, finish)
+    return GeTableUtils.range(arr, start, finish)
+end
+
 ---@overload fun<V>(arr: V[], func: fun(value: V, index: number): boolean): V[]
 ---@generic K, V
 ---@param tab table<K, V>

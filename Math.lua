@@ -1,7 +1,9 @@
 local Math = {}
 
+---@overload fun(value: number): number
 ---@param value number
 ---@param decimalPlaces number
+---@return number
 function Math.round(value, decimalPlaces)
     if decimalPlaces and decimalPlaces > 0 then
         local multiple = 10 ^ decimalPlaces
