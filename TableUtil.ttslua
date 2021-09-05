@@ -136,6 +136,18 @@ function TableUtil.getRandom(tab)
     return tab[math.random(TableUtil.length(tab))]
 end
 
+---@generic K, V
+---@param tab table<K, V> | V[]
+---@param func fun(value: V): boolean
+---@return nil | V
+function TableUtil.find(tab, func)
+    for _, v in pairs(tab) do
+        if func(v) then
+            return v
+        end
+    end
+end
+
 ---@overload fun<V, MappedV>(tab: V[], func: fun(value: V, key: number): MappedV): MappedV[]
 ---@generic K, V, MappedV
 ---@param tab table<K, V>
