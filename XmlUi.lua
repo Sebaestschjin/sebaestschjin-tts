@@ -92,6 +92,7 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
         local self = --[[---@type seb_XmlUi]] XmlUiContainer()
         local boundObject = object
         local children = self._wrapChildren(boundObject.UI.getXmlTable())
+        ---@type tts__UIAsset[]
         local assets = boundObject.UI.getCustomAssets()
 
         ---@return tts__UIElement[]
@@ -156,6 +157,10 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
             boundObject.UI.setXmlTable(xmlTable)
         end
 
+        function self.updateAllAssets()
+            boundObject.UI.setCustomAssets(assets)
+        end
+
         ---@param assetList tts__UIAsset[]
         function self.updateAssets(assetList)
             for _, asset in ipairs(assetList) do
@@ -174,6 +179,11 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
             end
 
             table.insert(assets, { name = assetName, url = assetUrl, })
+        end
+
+        ---@return tts__UIAsset[]
+        function self.getAssets()
+            return assets
         end
 
         ---@param assetName string
