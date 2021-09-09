@@ -167,6 +167,24 @@ function TableUtil.reduce(tab, initial, func)
     return GeTableUtils.reduce(tab, initial, func)
 end
 
+---@overload fun(finish: integer): integer[]
+---@param start integer
+---@param finish integer
+---@return integer[]
+function TableUtil.range(start, finish)
+    if not finish then
+        finish = start
+        start = 1
+    end
+
+    local range = {}
+    for i = start, finish do
+        table.insert(range, i)
+    end
+
+    return range
+end
+
 ---@overload fun<V>(arr: std__Packed<V>, start: number): std__Packed<V>
 ---@overload fun<V>(arr: V[], start: number): V[]
 ---@generic V
@@ -174,8 +192,27 @@ end
 ---@param start number
 ---@param finish number
 ---@return V[]
-function TableUtil.range(arr, start, finish)
+function TableUtil.slice(arr, start, finish)
     return GeTableUtils.range(arr, start, finish)
+end
+
+---@generic V
+---@param arr V[]
+---@param shift integer
+---@return V[]
+function TableUtil.shift(arr, shift)
+    local shifted = --[[---@type V[] ]] {}
+    local length = #arr
+
+    for i = 1, length do
+        local shiftedPosition = (i + shift) % length
+        if shiftedPosition == 0 then
+            shiftedPosition = length
+        end
+        shifted[i] = arr[shiftedPosition]
+    end
+
+    return shifted
 end
 
 ---@overload fun<V>(arr: V[], func: fun(value: V, index: number): boolean): V[]
