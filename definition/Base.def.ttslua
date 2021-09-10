@@ -4,6 +4,7 @@
 ---@alias float number
 
 ---@alias set<T> table<T, boolean>
+---@alias optional<T> nil | T
 
 ---@shape seb_Vector2
 ---@field [1] number
