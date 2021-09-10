@@ -6,6 +6,15 @@
 ---@alias set<T> table<T, boolean>
 ---@alias optional<T> nil | T
 
+---@shape tuple<A, B>
+---@field [1] A
+---@field [2] B
+
+---@shape triple<A, B, C>
+---@field [1] A
+---@field [2] B
+---@field [3] C
+
 ---@shape seb_Vector2
 ---@field [1] number
 ---@field [2] number
