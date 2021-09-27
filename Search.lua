@@ -8,6 +8,7 @@ local Search = {}
 ---@field guid nil | GUID
 ---@field name nil | string
 ---@field description nil | string
+---@field memo nil | string
 ---@field isPattern nil | boolean
 
 ---@shape seb_Search_Full : seb_Search
@@ -36,6 +37,7 @@ function Search.inAllObjects(search)
         if matches(search.guid, contained.getGUID(), search.isPattern)
                 and matches(search.name, contained.getName(), search.isPattern)
                 and matches(search.description, contained.getDescription(), search.isPattern)
+                and matches(search.memo, contained.getMemo(), search.isPattern)
                 and matches(search.cardId, contained.getData().CardID, search.isPattern)
                 and matches(search.type, contained.type, search.isPattern)
         then
@@ -55,6 +57,7 @@ function Search.inContainer(object, search)
         if matches(search.guid, contained.guid, search.isPattern)
                 and matches(search.name, contained.name, search.isPattern)
                 and matches(search.description, contained.description, search.isPattern)
+                and matches(search.memo, contained.memo, search.isPattern)
         then
             return contained
         end
@@ -72,6 +75,7 @@ function Search.inZone(zone, search)
         if matches(search.guid, contained.getGUID(), search.isPattern)
                 and matches(search.name, contained.getName(), search.isPattern)
                 and matches(search.description, contained.getDescription(), search.isPattern)
+                and matches(search.memo, contained.getMemo(), search.isPattern)
                 and matches(search.cardId, contained.getData().CardID, search.isPattern)
                 and matches(search.type, contained.type, search.isPattern)
         then
@@ -95,6 +99,7 @@ function Search.inContainedObjects(object, search)
         if matches(search.guid, contained.GUID, search.isPattern)
                 and matches(search.name, contained.Nickname, search.isPattern)
                 and matches(search.description, contained.Description, search.isPattern)
+                and matches(search.memo, contained.Memo, search.isPattern)
                 and matches(search.cardId, contained.CardID, search.isPattern)
                 and matches(search.type, Object.type(contained), search.isPattern)
         then
