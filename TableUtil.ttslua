@@ -138,14 +138,10 @@ end
 
 ---@generic K, V
 ---@param tab table<K, V> | V[]
----@param func fun(value: V): boolean
----@return nil | V
-function TableUtil.find(tab, func)
-    for _, v in pairs(tab) do
-        if func(v) then
-            return v
-        end
-    end
+---@param value V
+---@return nil | K
+function TableUtil.find(tab, value)
+    return GeTableUtils.find(tab, value)
 end
 
 ---@overload fun<V, MappedV>(tab: V[], func: fun(value: V, key: number): MappedV): MappedV[]
