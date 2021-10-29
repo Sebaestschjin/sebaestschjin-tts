@@ -6,6 +6,7 @@ local Object = {}
 Object.Name = --[[---@type table<string, string>]] GeObject.Name
 Object.Name.LayoutZone = "LayoutZone"
 Object.Name.ModelBag = "Custom_Model_Bag"
+Object.Name.ModelInfinite = "Custom_Model_Infinite_Bag"
 
 Object.Type = GeObject.Tag
 Object.ModelType = GeObject.ModelType
@@ -60,31 +61,33 @@ Object.LayoutZone = {
 
 ---@type table<string, tts__ObjectType>
 Object.TypeForName = {
-    [GeObject.Name.Bag] = Object.Type.Bag,
-    [GeObject.Name.Board] = Object.Type.Board,
-    [GeObject.Name.Card] = Object.Type.Card,
-    [GeObject.Name.CardCustom] = Object.Type.Card,
-    [GeObject.Name.Deck] = Object.Type.Deck,
-    [GeObject.Name.DeckCustom] = Object.Type.Deck,
-    [GeObject.Name.Die4] = Object.Type.Die,
-    [GeObject.Name.Die6] = Object.Type.Die,
-    [GeObject.Name.Die6Rounded] = Object.Type.Die,
-    [GeObject.Name.Die8] = Object.Type.Die,
-    [GeObject.Name.Die10] = Object.Type.Die,
-    [GeObject.Name.Die12] = Object.Type.Die,
-    [GeObject.Name.Die20] = Object.Type.Die,
-    [GeObject.Name.DieCustom] = Object.Type.Die,
-    [GeObject.Name.FigurineCardBot] = Object.Type.Figurine,
-    [GeObject.Name.FigurineCustom] = Object.Type.Figurine,
-    [GeObject.Name.FigurineKimiKat] = Object.Type.Figurine,
-    [GeObject.Name.FigurineKnil] = Object.Type.Figurine,
-    [GeObject.Name.FigurineMara] = Object.Type.Figurine,
-    [GeObject.Name.FigurineSirLoin] = Object.Type.Figurine,
-    [GeObject.Name.FigurineZeke] = Object.Type.Figurine,
-    [GeObject.Name.FigurineZomblor] = Object.Type.Figurine,
-    [GeObject.Name.InfiniteBag] = Object.Type.Infinite,
-    [GeObject.Name.ScriptingTrigger] = Object.Type.Scripting,
-    [GeObject.Name.Tile] = Object.Type.Tile,
+    [Object.Name.Bag] = Object.Type.Bag,
+    [Object.Name.Board] = Object.Type.Board,
+    [Object.Name.Card] = Object.Type.Card,
+    [Object.Name.CardCustom] = Object.Type.Card,
+    [Object.Name.Deck] = Object.Type.Deck,
+    [Object.Name.DeckCustom] = Object.Type.Deck,
+    [Object.Name.Die4] = Object.Type.Die,
+    [Object.Name.Die6] = Object.Type.Die,
+    [Object.Name.Die6Rounded] = Object.Type.Die,
+    [Object.Name.Die8] = Object.Type.Die,
+    [Object.Name.Die10] = Object.Type.Die,
+    [Object.Name.Die12] = Object.Type.Die,
+    [Object.Name.Die20] = Object.Type.Die,
+    [Object.Name.DieCustom] = Object.Type.Die,
+    [Object.Name.FigurineCardBot] = Object.Type.Figurine,
+    [Object.Name.FigurineCustom] = Object.Type.Figurine,
+    [Object.Name.FigurineKimiKat] = Object.Type.Figurine,
+    [Object.Name.FigurineKnil] = Object.Type.Figurine,
+    [Object.Name.FigurineMara] = Object.Type.Figurine,
+    [Object.Name.FigurineSirLoin] = Object.Type.Figurine,
+    [Object.Name.FigurineZeke] = Object.Type.Figurine,
+    [Object.Name.FigurineZomblor] = Object.Type.Figurine,
+    [Object.Name.ModelBag] = Object.Type.Bag,
+    [Object.Name.ModelInfinite] = Object.Type.Infinite,
+    [Object.Name.InfiniteBag] = Object.Type.Infinite,
+    [Object.Name.ScriptingTrigger] = Object.Type.Scripting,
+    [Object.Name.Tile] = Object.Type.Tile,
 }
 
 ---@param object seb_Object_Identifiable
@@ -119,6 +122,12 @@ end
 
 ---@param object seb_Object
 ---@return boolean
+function Object.isInfiniteBag(object)
+    return Object.type(object) == Object.Type.Infinite
+end
+
+---@param object seb_Object
+---@return boolean
 function Object.isFigurine(object)
     return Object.type(object) == Object.Type.Figurine
 end
@@ -126,7 +135,7 @@ end
 ---@param object seb_Object
 ---@return boolean
 function Object.isContainer(object)
-    return Object.isDeck(object) or Object.isBag(object)
+    return Object.isDeck(object) or Object.isBag(object) or Object.isInfiniteBag(object)
 end
 
 ---@param object tts__Object
