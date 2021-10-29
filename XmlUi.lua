@@ -201,4 +201,19 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
     end
 }))
 
+---@param object tts__Object
+---@param assetName string
+---@return boolean
+function XmlUi.hasAsset(object, assetName)
+    local assets = object.UI.getCustomAssets()
+
+    for _, asset in ipairs(assets) do
+        if asset.name == assetName then
+            return true
+        end
+    end
+
+    return false
+end
+
 return XmlUi
