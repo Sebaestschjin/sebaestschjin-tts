@@ -1,4 +1,5 @@
 local GeTableUtils = require("ge_tts.TableUtils")
+local StringUtil = require("sebaestschjin-tts.StringUtil")
 
 local TableUtil = {}
 
@@ -321,6 +322,8 @@ function TableUtil.dump(tab, exclude, depth)
     exclude = exclude or {}
     depth = depth or 1
 
+    local isVector = TableUtil.length(tab) == 3 and tab.x ~= nil and tab.y ~= nil and tab.z ~= nil
+
     local indentation = string.rep('  ', depth)
     local str = '{'
 
@@ -340,7 +343,19 @@ function TableUtil.dump(tab, exclude, depth)
 
     for k, v in pairs(tab) do
         if not ordered_keys[--[[---@type number]] k] and not TableUtil.containsKey(exclude, k) then
-            str = str .. '\n' .. indentation .. '[' .. TYPE_STRINGIFIERS[type(k)](k) .. '] = '
+            local keyEntry
+            if type(k) == "string" and StringUtil.isIdentifier(k) then
+                keyEntry = k
+            else
+                keyEntry = '[' .. TYPE_STRINGIFIERS[type(k)](k) .. ']'
+            end
+
+            if isVector then
+                str = str .. ' '
+            else
+                str = str .. '\n' .. indentation
+            end
+            str = str .. keyEntry .. ' = '
 
             if type(v) == 'table' then
                 str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
@@ -350,7 +365,11 @@ function TableUtil.dump(tab, exclude, depth)
         end
     end
 
-    str = str .. '\n' .. string.rep('  ', depth - 1) .. '}'
+    if isVector then
+        str = str .. ' }'
+    else
+        str = str .. '\n' .. string.rep('  ', depth - 1) .. '}'
+    end
 
     return str
 end

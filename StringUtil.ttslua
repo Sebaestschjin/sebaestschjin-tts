@@ -2,6 +2,31 @@ local Base64 = require("ge_tts.Base64")
 
 local StringUtil = {}
 
+---@type set<string>
+local LuaKeywords = {
+    ["and"] = true,
+    ["break"] = true,
+    ["do"] = true,
+    ["else"] = true,
+    ["elseif"] = true,
+    ["end"] = true,
+    ["false"] = true,
+    ["for"] = true,
+    ["function"] = true,
+    ["if"] = true,
+    ["in"] = true,
+    ["local"] = true,
+    ["nil"] = true,
+    ["not"] = true,
+    ["or"] = true,
+    ["repeat"] = true,
+    ["return"] = true,
+    ["then"] = true,
+    ["true"] = true,
+    ["until"] = true,
+    ["while"] = true,
+}
+
 ---@param value nil | string
 ---@return boolean
 function StringUtil.isEmpty(value)
@@ -99,6 +124,18 @@ end
 ---@return boolean
 function StringUtil.isBase64(text)
     return text:find("^[a-zA-Z0-9+/]+=?=?$") ~= nil
+end
+
+---@param text string
+---@return boolean
+function StringUtil.isKeyword(text)
+    return LuaKeywords[text]
+end
+
+---@param text string
+---@return boolean
+function StringUtil.isIdentifier(text)
+    return not StringUtil.isKeyword(text) and text:find("^[_a-zA-Z][_a-zA-Z0-9]*$") ~= nil
 end
 
 ---@param value string
