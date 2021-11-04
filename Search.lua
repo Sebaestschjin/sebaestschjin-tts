@@ -66,6 +66,24 @@ function Search.inContainer(object, search)
     return nil
 end
 
+--- Finds the first object in the given container that matches the given search.
+---@param container tts__ContainerState
+---@param search seb_Search_Minimal
+---@return nil | tts__ObjectState
+function Search.inContainerData(container, search)
+    for _, contained in ipairs(container.ContainedObjects or {}) do
+        if matches(search.guid, contained.GUID, search.isPattern)
+                and matches(search.name, contained.Nickname, search.isPattern)
+                and matches(search.description, contained.Description, search.isPattern)
+                and matches(search.memo, contained.Memo, search.isPattern)
+        then
+            return contained
+        end
+    end
+
+    return nil
+end
+
 --- Finds the first object in the given scripting zone that matches the given search.
 ---@param zone tts__ScriptingTrigger
 ---@param search seb_Search_Full

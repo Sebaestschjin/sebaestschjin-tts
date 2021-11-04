@@ -263,6 +263,18 @@ function Object.tags(object)
     return (--[[---@type tts__ObjectState]] object).Tags or {}
 end
 
+---@param object seb_Object
+---@param tag tts__Object_Tag
+---@return boolean
+function Object.hasTag(object, tag)
+    for _, objectTag in ipairs(Object.tags(object)) do
+        if objectTag == tag then
+            return true
+        end
+    end
+    return false
+end
+
 ---@param transform tts__ObjectState_Transform
 ---@return tts__Vector
 function Object.transformToPosition(transform)
