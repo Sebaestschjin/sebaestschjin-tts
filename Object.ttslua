@@ -191,6 +191,18 @@ function Object.description(object)
     return (--[[---@type tts__ObjectState]] object).Description or ""
 end
 
+---@param object seb_Object_Identifiable
+---@return string
+function Object.memo(object)
+    if Object.isObject(object) then
+        return (--[[---@type tts__Object]] object).getMemo() or ""
+    end
+    if Object.isSimple(object) then
+        return (--[[---@type tts__IndexedSimpleObjectState]] object).memo or ""
+    end
+    return (--[[---@type tts__ObjectState]] object).Memo or ""
+end
+
 ---@param object seb_Object
 ---@return tts__ObjectState
 function Object.data(object)
