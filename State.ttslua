@@ -1,0 +1,56 @@
+local Json = require("ge_tts.Json")
+
+---@shape seb_State
+---@field save fun(): nil | string
+---@field load fun(savedState: nil | string): void
+
+---@class seb_State_Static<TT>
+---@overload fun(data: TT): TT
+local State = {}
+
+---@generic T: seb_State
+---@param initial T
+---@return T
+function State.createState(initial)
+    local self = --[[---@type T]] {}
+
+    local data = initial
+    local isDirty = true
+    ---@type nil | string
+    local representation = nil
+
+    ---@return nil | string
+    function self.save()
+        if isDirty and data then
+            isDirty = false
+            log("Dirty " .. logString(data))
+            representation = Json.encode(data)
+            log("New rep " .. logString(representation))
+        end
+
+        return representation
+    end
+
+    ---@param savedState nil | string
+    function self.load(savedState)
+        if savedState and savedState ~= "" then
+            isDirty = true
+            data = Json.decode(--[[---@not nil]] savedState)
+        end
+    end
+
+    setmetatable(self, {
+        __index = function(_, key)
+            return data[key]
+        end,
+
+        __newindex = function(_, key, value)
+            isDirty = true
+            data[key] = value
+        end,
+    })
+
+    return self
+end
+
+return State
