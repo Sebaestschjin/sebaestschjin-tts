@@ -9,9 +9,12 @@ local XmlUiElement = require("sebaestschjin-tts.xmlui.XmlUiElement")
 local XmlUiPanel = {}
 
 ---@shape seb_XmlUi_PanelAttributes : seb_XmlUi_Attributes
+---@field padding nil | seb_XmlUi_Padding
 ---@field [any] nil @All other fields are invalid
 
-local Attributes = {}
+local Attributes = {
+    padding = XmlUiFactory.AttributeType.padding,
+}
 
 setmetatable(XmlUiPanel, TableUtil.merge(getmetatable(XmlUiElement), {
     ---@param element tts__UIPanelElement
