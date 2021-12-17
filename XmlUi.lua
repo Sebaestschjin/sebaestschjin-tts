@@ -157,11 +157,15 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
             boundObject.UI.setXmlTable(xmlTable)
         end
 
+        ---@return boolean
         function self.updateUiAssets()
             if assetsChanged then
                 boundObject.UI.setCustomAssets(assets)
                 assetsChanged = false
+                return true
             end
+
+            return false
         end
 
         ---@param assetList tts__UIAsset[]
