@@ -94,6 +94,7 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
         local children = self._wrapChildren(boundObject.UI.getXmlTable())
         ---@type tts__UIAsset[]
         local assets = boundObject.UI.getCustomAssets()
+        local assetsChanged = false
 
         ---@return tts__UIElement[]
         local function createXmlTable()
@@ -153,12 +154,14 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
 
         function self.update()
             local xmlTable = createXmlTable()
-            boundObject.UI.setCustomAssets(assets)
             boundObject.UI.setXmlTable(xmlTable)
         end
 
-        function self.updateAllAssets()
-            boundObject.UI.setCustomAssets(assets)
+        function self.updateUiAssets()
+            if assetsChanged then
+                boundObject.UI.setCustomAssets(assets)
+                assetsChanged = false
+            end
         end
 
         ---@param assetList tts__UIAsset[]
@@ -173,12 +176,16 @@ setmetatable(XmlUi, TableUtil.merge(getmetatable(XmlUiContainer), {
         function self.updateAsset(assetName, assetUrl)
             for _, asset in ipairs(assets) do
                 if asset.name == assetName then
-                    asset.url = assetUrl
+                    if asset.url ~= assetUrl then
+                        asset.url = assetUrl
+                        assetsChanged = true
+                    end
                     return
                 end
             end
 
             table.insert(assets, { name = assetName, url = assetUrl, })
+            assetsChanged = true
         end
 
         ---@return tts__UIAsset[]
