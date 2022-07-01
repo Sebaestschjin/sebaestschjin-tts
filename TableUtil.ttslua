@@ -95,6 +95,39 @@ function TableUtil.areEqual(a, b)
     return true
 end
 
+--- Returns `true`, if any of the elements of the table satisfies the condition `func`.
+---@overload fun<V>(tab: V[], func: fun(value: V): boolean): boolean
+---@overload fun<K, V>(tab: table<K,V>, func: fun(value: V, key: K): boolean): boolean
+function TableUtil.any(tab, func)
+    for key, value in pairs(tab) do
+        if func(value, key) then
+            return true
+        end
+    end
+
+    return false
+end
+
+--- Returns `true`, if all of the elements of the table satisfies the condition `func`.
+---@overload fun<V>(tab: V[], func: fun(value: V): boolean): boolean
+---@overload fun<K, V>(tab: table<K,V>, func: fun(value: V, key: K): boolean): boolean
+function TableUtil.all(tab, func)
+    for key, value in pairs(tab) do
+        if not func(value, key) then
+            return false
+        end
+    end
+
+    return true
+end
+
+--- Returns `true`, if none of the elements of the table satisfies the condition `func`.
+---@overload fun<V>(tab: V[], func: fun(value: V): boolean): boolean
+---@overload fun<K, V>(tab: table<K,V>, func: fun(value: V, key: K): boolean): boolean
+function TableUtil.none(tab, func)
+    return not TableUtil.any(tab, func)
+end
+
 ---@overload fun<V>(tab: V[], value: V): boolean
 ---@overload fun<V>(tab: V[], value: V, comparator: fun(a: V, b: V): boolean): boolean
 ---@overload fun<K, V>(tab: table<K, V>, value: V): boolean
