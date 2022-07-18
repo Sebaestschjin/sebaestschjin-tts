@@ -1,11 +1,7 @@
-local Json = require("ge_tts.Json")
-
 ---@shape seb_State
 ---@field save fun(): nil | string
 ---@field load fun(savedState: nil | string): void
 
----@class seb_State_Static<TT>
----@overload fun(data: TT): TT
 local State = {}
 
 ---@generic T: seb_State
@@ -23,9 +19,7 @@ function State.createState(initial)
     function self.save()
         if isDirty and data then
             isDirty = false
-            log("Dirty " .. logString(data))
-            representation = Json.encode(data)
-            log("New rep " .. logString(representation))
+            representation = json.serialize(data)
         end
 
         return representation
@@ -34,8 +28,8 @@ function State.createState(initial)
     ---@param savedState nil | string
     function self.load(savedState)
         if savedState and savedState ~= "" then
-            isDirty = true
-            data = Json.decode(--[[---@not nil]] savedState)
+            data = json.parse(--[[---@not nil]] savedState)
+            representation = savedState
         end
     end
 
