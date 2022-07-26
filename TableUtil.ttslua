@@ -270,6 +270,14 @@ function TableUtil.copy(tab, recursive)
     return GeTableUtils.copy(tab, recursive)
 end
 
+---@overload fun<T>(tab: T): T
+---@generic T
+---@param tab T
+---@return T
+function TableUtil.deepCopy(tab)
+    return GeTableUtils.copy(tab, true)
+end
+
 ---@generic T
 ---@param tab T
 ---@return nil | T
