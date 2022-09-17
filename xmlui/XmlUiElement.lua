@@ -38,6 +38,7 @@ local XmlUiElement = {}
 ---@field onMouseExit nil | seb_XmlUi_EventHandler
 ---@field class nil | string | string[] @A list of classes. An element will inherit attributes from any of its classes defined in Defaults.
 ---@field color nil | seb_XmlUi_Color @Color of the text. Elements that also take an image color use textColor for this.
+---@field font nil | tts__UIAssetName
 ---@field fontStyle nil | tts__UIElement_FontStyle @Typographic emphasis on the text.
 ---@field fontSize nil | number @Height of the text in pixels.
 ---@field shadow nil | tts__ColorShape @Defines the shadow color of this element.
@@ -72,6 +73,7 @@ local Attributes = {
     text = XmlUiFactory.AttributeType.string,
     alignment = XmlUiFactory.AttributeType.string,
     color = XmlUiFactory.AttributeType.color,
+    font = XmlUiFactory.AttributeType.string,
     fontStyle = XmlUiFactory.AttributeType.string,
     fontSize = XmlUiFactory.AttributeType.integer,
     resizeTextForBestFit = XmlUiFactory.AttributeType.boolean,
