@@ -34,3 +34,5 @@
 ---@field [1] integer
 ---@field [2] integer
 ---@field [3] nil | integer
+---@field [4] nil | 'alpha' | 'beta'
+---@field [5] nil | integer
