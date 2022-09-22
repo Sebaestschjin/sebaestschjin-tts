@@ -86,6 +86,16 @@ end
 
 ---@param text string
 ---@return string
+function StringUtil.capitalizeWords(text)
+  local words = StringUtil.split(text, " ")
+  for i=1, #words do
+    words[i] = StringUtil.capitalize(words[i])
+  end
+  return table.concat(words, " ")
+end
+
+---@param text string
+---@return string
 function StringUtil.escapePattern(text)
     local escaped, _ = text:gsub("([-+()%[%]])", "%%%1")
     return escaped
