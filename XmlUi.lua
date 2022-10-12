@@ -154,7 +154,9 @@ local function new(object)
 
   function self.update()
     local xmlTable = createXmlTable()
-    boundObject.UI.setXmlTable(xmlTable)
+    if TableUtil.isNotEmpty(xmlTable) then
+      boundObject.UI.setXmlTable(xmlTable)
+    end
   end
 
   ---@return boolean
