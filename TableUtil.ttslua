@@ -327,6 +327,19 @@ function TableUtil.sortByAttribute(tab, attributeName)
 end
 
 ---@generic K
+---@param list K[]
+---@return set<K>
+function TableUtil.listToSet(list)
+  ---@type set<K>
+  local set = {}
+  for _, value in ipairs(list) do
+    set[value] = true
+  end
+
+  return set
+end
+
+---@generic K
 ---@param set table<K,boolean>
 ---@return K[]
 function TableUtil.setToList(set)
