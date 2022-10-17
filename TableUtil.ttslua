@@ -5,11 +5,11 @@ local TableUtil = {}
 
 ---@return number
 function TableUtil.length(tab)
-    local len = 0
-    for _, _ in TableUtil.pairs(tab) do
-        len = len + 1
-    end
-    return len
+  local len = 0
+  for _, _ in TableUtil.pairs(tab) do
+    len = len + 1
+  end
+  return len
 end
 
 --- Variant of pairs that also works for nil values.
@@ -17,10 +17,10 @@ end
 ---@param tab nil | table<K, V>
 ---@return fun(tab: table<K, V>):K, V
 function TableUtil.pairs(tab)
-    if tab then
-        return pairs(--[[---@not nil]]tab)
-    end
-    return pairs(--[[---@type table<K,V>]]{})
+  if tab then
+    return pairs(--[[---@not nil]]tab)
+  end
+  return pairs(--[[---@type table<K,V>]]{})
 end
 
 --- Variant of ipairs that also works for nil values.
@@ -28,104 +28,104 @@ end
 ---@param tab nil | V[]
 ---@return fun(tab: V[]): number, V
 function TableUtil.ipairs(tab)
-    if tab then
-        return ipairs(--[[---@not nil]]tab)
-    end
-    return ipairs(--[[---@type V[] ]]{})
+  if tab then
+    return ipairs(--[[---@not nil]]tab)
+  end
+  return ipairs(--[[---@type V[] ]]{})
 end
 
 ---@generic K, V
 ---@param tab table<K, V>
 ---@return K[]
 function TableUtil.keys(tab)
-    local keys = {}
-    for key, _ in TableUtil.pairs(tab) do
-        table.insert(keys, key)
-    end
-    return keys
+  local keys = {}
+  for key, _ in TableUtil.pairs(tab) do
+    table.insert(keys, key)
+  end
+  return keys
 end
 
 ---@generic K, V
 ---@param tab nil | table<K, V>
 ---@return V[]
 function TableUtil.values(tab)
-    local values = {}
+  local values = {}
 
-    for _, value in TableUtil.pairs(tab) do
-        table.insert(values, value)
-    end
+  for _, value in TableUtil.pairs(tab) do
+    table.insert(values, value)
+  end
 
-    return values
+  return values
 end
 
 --- Checks whether a table is empty. A nil value is also considered an empty table.
 ---@param tab nil | table
 ---@return boolean
 function TableUtil.isEmpty(tab)
-    return not tab or not next(--[[---@not nil]]tab)
+  return not tab or not next(--[[---@not nil]]tab)
 end
 
 --- Checks whether a table is not empty. A nil value is always considered an empty table.
 ---@param tab nil | table
 ---@return boolean
 function TableUtil.isNotEmpty(tab)
-    return not TableUtil.isEmpty(tab)
+  return not TableUtil.isEmpty(tab)
 end
 
 ---@param a table
 ---@param b table
 ---@return boolean
 function TableUtil.areEqual(a, b)
-    if TableUtil.length(a) ~= TableUtil.length(b) then
+  if TableUtil.length(a) ~= TableUtil.length(b) then
+    return false
+  end
+
+  for key, value in pairs(a) do
+    if type(value) == "table" then
+      if not TableUtil.areEqual(value, b[key]) then
         return false
+      end
+    else
+      if b[key] == nil or value ~= b[key] then
+        return false
+      end
     end
+  end
 
-    for key, value in pairs(a) do
-        if type(value) == "table" then
-            if not TableUtil.areEqual(value, b[key]) then
-                return false
-            end
-        else
-            if b[key] == nil or value ~= b[key] then
-                return false
-            end
-        end
-    end
-
-    return true
+  return true
 end
 
 --- Returns `true`, if any of the elements of the table satisfies the condition `func`.
 ---@overload fun<V>(tab: V[], func: fun(value: V): boolean): boolean
 ---@overload fun<K, V>(tab: table<K,V>, func: fun(value: V, key: K): boolean): boolean
 function TableUtil.any(tab, func)
-    for key, value in pairs(tab) do
-        if func(value, key) then
-            return true
-        end
+  for key, value in pairs(tab) do
+    if func(value, key) then
+      return true
     end
+  end
 
-    return false
+  return false
 end
 
 --- Returns `true`, if all of the elements of the table satisfies the condition `func`.
 ---@overload fun<V>(tab: V[], func: fun(value: V): boolean): boolean
 ---@overload fun<K, V>(tab: table<K,V>, func: fun(value: V, key: K): boolean): boolean
 function TableUtil.all(tab, func)
-    for key, value in pairs(tab) do
-        if not func(value, key) then
-            return false
-        end
+  for key, value in pairs(tab) do
+    if not func(value, key) then
+      return false
     end
+  end
 
-    return true
+  return true
 end
 
 --- Returns `true`, if none of the elements of the table satisfies the condition `func`.
 ---@overload fun<V>(tab: V[], func: fun(value: V): boolean): boolean
 ---@overload fun<K, V>(tab: table<K,V>, func: fun(value: V, key: K): boolean): boolean
 function TableUtil.none(tab, func)
-    return not TableUtil.any(tab, func)
+  return not TableUtil.any(tab, func)
 end
 
 ---@overload fun<V>(tab: V[], value: V): boolean
@@ -133,17 +133,17 @@ end
 ---@overload fun<K, V>(tab: table<K, V>, value: V): boolean
 ---@overload fun<K, V>(tab: table<K, V>, value: V, comparator: fun(a: V, b: V): boolean): boolean
 function TableUtil.contains(tab, value, comparator)
-    if not tab then
-        return false
-    end
-
-    comparator = comparator or function(a, b) return a == b end
-    for _, v in pairs(tab) do
-        if comparator(v, value) then
-            return true
-        end
-    end
+  if not tab then
     return false
+  end
+
+  comparator = comparator or function(a, b) return a == b end
+  for _, v in pairs(tab) do
+    if comparator(v, value) then
+      return true
+    end
+  end
+  return false
 end
 
 ---@generic K, V
@@ -151,23 +151,23 @@ end
 ---@param key K
 ---@return boolean
 function TableUtil.containsKey(tab, key)
-    return tab[key] ~= nil
+  return tab[key] ~= nil
 end
 
 ---@generic V
 ---@param tab V[]
 function TableUtil.shuffle(tab)
-    for i = #tab, 2, -1 do
-        local j = math.random(1, i)
-        tab[i], tab[j] = tab[j], tab[i]
-    end
+  for i = #tab, 2, -1 do
+    local j = math.random(1, i)
+    tab[i], tab[j] = tab[j], tab[i]
+  end
 end
 
 ---@generic V
 ---@param tab V[]
 ---@return V
 function TableUtil.getRandom(tab)
-    return tab[math.random(TableUtil.length(tab))]
+  return tab[math.random(TableUtil.length(tab))]
 end
 
 ---@generic K, V
@@ -175,7 +175,7 @@ end
 ---@param value V
 ---@return nil | K
 function TableUtil.find(tab, value)
-    return GeTableUtils.find(tab, value)
+  return GeTableUtils.find(tab, value)
 end
 
 ---@overload fun<V, MappedV>(tab: V[], func: fun(value: V, key: number): MappedV): MappedV[]
@@ -184,7 +184,7 @@ end
 ---@param func fun(value: V, key: K): MappedV
 ---@return table<K, MappedV>
 function TableUtil.map(tab, func)
-    return GeTableUtils.map(tab, func)
+  return GeTableUtils.map(tab, func)
 end
 
 ---@overload fun<R, K, V: R>(tab: table<K, V>, func: fun(memo: R, value: V, key: K): R): nil | R
@@ -194,7 +194,7 @@ end
 ---@param func fun(memo: R, value: V, key: K): R
 ---@return R
 function TableUtil.reduce(tab, initial, func)
-    return GeTableUtils.reduce(tab, initial, func)
+  return GeTableUtils.reduce(tab, initial, func)
 end
 
 ---@overload fun(finish: integer): integer[]
@@ -202,17 +202,17 @@ end
 ---@param finish integer
 ---@return integer[]
 function TableUtil.range(start, finish)
-    if not finish then
-        finish = start
-        start = 1
-    end
+  if not finish then
+    finish = start
+    start = 1
+  end
 
-    local range = {}
-    for i = start, finish do
-        table.insert(range, i)
-    end
+  local range = {}
+  for i = start, finish do
+    table.insert(range, i)
+  end
 
-    return range
+  return range
 end
 
 ---@overload fun<V>(arr: std__Packed<V>, start: number): std__Packed<V>
@@ -223,7 +223,7 @@ end
 ---@param finish number
 ---@return V[]
 function TableUtil.slice(arr, start, finish)
-    return GeTableUtils.range(arr, start, finish)
+  return GeTableUtils.range(arr, start, finish)
 end
 
 ---@generic V
@@ -231,18 +231,18 @@ end
 ---@param shift integer
 ---@return V[]
 function TableUtil.shift(arr, shift)
-    local shifted = --[[---@type V[] ]] {}
-    local length = #arr
+  local shifted = --[[---@type V[] ]] {}
+  local length = #arr
 
-    for i = 1, length do
-        local shiftedPosition = (i + shift) % length
-        if shiftedPosition == 0 then
-            shiftedPosition = length
-        end
-        shifted[i] = arr[shiftedPosition]
+  for i = 1, length do
+    local shiftedPosition = (i + shift) % length
+    if shiftedPosition == 0 then
+      shiftedPosition = length
     end
+    shifted[i] = arr[shiftedPosition]
+  end
 
-    return shifted
+  return shifted
 end
 
 ---@overload fun<V>(arr: V[], func: fun(value: V, index: number): boolean): V[]
@@ -251,14 +251,32 @@ end
 ---@param func fun(value: V, key: K): any
 ---@return table<K, V>
 function TableUtil.filter(tab, func)
-    return GeTableUtils.select(tab, func)
+  return GeTableUtils.select(tab, func)
 end
 
 ---@overload fun<T>(...: T): T
 ---@vararg table
 ---@return table
 function TableUtil.merge(...)
-    return GeTableUtils.merge(...)
+  return GeTableUtils.merge(...)
+end
+
+---@generic V
+---@param first V[]
+---@param second V[]
+---@return V[]
+function TableUtil.append(first, second)
+  local result = {}
+
+  for _, v in ipairs(first) do
+    table.insert(result, v)
+  end
+
+  for _, v in ipairs(second) do
+    table.insert(result, v)
+  end
+
+  return result
 end
 
 ---@overload fun<T>(tab: T): T
@@ -267,7 +285,7 @@ end
 ---@param recursive boolean @Default false
 ---@return T
 function TableUtil.copy(tab, recursive)
-    return GeTableUtils.copy(tab, recursive)
+  return GeTableUtils.copy(tab, recursive)
 end
 
 ---@overload fun<T>(tab: T): T
@@ -275,17 +293,17 @@ end
 ---@param tab T
 ---@return T
 function TableUtil.deepCopy(tab)
-    return GeTableUtils.copy(tab, true)
+  return GeTableUtils.copy(tab, true)
 end
 
 ---@generic T
 ---@param tab T
 ---@return nil | T
 function TableUtil.emptyToNil(tab)
-    if TableUtil.isEmpty(tab) then
-        return nil
-    end
-    return tab
+  if TableUtil.isEmpty(tab) then
+    return nil
+  end
+  return tab
 end
 
 ---@generic K, V
@@ -293,9 +311,9 @@ end
 ---@param key K
 ---@return V
 function TableUtil.removeKey(tab, key)
-    local element = tab[key]
-    tab[key] = nil
-    return element
+  local element = tab[key]
+  tab[key] = nil
+  return element
 end
 
 ---@generic V
@@ -303,17 +321,17 @@ end
 ---@param value V
 ---@return nil | V
 function TableUtil.removeValue(tab, value)
-    local index = -1
-    for i, v in ipairs(tab) do
-        if v == value then
-            index = i
-            break
-        end
+  local index = -1
+  for i, v in ipairs(tab) do
+    if v == value then
+      index = i
+      break
     end
-    if index > 0 then
-        return table.remove(tab, index)
-    end
-    return nil
+  end
+  if index > 0 then
+    return table.remove(tab, index)
+  end
+  return nil
 end
 
 ---@generic T
@@ -321,9 +339,9 @@ end
 ---@param attributeName string
 ---@return T[]
 function TableUtil.sortByAttribute(tab, attributeName)
-    return table.sort(tab, function(l, r)
-        return l[attributeName] < r[attributeName]
-    end)
+  return table.sort(tab, function(l, r)
+    return l[attributeName] < r[attributeName]
+  end)
 end
 
 ---@generic K
@@ -343,26 +361,26 @@ end
 ---@param set table<K,boolean>
 ---@return K[]
 function TableUtil.setToList(set)
-    ---@type K[]
-    local list = {}
-    for entry, value in pairs(set) do
-        if value then
-            table.insert(list, entry)
-        end
+  ---@type K[]
+  local list = {}
+  for entry, value in pairs(set) do
+    if value then
+      table.insert(list, entry)
     end
+  end
 
-    return list
+  return list
 end
 
 local TYPE_STRINGIFIERS = {
-    ['nil'] = function(_) return 'nil' end,
-    boolean = function(v) return tostring(v) end,
-    number = function(v) return tostring(v) end,
-    string = function(v) return "'" .. v .. "'" end,
-    userdata = function(_) return 'userdata' end,
-    ['function'] = function(_) return 'function' end,
-    thread = function(_) return 'thread' end,
-    table = function(v) return tostring(v) end,
+  ['nil'] = function(_) return 'nil' end,
+  boolean = function(v) return tostring(v) end,
+  number = function(v) return tostring(v) end,
+  string = function(v) return "'" .. v .. "'" end,
+  userdata = function(_) return 'userdata' end,
+  ['function'] = function(_) return 'function' end,
+  thread = function(_) return 'thread' end,
+  table = function(v) return tostring(v) end,
 }
 
 --- Taken from ge_tts.TableUtils with changed signature.
@@ -373,59 +391,59 @@ local TYPE_STRINGIFIERS = {
 ---@param depth number
 ---@return string
 function TableUtil.dump(tab, exclude, depth)
-    exclude = exclude or {}
-    depth = depth or 1
+  exclude = exclude or {}
+  depth = depth or 1
 
-    local isVector = TableUtil.length(tab) == 3 and tab.x ~= nil and tab.y ~= nil and tab.z ~= nil
+  local isVector = TableUtil.length(tab) == 3 and tab.x ~= nil and tab.y ~= nil and tab.z ~= nil
 
-    local indentation = string.rep('  ', depth)
-    local str = '{'
+  local indentation = string.rep('  ', depth)
+  local str = '{'
 
-    ---@type table<number, nil | boolean>
-    local ordered_keys = {}
+  ---@type table<number, nil | boolean>
+  local ordered_keys = {}
 
-    for i, v in ipairs(--[[---@type any[] ]] tab) do
-        ordered_keys[i] = true
-        str = str .. '\n' .. indentation .. '[' .. i .. '] = '
+  for i, v in ipairs(--[[---@type any[] ]] tab) do
+    ordered_keys[i] = true
+    str = str .. '\n' .. indentation .. '[' .. i .. '] = '
 
-        if type(v) == 'table' then
-            str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
-        else
-            str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
-        end
-    end
-
-    for k, v in pairs(tab) do
-        if not ordered_keys[--[[---@type number]] k] and not TableUtil.containsKey(exclude, k) then
-            local keyEntry
-            if type(k) == "string" and StringUtil.isIdentifier(k) then
-                keyEntry = k
-            else
-                keyEntry = '[' .. TYPE_STRINGIFIERS[type(k)](k) .. ']'
-            end
-
-            if isVector then
-                str = str .. ' '
-            else
-                str = str .. '\n' .. indentation
-            end
-            str = str .. keyEntry .. ' = '
-
-            if type(v) == 'table' then
-                str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
-            else
-                str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
-            end
-        end
-    end
-
-    if isVector then
-        str = str .. ' }'
+    if type(v) == 'table' then
+      str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
     else
-        str = str .. '\n' .. string.rep('  ', depth - 1) .. '}'
+      str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
     end
+  end
 
-    return str
+  for k, v in pairs(tab) do
+    if not ordered_keys[--[[---@type number]] k] and not TableUtil.containsKey(exclude, k) then
+      local keyEntry
+      if type(k) == "string" and StringUtil.isIdentifier(k) then
+        keyEntry = k
+      else
+        keyEntry = '[' .. TYPE_STRINGIFIERS[type(k)](k) .. ']'
+      end
+
+      if isVector then
+        str = str .. ' '
+      else
+        str = str .. '\n' .. indentation
+      end
+      str = str .. keyEntry .. ' = '
+
+      if type(v) == 'table' then
+        str = str .. TableUtil.dump(v, exclude, depth + 1) .. ','
+      else
+        str = str .. TYPE_STRINGIFIERS[type(v)](v) .. ','
+      end
+    end
+  end
+
+  if isVector then
+    str = str .. ' }'
+  else
+    str = str .. '\n' .. string.rep('  ', depth - 1) .. '}'
+  end
+
+  return str
 end
 
 return TableUtil
