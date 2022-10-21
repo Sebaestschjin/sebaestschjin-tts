@@ -359,6 +359,18 @@ end
 
 ---@param object seb_Object_Identifiable
 ---@return string
+function Object.gmNotes(object)
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getGMNotes() or ""
+  end
+  if Object.isSimple(object) then
+    return (--[[---@type tts__IndexedSimpleObjectState]] object).gm_notes or ""
+  end
+  return (--[[---@type tts__ObjectState]] object).GMNotes or ""
+end
+
+---@param object seb_Object_Identifiable
+---@return string
 function Object.memo(object)
     if Object.isObject(object) then
         return (--[[---@type tts__Object]] object).getMemo() or ""
