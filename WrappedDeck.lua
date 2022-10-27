@@ -1,3 +1,4 @@
+local Logger = require("sebaestschjin-tts.Logger")
 local Object = require("sebaestschjin-tts.Object")
 
 ---@class seb_WrappedDeck
@@ -221,6 +222,11 @@ local function new(obj)
         formedDeck.setPosition(currentPosition)
         formedDeck.setRotation(currentRotation)
       end
+
+      if not formedDeck then
+        Logger.error("Could not form a new deck from %s and %s", wrappedObject, cardOrDeck)
+      end
+
       makeDeck(formedDeck)
       return formedDeck
     else
