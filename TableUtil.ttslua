@@ -58,6 +58,21 @@ function TableUtil.values(tab)
   return values
 end
 
+---@generic K, V
+---@param table table<K, V>
+---@param key K
+---@param default V
+---@return V
+function TableUtil.getOrElse(table, key, default)
+  local value = table[key]
+  if not value then
+    value = default
+    table[key] = value
+  end
+
+  return table[key]
+end
+
 --- Checks whether a table is empty. A nil value is also considered an empty table.
 ---@param tab nil | table
 ---@return boolean
