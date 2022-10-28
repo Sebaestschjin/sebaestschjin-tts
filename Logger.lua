@@ -55,7 +55,16 @@ local function buildMessage(...)
   for i = 1, args.n do
     args[i] = logString(args[i])
   end
-  return string.format(table.unpack(args))
+
+  local success, result = pcall(function()
+    return string.format(table.unpack(args))
+  end)
+
+  if success then
+    return result
+  end
+
+  return table.unpack(args)
 end
 
 ---@param functionName string
