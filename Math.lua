@@ -35,4 +35,19 @@ function Math.roundDown(value, decimalPlaces)
     return math.ceil(value - 0.5)
 end
 
+---@param value number
+---@param min number
+---@param max number
+function Math.clamp(value, min, max)
+  if value < min then
+    return min
+  end
+
+  if value > max then
+    return max
+  end
+
+  return value
+end
+
 return Math
