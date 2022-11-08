@@ -22,40 +22,42 @@ local XmlUiDropdown = {}
 ---@field onValueChanged nil | seb_XmlUi_EventHandler
 ---@field scrollbarColors nil | seb_XmlUi_ColorBlock
 ---@field scrollbarImage nil | tts__UIAssetName
+---@field scrollSensitivity nil | number
 ---@field textColor nil | seb_XmlUi_Color
 ---@field [any] nil @All other fields are invalid
 
 local Attributes = {
-    arrowColor = XmlUiFactory.AttributeType.color,
-    arrowImage = XmlUiFactory.AttributeType.string,
-    checkColor = XmlUiFactory.AttributeType.color,
-    checkImage = XmlUiFactory.AttributeType.string,
-    dropdownBackgroundColor = XmlUiFactory.AttributeType.color,
-    dropdownBackgroundImage = XmlUiFactory.AttributeType.string,
-    image = XmlUiFactory.AttributeType.string,
-    itemBackgroundColors = XmlUiFactory.AttributeType.colorBlock,
-    itemHeight = XmlUiFactory.AttributeType.integer,
-    itemTextColor = XmlUiFactory.AttributeType.color,
-    onValueChanged = XmlUiFactory.AttributeType.handler,
-    scrollbarColors = XmlUiFactory.AttributeType.colorBlock,
-    scrollbarImage = XmlUiFactory.AttributeType.string,
-    textColor = XmlUiFactory.AttributeType.color,
+  arrowColor = XmlUiFactory.AttributeType.color,
+  arrowImage = XmlUiFactory.AttributeType.string,
+  checkColor = XmlUiFactory.AttributeType.color,
+  checkImage = XmlUiFactory.AttributeType.string,
+  dropdownBackgroundColor = XmlUiFactory.AttributeType.color,
+  dropdownBackgroundImage = XmlUiFactory.AttributeType.string,
+  image = XmlUiFactory.AttributeType.string,
+  itemBackgroundColors = XmlUiFactory.AttributeType.colorBlock,
+  itemHeight = XmlUiFactory.AttributeType.integer,
+  itemTextColor = XmlUiFactory.AttributeType.color,
+  onValueChanged = XmlUiFactory.AttributeType.handler,
+  scrollbarColors = XmlUiFactory.AttributeType.colorBlock,
+  scrollbarImage = XmlUiFactory.AttributeType.string,
+  scrollSensitivity = XmlUiFactory.AttributeType.float,
+  textColor = XmlUiFactory.AttributeType.color,
 }
 
 setmetatable(XmlUiDropdown, TableUtil.merge(getmetatable(XmlUiElement), {
-    ---@param element tts__UIDropdownElement
-    __call = function(_, element)
-        local self = --[[---@type seb_XmlUi_Dropdown]] XmlUiElement(element)
+  ---@param element tts__UIDropdownElement
+  __call = function(_, element)
+    local self = --[[---@type seb_XmlUi_Dropdown]] XmlUiElement(element)
 
-        ---@param attributes seb_XmlUi_OptionAttributes
-        function self.addOption(attributes)
-            local option = XmlUiFactory.createOption(attributes)
-            self.addChild(option)
-            return option
-        end
-
-        return self
+    ---@param attributes seb_XmlUi_OptionAttributes
+    function self.addOption(attributes)
+      local option = XmlUiFactory.createOption(attributes)
+      self.addChild(option)
+      return option
     end
+
+    return self
+  end
 }))
 
 XmlUiFactory.register("Dropdown", XmlUiDropdown, Attributes)

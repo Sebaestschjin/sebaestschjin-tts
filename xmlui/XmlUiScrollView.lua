@@ -11,20 +11,22 @@ local XmlUiScrollView = {}
 ---@shape seb_XmlUi_ScrollViewAttributes : seb_XmlUi_Attributes
 ---@field scrollbarBackgroundColor nil | seb_XmlUi_Color
 ---@field scrollbarColors nil | seb_XmlUi_ColorBlock
+---@field scrollSensitivity nil | number
 ---@field [any] nil @All other fields are invalid
 
 local Attributes = {
-    scrollbarBackgroundColor = XmlUiFactory.AttributeType.color,
-    scrollbarColors = XmlUiFactory.AttributeType.colorBlock,
+  scrollbarBackgroundColor = XmlUiFactory.AttributeType.color,
+  scrollbarColors = XmlUiFactory.AttributeType.colorBlock,
+  scrollSensitivity = XmlUiFactory.AttributeType.float,
 }
 
 setmetatable(XmlUiScrollView, TableUtil.merge(getmetatable(XmlUiElement), {
-    ---@param element tts__UIScrollViewElement
-    __call = function(_, element)
-        local self = --[[---@type seb_XmlUi_ScrollView]] XmlUiElement(element)
+  ---@param element tts__UIScrollViewElement
+  __call = function(_, element)
+    local self = --[[---@type seb_XmlUi_ScrollView]] XmlUiElement(element)
 
-        return self
-    end
+    return self
+  end
 }))
 
 XmlUiFactory.register("HorizontalScrollView", XmlUiScrollView, Attributes)
