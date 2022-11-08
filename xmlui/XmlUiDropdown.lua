@@ -37,7 +37,7 @@ local Attributes = {
     itemHeight = XmlUiFactory.AttributeType.integer,
     itemTextColor = XmlUiFactory.AttributeType.color,
     onValueChanged = XmlUiFactory.AttributeType.handler,
-    scrollbarColors = XmlUiFactory.AttributeType.color,
+    scrollbarColors = XmlUiFactory.AttributeType.colorBlock,
     scrollbarImage = XmlUiFactory.AttributeType.string,
     textColor = XmlUiFactory.AttributeType.color,
 }
