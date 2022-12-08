@@ -25,8 +25,15 @@ local Search = {}
 ---@param isPattern nil | boolean
 ---@return boolean
 local function matches(searchField, searchValue, isPattern)
-    local plain = not isPattern
-    return searchField == nil or string.find(tostring(searchValue), tostring(searchField), 1, plain) ~= nil
+  if searchField == nil then
+    return true
+  end
+
+  if isPattern then
+    return string.find(tostring(searchValue), tostring(searchField)) ~= nil
+  end
+
+  return tostring(searchValue) == tostring(searchField)
 end
 
 --- Finds the first object in all objects that matches the given search.
