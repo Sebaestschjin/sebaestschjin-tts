@@ -157,4 +157,25 @@ function Search.nearestInContainedObjects(container, name, maxDistance)
     return nearestObject, nearestDistance
 end
 
+---@param objects tts__ObjectState[]
+---@param search fun(obj: tts__ObjectState): boolean
+---@return nil | tts__ObjectState
+function Search.firstObject(objects, search)
+  for _, object in ipairs(objects) do
+    if search(object) then
+      return object
+    end
+  end
+
+  return nil
+end
+
+---@param name string
+---@return fun(obj: tts__ObjectState): boolean
+function Search.byName(name)
+  return function(obj)
+    return obj.Nickname == name
+  end
+end
+
 return Search
