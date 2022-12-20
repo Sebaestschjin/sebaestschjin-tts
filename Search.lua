@@ -4,6 +4,9 @@ local TableUtil = require("sebaestschjin-tts.TableUtil")
 
 local Search = {}
 
+---@alias Search_Object fun(obj: tts__Object): boolean
+---@alias Search_ObjectData fun(obj: tts__ObjectState): boolean
+
 ---@shape seb_Search
 ---@field guid nil | GUID
 ---@field name nil | string
@@ -170,11 +173,32 @@ function Search.firstObject(objects, search)
   return nil
 end
 
+---@param zone tts__ScriptingTrigger
+---@param search Search_Object
+---@return nil | tts__Object
+function Search.firstObjectInZone(zone, search)
+  for _, object in ipairs(zone.getObjects()) do
+    if search(object) then
+      return object
+    end
+  end
+
+  return nil
+end
+
 ---@param name string
----@return fun(obj: tts__ObjectState): boolean
+---@return fun(obj: seb_Object): boolean
 function Search.byName(name)
   return function(obj)
-    return obj.Nickname == name
+    return Object.name(obj) == name
+  end
+end
+
+---@param name string
+---@return fun(obj: seb_Object): boolean
+function Search.byNamePattern(name)
+  return function(obj)
+    return Object.name(obj):find(name) ~= nil
   end
 end
 
