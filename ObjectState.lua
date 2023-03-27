@@ -340,6 +340,21 @@ function ObjectState.addTag(object, tag)
   end
 end
 
+
+---@param object tts__ObjectState
+---@param assets tts__UIAsset[]
+function ObjectState.setCustomAssets(object, assets)
+  object.CustomUIAssets = {}
+
+  for _, asset in ipairs(assets) do
+    table.insert(object.CustomUIAssets, {
+      Type = asset.type or 0,
+      Name = asset.name,
+      URL = asset.url,
+    })
+  end
+end
+
 ---@param object tts__ObjectState
 ---@param useGravity boolean
 function ObjectState.setUseGravity(object, useGravity)
