@@ -121,6 +121,10 @@ local function new(object)
     return findElementById(children, elementId)
   end
 
+  function self.getChildren()
+    return children
+  end
+
   ---@param elementId string
         ---@param attribute string
         ---@param value string | number | boolean
