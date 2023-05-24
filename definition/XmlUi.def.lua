@@ -20,3 +20,5 @@
 ---@shape seb_XmlUi_Padding_AxisChar
 ---@field h integer
 ---@field v integer
+
+---@alias UIElement_Callback fun(player: tts__Player, value: string, id: string)

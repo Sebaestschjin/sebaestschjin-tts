@@ -14,7 +14,7 @@ local XmlUiFactory = {}
 local ElementFactory = {}
 local DefaultFactoryName = "__default__"
 
----@alias seb_XmlUi_AttributeType 'boolean' | 'string' | 'integer' | 'float' | 'floats' | 'handler' | 'color' | 'colorBlock' | 'padding' | 'players' | 'vector2' | 'vector4'
+---@alias seb_XmlUi_AttributeType 'boolean' | 'string' | 'integer' | 'float' | 'floats' | 'handler' | 'color' | 'colorBlock' | 'padding' | 'players' | 'vector2' | 'vector3' | 'vector4'
 
 XmlUiFactory.AttributeType = {
     boolean = "boolean",
@@ -28,6 +28,7 @@ XmlUiFactory.AttributeType = {
     padding = "padding",
     players = "players",
     vector2 = "vector2",
+    vector3 = "vector3",
     vector4 = "vector4",
 }
 
@@ -149,6 +150,7 @@ local AttributeTypeMapper = {
     [XmlUiFactory.AttributeType.padding] = toPadding,
     [XmlUiFactory.AttributeType.players] = toPlayerColors,
     [XmlUiFactory.AttributeType.vector2] = toList,
+    [XmlUiFactory.AttributeType.vector3] = toList,
     [XmlUiFactory.AttributeType.vector4] = toList,
 }
 
@@ -272,6 +274,12 @@ end
 ---@return seb_XmlUi_Image
 function XmlUiFactory.createImage(attributes)
     return --[[---@type seb_XmlUi_Image]] XmlUiFactory.createElement("Image", attributes)
+end
+
+---@param attributes seb_XmlUi_InputFieldAttributes
+---@return seb_XmlUi_InputField
+function XmlUiFactory.createInputField(attributes)
+  return --[[---@type seb_XmlUi_InputField]] XmlUiFactory.createElement("InputField", attributes)
 end
 
 ---@param attributes seb_XmlUi_OptionAttributes

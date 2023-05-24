@@ -8,7 +8,25 @@ local XmlUiElement = require("sebaestschjin-tts.xmlui.XmlUiElement")
 ---@overload fun(element: tts__UIInputFieldElement): seb_XmlUi_InputField
 local XmlUiInputField = {}
 
-local Attributes = {}
+---@shape seb_XmlUi_InputFieldAttributes : seb_XmlUi_Attributes
+---@field text nil | string
+---@field placeholder nil | string
+---@field textAlignment nil | tts__UIElement_Alignment
+---@field characterValidation nil | "None" | "Integer" | "Decimal" | "Alphanumeric" | "Name" | "EmailAddress"
+---@field colors nil | seb_XmlUi_ColorBlock
+---@field onEndEdit nil | seb_XmlUi_EventHandler
+---@field onValueChanged nil | seb_XmlUi_EventHandler
+---@field [any] nil @All other fields are invalid
+
+local Attributes = {
+  text = XmlUiFactory.AttributeType.string,
+  placeholder = XmlUiFactory.AttributeType.string,
+  characterValidation = XmlUiFactory.AttributeType.string,
+  textAlignment = XmlUiFactory.AttributeType.string,
+  colors = XmlUiFactory.AttributeType.colorBlock,
+  onEndEdit = XmlUiFactory.AttributeType.handler,
+  onValueChanged = XmlUiFactory.AttributeType.handler,
+}
 
 setmetatable(XmlUiInputField, TableUtil.merge(getmetatable(XmlUiElement), {
     ---@param element tts__UIInputFieldElement

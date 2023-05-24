@@ -15,6 +15,9 @@ local XmlUiElement = {}
 ---@field rectAlignment nil | tts__UIElement_Alignment @The element's anchor and pivot point, relative to its parent element.
 ---@field width nil | number @ 	The width of this element in pixels or as a percentage of the width of its parent.
 ---@field height nil | number @The height of this element in pixels or as a percentage of the height of its parent.
+---@field position nil | seb_Vector3
+---@field rotation nil | seb_Vector3
+---@field scale nil | seb_Vector3
 ---@field offsetXY nil | seb_Vector2 @An offset to the position of this element, e.g. a value of -32 10 will cause this element to be 10 pixels up and 32 pixels to the left of where it would otherwise be.
 ---@field alignment nil | tts__UIElement_Alignment @Typographic alignment of the text within its bounding box.
 ---@field visibility nil | seb_XmlUi_VisibilityTarget | seb_XmlUi_VisibilityTarget[] @A list of visibility targets. An element is always treated as inactive to players not specified here.
@@ -95,6 +98,9 @@ local Attributes = {
     flexibleWidth = XmlUiFactory.AttributeType.integer,
     flexibleHeight = XmlUiFactory.AttributeType.integer,
     -- Position/Size
+    position = XmlUiFactory.AttributeType.vector3,
+    rotation = XmlUiFactory.AttributeType.vector3,
+    scale = XmlUiFactory.AttributeType.vector3,
     rectAlignment = XmlUiFactory.AttributeType.string,
     width = XmlUiFactory.AttributeType.integer,
     height = XmlUiFactory.AttributeType.integer,
