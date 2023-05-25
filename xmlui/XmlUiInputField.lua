@@ -10,6 +10,7 @@ local XmlUiInputField = {}
 
 ---@shape seb_XmlUi_InputFieldAttributes : seb_XmlUi_Attributes
 ---@field text nil | string
+---@field lineType nil | "SingleLine" | "MultiLineSubmit" | "MultiLineNewLine"
 ---@field placeholder nil | string
 ---@field textAlignment nil | tts__UIElement_Alignment
 ---@field characterValidation nil | "None" | "Integer" | "Decimal" | "Alphanumeric" | "Name" | "EmailAddress"
@@ -20,6 +21,7 @@ local XmlUiInputField = {}
 
 local Attributes = {
   text = XmlUiFactory.AttributeType.string,
+  lineType = XmlUiFactory.AttributeType.string,
   placeholder = XmlUiFactory.AttributeType.string,
   characterValidation = XmlUiFactory.AttributeType.string,
   textAlignment = XmlUiFactory.AttributeType.string,
