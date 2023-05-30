@@ -1,6 +1,7 @@
 ---@shape seb_
 
 ---@shape seb_CustomObject
+---@field guid nil | GUID
 ---@field name nil | string
 ---@field description nil | string
 ---@field locked nil | boolean @Default false
