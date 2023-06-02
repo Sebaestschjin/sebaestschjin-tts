@@ -46,7 +46,7 @@ local XmlUiElement = {}
 ---@field fontSize nil | number @Height of the text in pixels.
 ---@field shadow nil | tts__ColorShape @Defines the shadow color of this element.
 ---@field shadowDistance nil | seb_Vector2 @Defines the distance of the shadow for this element.
----@field outline nil | tts__ColorShape @Defines the outline color of this element.
+---@field outline nil | seb_XmlUi_Color @Defines the outline color of this element.
 ---@field outlineSize nil | seb_Vector2 @Defines the size of this elements outline.
 ---@field resizeTextForBestFit nil | boolean @If set then fontSize is ignored and the text will be sized to be as large as possible while still fitting within its bounding box.
 ---@field resizeTextMinSize nil | number @When resizeTextForBestFit is set, text will not be sized smaller than this.
