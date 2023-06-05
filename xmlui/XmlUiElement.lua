@@ -67,214 +67,242 @@ local XmlUiElement = {}
 
 ---@type table<string, seb_XmlUi_AttributeType>
 local Attributes = {
-    -- General
-    id = XmlUiFactory.AttributeType.string,
-    class = XmlUiFactory.AttributeType.string,
-    active = XmlUiFactory.AttributeType.boolean,
-    visibility = XmlUiFactory.AttributeType.players,
-    -- Text
-    text = XmlUiFactory.AttributeType.string,
-    alignment = XmlUiFactory.AttributeType.string,
-    color = XmlUiFactory.AttributeType.color,
-    font = XmlUiFactory.AttributeType.string,
-    fontStyle = XmlUiFactory.AttributeType.string,
-    fontSize = XmlUiFactory.AttributeType.integer,
-    resizeTextForBestFit = XmlUiFactory.AttributeType.boolean,
-    resizeTextMinSize = XmlUiFactory.AttributeType.integer,
-    resizeTextMaxSize = XmlUiFactory.AttributeType.integer,
-    horizontalOverflow = XmlUiFactory.AttributeType.string,
-    verticalOverflow = XmlUiFactory.AttributeType.string,
-    -- Appearance
-    shadow = XmlUiFactory.AttributeType.color,
-    shadowDistance = XmlUiFactory.AttributeType.vector2,
-    outline = XmlUiFactory.AttributeType.color,
-    outlineSize = XmlUiFactory.AttributeType.vector2,
-    -- Layout
-    ignoreLayout = XmlUiFactory.AttributeType.boolean,
-    minWidth = XmlUiFactory.AttributeType.integer,
-    minHeight = XmlUiFactory.AttributeType.integer,
-    preferredWidth = XmlUiFactory.AttributeType.integer,
-    preferredHeight = XmlUiFactory.AttributeType.integer,
-    flexibleWidth = XmlUiFactory.AttributeType.integer,
-    flexibleHeight = XmlUiFactory.AttributeType.integer,
-    -- Position/Size
-    position = XmlUiFactory.AttributeType.vector3,
-    rotation = XmlUiFactory.AttributeType.vector3,
-    scale = XmlUiFactory.AttributeType.vector3,
-    rectAlignment = XmlUiFactory.AttributeType.string,
-    width = XmlUiFactory.AttributeType.integer,
-    height = XmlUiFactory.AttributeType.integer,
-    offsetXY = XmlUiFactory.AttributeType.vector2,
-    -- Dragging
-    allowDragging = XmlUiFactory.AttributeType.boolean,
-    restrictDraggingToParentBounds = XmlUiFactory.AttributeType.boolean,
-    returnToOriginalPositionWhenReleased = XmlUiFactory.AttributeType.boolean,
-    -- Animation
-    showAnimation = XmlUiFactory.AttributeType.string,
-    hideAnimation = XmlUiFactory.AttributeType.string,
-    showAnimationDelay = XmlUiFactory.AttributeType.float,
-    hideAnimationDelay = XmlUiFactory.AttributeType.float,
-    animationDuration = XmlUiFactory.AttributeType.float,
-    -- Tooltip
-    tooltip = XmlUiFactory.AttributeType.string,
-    tooltipBackgroundColor = XmlUiFactory.AttributeType.color,
-    tooltipBackgroundImage = XmlUiFactory.AttributeType.string,
-    tooltipBorderColor = XmlUiFactory.AttributeType.color,
-    tooltipBorderImage = XmlUiFactory.AttributeType.string,
-    tooltipOffset = XmlUiFactory.AttributeType.integer,
-    tooltipPosition = XmlUiFactory.AttributeType.string,
-    tooltipTextColor = XmlUiFactory.AttributeType.color,
-    -- Event
-    onClick = XmlUiFactory.AttributeType.handler,
-    onMouseEnter = XmlUiFactory.AttributeType.handler,
-    onMouseExit = XmlUiFactory.AttributeType.handler,
-    onMouseDown = XmlUiFactory.AttributeType.handler,
-    onMouseUp = XmlUiFactory.AttributeType.handler,
-    -- Custom
-    zIndex = XmlUiFactory.AttributeType.integer,
+  -- General
+  id = XmlUiFactory.AttributeType.string,
+  class = XmlUiFactory.AttributeType.string,
+  active = XmlUiFactory.AttributeType.boolean,
+  visibility = XmlUiFactory.AttributeType.players,
+  -- Text
+  text = XmlUiFactory.AttributeType.string,
+  alignment = XmlUiFactory.AttributeType.string,
+  color = XmlUiFactory.AttributeType.color,
+  font = XmlUiFactory.AttributeType.string,
+  fontStyle = XmlUiFactory.AttributeType.string,
+  fontSize = XmlUiFactory.AttributeType.integer,
+  resizeTextForBestFit = XmlUiFactory.AttributeType.boolean,
+  resizeTextMinSize = XmlUiFactory.AttributeType.integer,
+  resizeTextMaxSize = XmlUiFactory.AttributeType.integer,
+  horizontalOverflow = XmlUiFactory.AttributeType.string,
+  verticalOverflow = XmlUiFactory.AttributeType.string,
+  -- Appearance
+  shadow = XmlUiFactory.AttributeType.color,
+  shadowDistance = XmlUiFactory.AttributeType.vector2,
+  outline = XmlUiFactory.AttributeType.color,
+  outlineSize = XmlUiFactory.AttributeType.vector2,
+  -- Layout
+  ignoreLayout = XmlUiFactory.AttributeType.boolean,
+  minWidth = XmlUiFactory.AttributeType.integer,
+  minHeight = XmlUiFactory.AttributeType.integer,
+  preferredWidth = XmlUiFactory.AttributeType.integer,
+  preferredHeight = XmlUiFactory.AttributeType.integer,
+  flexibleWidth = XmlUiFactory.AttributeType.integer,
+  flexibleHeight = XmlUiFactory.AttributeType.integer,
+  -- Position/Size
+  position = XmlUiFactory.AttributeType.vector3,
+  rotation = XmlUiFactory.AttributeType.vector3,
+  scale = XmlUiFactory.AttributeType.vector3,
+  rectAlignment = XmlUiFactory.AttributeType.string,
+  width = XmlUiFactory.AttributeType.integer,
+  height = XmlUiFactory.AttributeType.integer,
+  offsetXY = XmlUiFactory.AttributeType.vector2,
+  -- Dragging
+  allowDragging = XmlUiFactory.AttributeType.boolean,
+  restrictDraggingToParentBounds = XmlUiFactory.AttributeType.boolean,
+  returnToOriginalPositionWhenReleased = XmlUiFactory.AttributeType.boolean,
+  -- Animation
+  showAnimation = XmlUiFactory.AttributeType.string,
+  hideAnimation = XmlUiFactory.AttributeType.string,
+  showAnimationDelay = XmlUiFactory.AttributeType.float,
+  hideAnimationDelay = XmlUiFactory.AttributeType.float,
+  animationDuration = XmlUiFactory.AttributeType.float,
+  -- Tooltip
+  tooltip = XmlUiFactory.AttributeType.string,
+  tooltipBackgroundColor = XmlUiFactory.AttributeType.color,
+  tooltipBackgroundImage = XmlUiFactory.AttributeType.string,
+  tooltipBorderColor = XmlUiFactory.AttributeType.color,
+  tooltipBorderImage = XmlUiFactory.AttributeType.string,
+  tooltipOffset = XmlUiFactory.AttributeType.integer,
+  tooltipPosition = XmlUiFactory.AttributeType.string,
+  tooltipTextColor = XmlUiFactory.AttributeType.color,
+  -- Event
+  onClick = XmlUiFactory.AttributeType.handler,
+  onMouseEnter = XmlUiFactory.AttributeType.handler,
+  onMouseExit = XmlUiFactory.AttributeType.handler,
+  onMouseDown = XmlUiFactory.AttributeType.handler,
+  onMouseUp = XmlUiFactory.AttributeType.handler,
+  -- Custom
+  zIndex = XmlUiFactory.AttributeType.integer,
 }
 
 setmetatable(XmlUiElement, TableUtil.merge(getmetatable(XmlUiContainer), {
-    ---@param element tts__UIElement
-    __call = function(_, element)
-        local self = --[[---@type seb_XmlUi_Element]] XmlUiContainer()
-        local boundElement = element
-        ---@type nil | seb_XmlUi
-        local boundUi
+  ---@param element tts__UIElement
+  __call = function(_, element)
+    local self = --[[---@type seb_XmlUi_Element]] XmlUiContainer()
+    local boundElement = element
+    ---@type nil | seb_XmlUi
+    local boundUi
 
-        local children = self._wrapChildren(--[[---@type tts__UIElement[] ]] element.children)
+    local children = self._wrapChildren(--[[---@type tts__UIElement[] ]] element.children)
 
-        ---@param name string
-        ---@return nil | string | number | boolean
-        local function getAttribute(name)
-            if boundElement.attributes then
-                return (--[[---@type table<string, nil | string | number | boolean>]] boundElement.attributes)[name]
-            end
-            return nil
+    ---@param childElements seb_XmlUi_Element[]
+    ---@param elementId string
+    local function findElementById(childElements, elementId)
+      for _, element in pairs(childElements) do
+        if element.getId() == elementId then
+          return element
         end
-
-        ---@param handler fun(ui: seb_XmlUi, id: tts__UIElement_Id): void
-        local function onBoundId(handler)
-            local id = self.getId()
-            if boundUi and id then
-                handler(--[[---@not nil]] boundUi, --[[---@not nil]] id)
-            else
-                Logger.debug("Not bound")
-            end
+        local inChild = findElementById(element.getChildren(), elementId)
+        if inChild then
+          return inChild
         end
-
-        ---@param name string
-        ---@param value tts__UIAttributeValue
-        function self.setAttribute(name, value)
-            if not boundElement.attributes then
-                (--[[---@type table<string, any>]] boundElement).attributes = {}
-            end
-            (--[[---@type table<string, any>]] boundElement.attributes)[name] = value
-
-            onBoundId(function(ui, id) ui.setAttribute(id, name, value) end)
-        end
-
-        ---@param name string
-        ---@return number | string | boolean
-        function self.getAttribute(name)
-            if boundElement.attributes then
-                local attributes = --[[---@type table<string, tts__UIAttributeValue>]] boundElement.attributes
-                return attributes[name]
-            end
-        end
-
-        ---@return nil | string
-        function self.getId()
-            return --[[---@type nil | string]] getAttribute("id")
-        end
-
-        ---@param ui seb_XmlUi
-        function self.bindUi(ui)
-            boundUi = ui
-        end
-
-        ---@param uiElement seb_XmlUi_Element
-        function self.addChild(uiElement)
-            table.insert(children, uiElement)
-        end
-
-        ---@return seb_XmlUi_Element[]
-        function self.getChildren()
-            return children
-        end
-
-        ---@param child number
-        ---@return seb_XmlUi_Element
-        function self.getChild(child)
-            return children[child]
-        end
-
-        function self.clearElements()
-            children = {}
-        end
-
-        ---@return tts__UIElement
-        function self.getXmlElement()
-            -- the type cast is obviously bogus, but I didn't find another clear way to get rid of the wrong type error
-            local unwrappedElement = --[[---@type tts__UILayoutElement]] boundElement
-            unwrappedElement.children = TableUtil.map(children, function(c) return c.getXmlElement() end)
-            return unwrappedElement
-        end
-
-        function self.show()
-            onBoundId(function(ui, id) ui.show(id) end)
-        end
-
-        function self.hide()
-            onBoundId(function(ui, id) ui.hide(id) end)
-        end
-
-        ---@return integer
-        function self.getZIndex()
-            local attribute = self.getAttribute("zIndex")
-            if not attribute then
-                return 0
-            end
-            return --[[---@not nil]] tonumber(--[[---@type string]] attribute)
-        end
-
-        ---@param value number
-        function self.setWidth(value)
-            self.setAttribute("width", value)
-        end
-
-        ---@param value number
-        function self.setHeight(value)
-            self.setAttribute("height", value)
-        end
-
-        ---@param value string
-        function self.setTooltip(value)
-            self.setAttribute("tooltip", value)
-        end
-
-        ---@param value seb_XmlUi_Color
-        function self.setTooltipBackgroundColor(value)
-            self.setAttribute("tooltipBackgroundColor", XmlUiFactory.Converter.toColor(value))
-        end
-
-        ---@param value seb_XmlUi_Color
-        function self.setTooltipBorderColor(value)
-            self.setAttribute("tooltipBorderColor", XmlUiFactory.Converter.toColor(value))
-        end
-
-        ---@param value seb_XmlUi_Color
-        function self.setTooltipTextColor(value)
-            self.setAttribute("tooltipTextColor", XmlUiFactory.Converter.toColor(value))
-        end
-
-        ---@return tts__UIElement_Tag
-        function self.getType()
-            return boundElement.tag
-        end
-
-        return self
+      end
     end
+
+    ---@param name string
+    ---@return nil | string | number | boolean
+    local function getAttribute(name)
+      if boundElement.attributes then
+        return (--[[---@type table<string, nil | string | number | boolean>]] boundElement.attributes)[name]
+      end
+      return nil
+    end
+
+    ---@param handler fun(ui: seb_XmlUi, id: tts__UIElement_Id): void
+    local function onBoundId(handler)
+      local id = self.getId()
+      if boundUi and id then
+        handler(--[[---@not nil]] boundUi, --[[---@not nil]] id)
+      else
+        Logger.debug("Not bound")
+      end
+    end
+
+    ---@param name string
+    ---@param value tts__UIAttributeValue
+    function self.setAttribute(name, value)
+      if not boundElement.attributes then
+        (--[[---@type table<string, any>]] boundElement).attributes = {}
+      end
+      (--[[---@type table<string, any>]] boundElement.attributes)[name] = value
+
+      onBoundId(function(ui, id)
+        ui.setAttribute(id, name, value)
+      end)
+    end
+
+    ---@param name string
+    ----@return number | string | boolean
+    function self.getAttribute(name)
+      if boundElement.attributes then
+        local attributes = --[[---@type table<string, tts__UIAttributeValue>]] boundElement.attributes
+        return attributes[name]
+      end
+    end
+
+    ---@return nil | string
+    function self.getId()
+      return --[[---@type nil | string]] getAttribute("id")
+    end
+
+    ---@param ui seb_XmlUi
+    function self.bindUi(ui)
+      boundUi = ui
+    end
+
+    ---@param uiElement seb_XmlUi_Element
+    function self.addChild(uiElement)
+      table.insert(children, uiElement)
+    end
+
+    ---@param elementId tts__UIElement_Id
+    ---@return nil | seb_XmlUi_Element
+    function self.findElement(elementId)
+      return findElementById(children, elementId)
+    end
+
+    ---@return seb_XmlUi_Element[]
+    function self.getChildren()
+      return children
+    end
+
+    ---@param child number
+    ---@return seb_XmlUi_Element
+    function self.getChild(child)
+      return children[child]
+    end
+
+    function self.clearElements()
+      children = {}
+    end
+
+    ---@return tts__UIElement
+    function self.getXmlElement()
+      -- the type cast is obviously bogus, but I didn't find another clear way to get rid of the wrong type error
+      local unwrappedElement = --[[---@type tts__UILayoutElement]] boundElement
+      unwrappedElement.children = TableUtil.map(children, function(c)
+        return c.getXmlElement()
+      end)
+      return unwrappedElement
+    end
+
+    function self.show()
+      onBoundId(function(ui, id)
+        ui.show(id)
+      end)
+    end
+
+    function self.hide()
+      onBoundId(function(ui, id)
+        ui.hide(id)
+      end)
+    end
+
+    ---@return integer
+    function self.getZIndex()
+      local attribute = self.getAttribute("zIndex")
+      if not attribute then
+        return 0
+      end
+      return --[[---@not nil]] tonumber(--[[---@type string]] attribute)
+    end
+
+    ---@param value number
+    function self.setWidth(value)
+      self.setAttribute("width", value)
+    end
+
+    ---@param value number
+    function self.setHeight(value)
+      self.setAttribute("height", value)
+    end
+
+    ---@param value string
+    function self.setTooltip(value)
+      self.setAttribute("tooltip", value)
+    end
+
+    ---@param value seb_XmlUi_Color
+    function self.setTooltipBackgroundColor(value)
+      self.setAttribute("tooltipBackgroundColor", XmlUiFactory.Converter.toColor(value))
+    end
+
+    ---@param value seb_XmlUi_Color
+    function self.setTooltipBorderColor(value)
+      self.setAttribute("tooltipBorderColor", XmlUiFactory.Converter.toColor(value))
+    end
+
+    ---@param value seb_XmlUi_Color
+    function self.setTooltipTextColor(value)
+      self.setAttribute("tooltipTextColor", XmlUiFactory.Converter.toColor(value))
+    end
+
+    ---@return tts__UIElement_Tag
+    function self.getType()
+      return boundElement.tag
+    end
+
+    return self
+  end
 }))
 
 XmlUiFactory.register(nil, XmlUiElement, Attributes)
