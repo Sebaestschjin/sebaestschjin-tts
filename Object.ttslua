@@ -1,360 +1,360 @@
 local Object = {}
 
 Object.Name = {
-    AssetBundle = "Custom_Assetbundle",
-    AssetBundleBag = "Custom_Assetbundle_Bag",
-    AssetBundleInfiniteBag = "Custom_Assetbundle_Infinite_Bag",
-    BackgammonBoard = "backgammon_board",
-    BackgammonPieceBrown = "backgammon_piece_brown",
-    BackgammonPieceWhite = "backgammon_piece_white",
-    Bag = "Bag",
-    BlockRectangle = "BlockRectangle",
-    BlockSquare = "BlockSquare",
-    BlockTriangle = "BlockTriangle",
-    Board = "Custom_Board",
-    Card = "Card",
-    CardCustom = "CardCustom",
-    CheckerBlack = "Checker_black",
-    CheckerBoard = "Checker_Board",
-    CheckerRed = "Checker_red",
-    CheckerWhite = "Checker_white",
-    ChessBishop = "Chess_Bishop",
-    ChessBoard = "Chess_Board",
-    ChessKing = "Chess_King",
-    ChessKnight = "Chess_Knight",
-    ChessPawn = "Chess_Pawn",
-    ChessQueen = "Chess_Queen",
-    ChessRook = "Chess_Rook",
-    ChiP1000 = "Chip_1000",
-    ChineseCheckersBoard = "Chinese_Checkers_Board",
-    ChineseCheckersPiece = "Chinese_Checkers_Piece",
-    Chip10 = "Chip_10",
-    Chip100 = "Chip_100",
-    Chip50 = "Chip_50",
-    Chip500 = "Chip_500",
-    Deck = "Deck",
-    DeckCardBotHead = "Deck_CardBot_Head",
-    DeckCardBotMain = "Deck_CardBot_Main",
-    DeckCustom = "DeckCustom",
-    Die10 = "Die_10",
-    Die12 = "Die_12",
-    Die20 = "Die_20",
-    Die4 = "Die_4",
-    Die6 = "Die_6",
-    Die6Rounded = "Die_6_Rounded",
-    Die8 = "Die_8",
-    DieCustom = "Custom_Dice",
-    DiePiecepack = "Die_Piecepack",
-    DigitalClock = "Digital_Clock",
-    Domino = "Domino",
-    FigurineCardBot = "Figurine_Card_Bot",
-    FigurineCustom = "Figurine_Custom",
-    FigurineKimiKat = "Figurine_Kimi_Kat",
-    FigurineKnil = "Figurine_Knil",
-    FigurineMara = "Figurine_Mara",
-    FigurineSirLoin = "Figurine_Sir_Loin",
-    FigurineZeke = "Figurine_Zeke",
-    FigurineZomblor = "Figurine_Zomblor",
-    GoBoard = "Go_Board",
-    GoGameBowlBlack = "go_game_bowl_black",
-    GoGameBowlWhite = "go_game_bowl_white",
-    GoGamePieceBlack = "go_game_piece_black",
-    GoGamePieceWhite = "go_game_piece_white",
-    InfiniteBag = "Infinite_Bag",
-    LayoutZone = "LayoutZone",
-    MahjongTile = "Mahjong_Tile",
-    MetalBall = "Ball",
-    Model = "Custom_Model",
-    ModelBag = "Custom_Model_Bag",
-    ModelInfinite = "Custom_Model_Infinite_Bag",
-    Pachisiboard = "Pachisi_board",
-    PlayerPawn = "PlayerPawn",
-    Quarter = "Quarter",
-    RPGBear = "rpg_BEAR",
-    RPGChimera = "rpg_CHIMERA",
-    RPGCyclop = "rpg_CYCLOP",
-    RPGDragonide = "rpg_DRAGONIDE",
-    RPGEvilWatcher = "rpg_EVIL_WATCHER",
-    RPGGhoul = "rpg_GHOUL",
-    RPGGiantViper = "rpg_GIANT_VIPER",
-    RPGGoblin = "rpg_GOBLIN",
-    RPGGolem = "rpg_GOLEM",
-    RPGGriffon = "rpg_GRIFFON",
-    RPGHydra = "rpg_HYDRA",
-    RPGKobold = "rpg_KOBOLD",
-    RPGLizardWarrior = "rpg_LIZARD_WARRIOR",
-    RPGManticora = "rpg_MANTICORA",
-    RPGMummy = "rpg_MUMMY",
-    RPGOgre = "rpg_OGRE",
-    RPGOrc = "rpg_ORC",
-    RPGRat = "rpg_RAT",
-    RPGSkeletonKnight = "rpg_SKELETON_KNIGHT",
-    RPGTreeEnt = "rpg_TREE_ENT",
-    RPGTroll = "rpg_TROLL",
-    RPGVampire = "rpg_VAMPIRE",
-    RPGWerewolf = "rpg_WEREWOLF",
-    RPGWolf = "rpg_WOLF",
-    RPGWyvern = "rpg_WYVERN",
-    ReversiBoard = "reversi_board",
-    ReversiChip = "reversi_chip",
-    ScriptingTrigger = "ScriptingTrigger",
-    Tablet = "Tablet",
-    Tile = "Custom_Tile",
-    TilesetBarrel = "Tileset_Barrel",
-    TilesetChair = "Tileset_Chair",
-    TilesetChest = "Tileset_Chest",
-    TilesetCorner = "Tileset_Corner",
-    TilesetFloor = "Tileset_Floor",
-    TilesetRock = "Tileset_Rock",
-    TilesetTable = "Tileset_Table",
-    TilesetTree = "Tileset_Tree",
-    TilesetWall = "Tileset_Wall",
-    Token = "Custom_Token",
+  AssetBundle = "Custom_Assetbundle",
+  AssetBundleBag = "Custom_Assetbundle_Bag",
+  AssetBundleInfiniteBag = "Custom_Assetbundle_Infinite_Bag",
+  BackgammonBoard = "backgammon_board",
+  BackgammonPieceBrown = "backgammon_piece_brown",
+  BackgammonPieceWhite = "backgammon_piece_white",
+  Bag = "Bag",
+  BlockRectangle = "BlockRectangle",
+  BlockSquare = "BlockSquare",
+  BlockTriangle = "BlockTriangle",
+  Board = "Custom_Board",
+  Card = "Card",
+  CardCustom = "CardCustom",
+  CheckerBlack = "Checker_black",
+  CheckerBoard = "Checker_Board",
+  CheckerRed = "Checker_red",
+  CheckerWhite = "Checker_white",
+  ChessBishop = "Chess_Bishop",
+  ChessBoard = "Chess_Board",
+  ChessKing = "Chess_King",
+  ChessKnight = "Chess_Knight",
+  ChessPawn = "Chess_Pawn",
+  ChessQueen = "Chess_Queen",
+  ChessRook = "Chess_Rook",
+  ChiP1000 = "Chip_1000",
+  ChineseCheckersBoard = "Chinese_Checkers_Board",
+  ChineseCheckersPiece = "Chinese_Checkers_Piece",
+  Chip10 = "Chip_10",
+  Chip100 = "Chip_100",
+  Chip50 = "Chip_50",
+  Chip500 = "Chip_500",
+  Deck = "Deck",
+  DeckCardBotHead = "Deck_CardBot_Head",
+  DeckCardBotMain = "Deck_CardBot_Main",
+  DeckCustom = "DeckCustom",
+  Die10 = "Die_10",
+  Die12 = "Die_12",
+  Die20 = "Die_20",
+  Die4 = "Die_4",
+  Die6 = "Die_6",
+  Die6Rounded = "Die_6_Rounded",
+  Die8 = "Die_8",
+  DieCustom = "Custom_Dice",
+  DiePiecepack = "Die_Piecepack",
+  DigitalClock = "Digital_Clock",
+  Domino = "Domino",
+  FigurineCardBot = "Figurine_Card_Bot",
+  FigurineCustom = "Figurine_Custom",
+  FigurineKimiKat = "Figurine_Kimi_Kat",
+  FigurineKnil = "Figurine_Knil",
+  FigurineMara = "Figurine_Mara",
+  FigurineSirLoin = "Figurine_Sir_Loin",
+  FigurineZeke = "Figurine_Zeke",
+  FigurineZomblor = "Figurine_Zomblor",
+  GoBoard = "Go_Board",
+  GoGameBowlBlack = "go_game_bowl_black",
+  GoGameBowlWhite = "go_game_bowl_white",
+  GoGamePieceBlack = "go_game_piece_black",
+  GoGamePieceWhite = "go_game_piece_white",
+  InfiniteBag = "Infinite_Bag",
+  LayoutZone = "LayoutZone",
+  MahjongTile = "Mahjong_Tile",
+  MetalBall = "Ball",
+  Model = "Custom_Model",
+  ModelBag = "Custom_Model_Bag",
+  ModelInfinite = "Custom_Model_Infinite_Bag",
+  Pachisiboard = "Pachisi_board",
+  PlayerPawn = "PlayerPawn",
+  Quarter = "Quarter",
+  RPGBear = "rpg_BEAR",
+  RPGChimera = "rpg_CHIMERA",
+  RPGCyclop = "rpg_CYCLOP",
+  RPGDragonide = "rpg_DRAGONIDE",
+  RPGEvilWatcher = "rpg_EVIL_WATCHER",
+  RPGGhoul = "rpg_GHOUL",
+  RPGGiantViper = "rpg_GIANT_VIPER",
+  RPGGoblin = "rpg_GOBLIN",
+  RPGGolem = "rpg_GOLEM",
+  RPGGriffon = "rpg_GRIFFON",
+  RPGHydra = "rpg_HYDRA",
+  RPGKobold = "rpg_KOBOLD",
+  RPGLizardWarrior = "rpg_LIZARD_WARRIOR",
+  RPGManticora = "rpg_MANTICORA",
+  RPGMummy = "rpg_MUMMY",
+  RPGOgre = "rpg_OGRE",
+  RPGOrc = "rpg_ORC",
+  RPGRat = "rpg_RAT",
+  RPGSkeletonKnight = "rpg_SKELETON_KNIGHT",
+  RPGTreeEnt = "rpg_TREE_ENT",
+  RPGTroll = "rpg_TROLL",
+  RPGVampire = "rpg_VAMPIRE",
+  RPGWerewolf = "rpg_WEREWOLF",
+  RPGWolf = "rpg_WOLF",
+  RPGWyvern = "rpg_WYVERN",
+  ReversiBoard = "reversi_board",
+  ReversiChip = "reversi_chip",
+  ScriptingTrigger = "ScriptingTrigger",
+  Tablet = "Tablet",
+  Tile = "Custom_Tile",
+  TilesetBarrel = "Tileset_Barrel",
+  TilesetChair = "Tileset_Chair",
+  TilesetChest = "Tileset_Chest",
+  TilesetCorner = "Tileset_Corner",
+  TilesetFloor = "Tileset_Floor",
+  TilesetRock = "Tileset_Rock",
+  TilesetTable = "Tileset_Table",
+  TilesetTree = "Tileset_Tree",
+  TilesetWall = "Tileset_Wall",
+  Token = "Custom_Token",
 }
 
 Object.Type = {
-    BackgammonPiece = "Backgammon Piece",
-    Bag = "Bag",
-    Block = "Block",
-    Board = "Board",
-    Calculator = "Calculator",
-    Card = "Card",
-    Checker = "Checker",
-    Chess = "Chess",
-    Chip = "Chip",
-    Clock = "Clock",
-    Coin = "Coin",
-    Counter = "Counter",
-    Deck = "Deck",
-    Die = "Dice",
-    Domino = "Domino",
-    Figurine = "Figurine",
-    Fog = "Fog",
-    FogOfWar = "FogOfWar",
-    Generic = "Generic",
-    GoPiece = "GoPiece",
-    Hand = "Hand",
-    Infinite = "Infinite",
-    InventoryBackground = "InventoryBackground",
-    InventoryBotBackground = "InventoryBotBG",
-    InventoryItemBlank = "InventoryItemBlank",
-    InventoryTopBackground = "InventoryTopBG",
-    Jigsaw = "Jigsaw",
-    JigsawBox = "Jigsaw Box",
-    MP3 = "Mp3",
-    Notecard = "Notecard",
-    Pointer = "Pointer",
-    RPGFigurine = "rpgFigurine",
-    Randomize = "Randomize",
-    Scripting = "Scripting",
-    Stack = "Stack",
-    Superfight = "Superfight",
-    Surface = "Surface",
-    Tablet = "Tablet",
-    Text = "3D Text",
-    Tile = "Tile",
-    Tileset = "Tileset",
-    VRUI = "VR UI",
+  BackgammonPiece = "Backgammon Piece",
+  Bag = "Bag",
+  Block = "Block",
+  Board = "Board",
+  Calculator = "Calculator",
+  Card = "Card",
+  Checker = "Checker",
+  Chess = "Chess",
+  Chip = "Chip",
+  Clock = "Clock",
+  Coin = "Coin",
+  Counter = "Counter",
+  Deck = "Deck",
+  Die = "Dice",
+  Domino = "Domino",
+  Figurine = "Figurine",
+  Fog = "Fog",
+  FogOfWar = "FogOfWar",
+  Generic = "Generic",
+  GoPiece = "GoPiece",
+  Hand = "Hand",
+  Infinite = "Infinite",
+  InventoryBackground = "InventoryBackground",
+  InventoryBotBackground = "InventoryBotBG",
+  InventoryItemBlank = "InventoryItemBlank",
+  InventoryTopBackground = "InventoryTopBG",
+  Jigsaw = "Jigsaw",
+  JigsawBox = "Jigsaw Box",
+  MP3 = "Mp3",
+  Notecard = "Notecard",
+  Pointer = "Pointer",
+  RPGFigurine = "rpgFigurine",
+  Randomize = "Randomize",
+  Scripting = "Scripting",
+  Stack = "Stack",
+  Superfight = "Superfight",
+  Surface = "Surface",
+  Tablet = "Tablet",
+  Text = "3D Text",
+  Tile = "Tile",
+  Tileset = "Tileset",
+  VRUI = "VR UI",
 }
 
 Object.ModelType = {
-    Generic = 0,
-    Figurine = 1,
-    Dice = 2,
-    Coin = 3,
-    Board = 4,
-    Chip = 5,
-    Bag = 6,
-    Infinite = 7,
+  Generic = 0,
+  Figurine = 1,
+  Dice = 2,
+  Coin = 3,
+  Board = 4,
+  Chip = 5,
+  Bag = 6,
+  Infinite = 7,
 }
 
 Object.MaterialType = {
-    Plastic = 0,
-    Wood = 1,
-    Metal = 2,
-    Cardboard = 3,
-    Glass = 4,
+  Plastic = 0,
+  Wood = 1,
+  Metal = 2,
+  Cardboard = 3,
+  Glass = 4,
 }
 
 --- Types for custom tiles.
 ---@type table<string, tts__TileType>
 Object.TileType = {
-    Box = 0,
-    Hex = 1,
-    Circle = 2,
-    Rounded = 3,
+  Box = 0,
+  Hex = 1,
+  Circle = 2,
+  Rounded = 3,
 }
 
 Object.LayoutZone = {
-    ---@type table<string, tts__LayoutZone_Direction>
-    Direction = {
-        RightDown = 0,
-        DownRight = 1,
-        LeftDown = 2,
-        DownLeft = 3,
-        RightUp = 4,
-        UpRight = 5,
-        LeftUp = 6,
-        UpLeft = 7,
-    },
-    ---@type table<string, tts__LayoutZone_Facing>
-    Facing = {
-        DoNotChange = 0,
-        FaceUp = 1,
-        FaceDown = 2,
-        GroupIsTipped = 3,
-    },
-    ---@type table<string, tts__LayoutZone_GroupDirection>
-    GroupDirection = {
-        Eastward = 0,
-        Westward = 1,
-        Northward = 2,
-        Southward = 3,
-    },
-    ---@type table<string, tts__LayoutZone_GroupSort>
-    GroupSort = {
-        None = 0,
-        AddedTime = 1,
-        Value = 2,
-        Name = 3,
-        Description = 4,
-        GmNotes = 5,
-        Memo = 6,
-    }
+  ---@type table<string, tts__LayoutZone_Direction>
+  Direction = {
+    RightDown = 0,
+    DownRight = 1,
+    LeftDown = 2,
+    DownLeft = 3,
+    RightUp = 4,
+    UpRight = 5,
+    LeftUp = 6,
+    UpLeft = 7,
+  },
+  ---@type table<string, tts__LayoutZone_Facing>
+  Facing = {
+    DoNotChange = 0,
+    FaceUp = 1,
+    FaceDown = 2,
+    GroupIsTipped = 3,
+  },
+  ---@type table<string, tts__LayoutZone_GroupDirection>
+  GroupDirection = {
+    Eastward = 0,
+    Westward = 1,
+    Northward = 2,
+    Southward = 3,
+  },
+  ---@type table<string, tts__LayoutZone_GroupSort>
+  GroupSort = {
+    None = 0,
+    AddedTime = 1,
+    Value = 2,
+    Name = 3,
+    Description = 4,
+    GmNotes = 5,
+    Memo = 6,
+  }
 }
 
 ---@type table<string, tts__ObjectType>
 Object.TypeForName = {
-    [Object.Name.AssetBundleBag] = Object.Type.Bag,
-    [Object.Name.AssetBundleInfiniteBag] = Object.Type.Infinite,
-    [Object.Name.Bag] = Object.Type.Bag,
-    [Object.Name.Board] = Object.Type.Board,
-    [Object.Name.Card] = Object.Type.Card,
-    [Object.Name.CardCustom] = Object.Type.Card,
-    [Object.Name.Deck] = Object.Type.Deck,
-    [Object.Name.DeckCustom] = Object.Type.Deck,
-    [Object.Name.Die4] = Object.Type.Die,
-    [Object.Name.Die6] = Object.Type.Die,
-    [Object.Name.Die6Rounded] = Object.Type.Die,
-    [Object.Name.Die8] = Object.Type.Die,
-    [Object.Name.Die10] = Object.Type.Die,
-    [Object.Name.Die12] = Object.Type.Die,
-    [Object.Name.Die20] = Object.Type.Die,
-    [Object.Name.DieCustom] = Object.Type.Die,
-    [Object.Name.FigurineCardBot] = Object.Type.Figurine,
-    [Object.Name.FigurineCustom] = Object.Type.Figurine,
-    [Object.Name.FigurineKimiKat] = Object.Type.Figurine,
-    [Object.Name.FigurineKnil] = Object.Type.Figurine,
-    [Object.Name.FigurineMara] = Object.Type.Figurine,
-    [Object.Name.FigurineSirLoin] = Object.Type.Figurine,
-    [Object.Name.FigurineZeke] = Object.Type.Figurine,
-    [Object.Name.FigurineZomblor] = Object.Type.Figurine,
-    [Object.Name.ModelBag] = Object.Type.Bag,
-    [Object.Name.ModelInfinite] = Object.Type.Infinite,
-    [Object.Name.InfiniteBag] = Object.Type.Infinite,
-    [Object.Name.ScriptingTrigger] = Object.Type.Scripting,
-    [Object.Name.Tile] = Object.Type.Tile,
+  [Object.Name.AssetBundleBag] = Object.Type.Bag,
+  [Object.Name.AssetBundleInfiniteBag] = Object.Type.Infinite,
+  [Object.Name.Bag] = Object.Type.Bag,
+  [Object.Name.Board] = Object.Type.Board,
+  [Object.Name.Card] = Object.Type.Card,
+  [Object.Name.CardCustom] = Object.Type.Card,
+  [Object.Name.Deck] = Object.Type.Deck,
+  [Object.Name.DeckCustom] = Object.Type.Deck,
+  [Object.Name.Die4] = Object.Type.Die,
+  [Object.Name.Die6] = Object.Type.Die,
+  [Object.Name.Die6Rounded] = Object.Type.Die,
+  [Object.Name.Die8] = Object.Type.Die,
+  [Object.Name.Die10] = Object.Type.Die,
+  [Object.Name.Die12] = Object.Type.Die,
+  [Object.Name.Die20] = Object.Type.Die,
+  [Object.Name.DieCustom] = Object.Type.Die,
+  [Object.Name.FigurineCardBot] = Object.Type.Figurine,
+  [Object.Name.FigurineCustom] = Object.Type.Figurine,
+  [Object.Name.FigurineKimiKat] = Object.Type.Figurine,
+  [Object.Name.FigurineKnil] = Object.Type.Figurine,
+  [Object.Name.FigurineMara] = Object.Type.Figurine,
+  [Object.Name.FigurineSirLoin] = Object.Type.Figurine,
+  [Object.Name.FigurineZeke] = Object.Type.Figurine,
+  [Object.Name.FigurineZomblor] = Object.Type.Figurine,
+  [Object.Name.ModelBag] = Object.Type.Bag,
+  [Object.Name.ModelInfinite] = Object.Type.Infinite,
+  [Object.Name.InfiniteBag] = Object.Type.Infinite,
+  [Object.Name.ScriptingTrigger] = Object.Type.Scripting,
+  [Object.Name.Tile] = Object.Type.Tile,
 }
 
 ---@param object seb_Object_Identifiable
 ---@return boolean
 function Object.isObject(object)
-    return type(object) == "userdata"
+  return type(object) == "userdata"
 end
 
 ---@param object seb_Object_Identifiable
 ---@return boolean
 function Object.isSimple(object)
-    return type(object) == "table" and (--[[---@type tts__IndexedSimpleObjectState]] object).name ~= nil
+  return type(object) == "table" and (--[[---@type tts__IndexedSimpleObjectState]] object).name ~= nil
 end
 
 ---@param object seb_Object
 ---@return boolean
 function Object.isCard(object)
-    return Object.type(object) == Object.Type.Card
+  return Object.type(object) == Object.Type.Card
 end
 
 ---@param object seb_Object
 ---@return boolean
 function Object.isDeck(object)
-    return Object.type(object) == Object.Type.Deck
+  return Object.type(object) == Object.Type.Deck
 end
 
 ---@param object seb_Object
 ---@return boolean
 function Object.isBag(object)
-    return Object.type(object) == Object.Type.Bag
+  return Object.type(object) == Object.Type.Bag
 end
 
 ---@param object seb_Object
 ---@return boolean
 function Object.isInfiniteBag(object)
-    return Object.type(object) == Object.Type.Infinite
+  return Object.type(object) == Object.Type.Infinite
 end
 
 ---@param object seb_Object
 ---@return boolean
 function Object.isFigurine(object)
-    return Object.type(object) == Object.Type.Figurine
+  return Object.type(object) == Object.Type.Figurine
 end
 
 ---@param object seb_Object
 ---@return boolean
 function Object.isContainer(object)
-    return Object.isDeck(object) or Object.isBag(object) or Object.isInfiniteBag(object)
+  return Object.isDeck(object) or Object.isBag(object) or Object.isInfiniteBag(object)
 end
 
 ---@param object tts__Object
 function Object.isLoaded(object)
-    return not object.spawning and not object.loading_custom
+  return not object.spawning and not object.loading_custom
 end
 
 ---@param object seb_Object
 ---@return tts__ObjectType
 function Object.type(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).type
-    end
-    if Object.isSimple(object) then
-        return Object.Type.Card
-    end
-    return Object.TypeForName[(--[[---@type tts__ObjectState]] object).Name]
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).type
+  end
+  if Object.isSimple(object) then
+    return Object.Type.Card
+  end
+  return Object.TypeForName[(--[[---@type tts__ObjectState]] object).Name]
 end
 
 ---@param object seb_Object_Identifiable
 ---@return GUID
 function Object.guid(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getGUID()
-    end
-    if Object.isSimple(object) then
-        return (--[[---@type tts__IndexedSimpleObjectState]] object).guid
-    end
-    return --[[---@not nil]] (--[[---@type tts__ObjectState]] object).GUID
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getGUID()
+  end
+  if Object.isSimple(object) then
+    return (--[[---@type tts__IndexedSimpleObjectState]] object).guid
+  end
+  return --[[---@not nil]] (--[[---@type tts__ObjectState]] object).GUID
 end
 
 ---@param object seb_Object_Identifiable
 ---@return string
 function Object.name(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getName()
-    end
-    if Object.isSimple(object) then
-        return (--[[---@type tts__IndexedSimpleObjectState]] object).name
-    end
-    return --[[---@not nil]] (--[[---@type tts__ObjectState]] object).Nickname
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getName()
+  end
+  if Object.isSimple(object) then
+    return (--[[---@type tts__IndexedSimpleObjectState]] object).name
+  end
+  return --[[---@not nil]] (--[[---@type tts__ObjectState]] object).Nickname
 end
 
 ---@param object seb_Object_Identifiable
 ---@return string
 function Object.description(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getDescription()
-    end
-    if Object.isSimple(object) then
-        return (--[[---@type tts__IndexedSimpleObjectState]] object).description or ""
-    end
-    return (--[[---@type tts__ObjectState]] object).Description or ""
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getDescription()
+  end
+  if Object.isSimple(object) then
+    return (--[[---@type tts__IndexedSimpleObjectState]] object).description or ""
+  end
+  return (--[[---@type tts__ObjectState]] object).Description or ""
 end
 
 ---@param object seb_Object_Identifiable
@@ -372,131 +372,134 @@ end
 ---@param object seb_Object_Identifiable
 ---@return string
 function Object.memo(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getMemo() or ""
-    end
-    if Object.isSimple(object) then
-        return (--[[---@type tts__IndexedSimpleObjectState]] object).memo or ""
-    end
-    return (--[[---@type tts__ObjectState]] object).Memo or ""
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getMemo() or ""
+  end
+  if Object.isSimple(object) then
+    return (--[[---@type tts__IndexedSimpleObjectState]] object).memo or ""
+  end
+  return (--[[---@type tts__ObjectState]] object).Memo or ""
 end
 
 ---@param object seb_Object
 ---@return tts__ObjectState
 function Object.data(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getData()
-    end
-    return --[[---@type tts__ObjectState]] object
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getData()
+  end
+  return --[[---@type tts__ObjectState]] object
 end
 
 ---@param object seb_Object
 ---@return nil | number
 function Object.cardIndex(object)
-    local cardId = Object.data(object).CardID
-    if not cardId then
-        return nil
-    end
+  local cardId = Object.data(object).CardID
+  if not cardId then
+    return nil
+  end
 
-    return tonumber(tostring(cardId):sub(-2, -1))
+  return tonumber(tostring(cardId):sub(-2, -1))
 end
 
 ---@param object seb_Object
 ---@return tts__Vector
 function Object.position(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getPosition()
-    end
-    return Object.transformToPosition(--[[---@not nil]] (--[[---@type tts__ObjectState]] object).Transform)
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getPosition()
+  end
+  return Object.transformToPosition(--[[---@not nil]] (--[[---@type tts__ObjectState]] object).Transform)
 end
 
 ---@param object seb_Object_Container
 ---@return tts__Object[] | tts__ObjectState[]
 function Object.objects(object)
-    if Object.isObject(object) then
-        if Object.type(object) == Object.Type.Scripting then
-            return (--[[---@type tts__ScriptingTrigger]] object).getObjects()
-        else
-            return (--[[---@type tts__Container]] object).getData().ContainedObjects or {}
-        end
+  if Object.isObject(object) then
+    if Object.type(object) == Object.Type.Scripting then
+      return (--[[---@type tts__ScriptingTrigger]] object).getObjects()
+    else
+      return (--[[---@type tts__Container]] object).getData().ContainedObjects or {}
     end
-    return (--[[---@type tts__ContainerState]] object).ContainedObjects or {}
+  end
+  return (--[[---@type tts__ContainerState]] object).ContainedObjects or {}
 end
 
 ---@param object seb_Object
 ---@return tts__Object_Decal[]
 function Object.decals(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getDecals() or {}
-    end
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getDecals() or {}
+  end
 
-    local decals = --[[---@type tts__Object_Decal[] ]]{}
-    local attachedDecals = --[[---@type tts__ObjectState_Decal[] ]] (--[[---@type tts__ObjectState]] object).AttachedDecals or {}
-    for _, decal in ipairs(attachedDecals) do
-        table.insert(decals, {
-            name = decal.CustomDecal.Name,
-            url = decal.CustomDecal.ImageURL,
-            position = Object.transformToPosition(decal.Transform),
-            rotation = Object.transformToPosition(decal.Transform),
-            scale = Object.transformToPosition(decal.Transform),
-        })
-    end
-    return decals
+  local decals = --[[---@type tts__Object_Decal[] ]]{}
+  local attachedDecals = --[[---@type tts__ObjectState_Decal[] ]] (--[[---@type tts__ObjectState]] object).AttachedDecals or {}
+  for _, decal in ipairs(attachedDecals) do
+    table.insert(decals, {
+      name = decal.CustomDecal.Name,
+      url = decal.CustomDecal.ImageURL,
+      position = Object.transformToPosition(decal.Transform),
+      rotation = Object.transformToPosition(decal.Transform),
+      scale = Object.transformToPosition(decal.Transform),
+    })
+  end
+  return decals
 end
 
----@param object seb_Object
+---@param object seb_Object_Identifiable
 ---@return tts__Object_Tag[]
 function Object.tags(object)
-    if Object.isObject(object) then
-        return (--[[---@type tts__Object]] object).getTags()
-    end
-    return (--[[---@type tts__ObjectState]] object).Tags or {}
+  if Object.isObject(object) then
+    return (--[[---@type tts__Object]] object).getTags()
+  end
+  if Object.isSimple(object) then
+    return (--[[---@type tts__SimpleObjectState]] object).tags or {}
+  end
+  return (--[[---@type tts__ObjectState]] object).Tags or {}
 end
 
----@param object seb_Object
+---@param object seb_Object_Identifiable
 ---@param tag tts__Object_Tag
 ---@return boolean
 function Object.hasTag(object, tag)
-    for _, objectTag in ipairs(Object.tags(object)) do
-        if objectTag == tag then
-            return true
-        end
+  for _, objectTag in ipairs(Object.tags(object)) do
+    if objectTag == tag then
+      return true
     end
-    return false
+  end
+  return false
 end
 
 ---@param transform tts__ObjectState_Transform
 ---@return tts__Vector
 function Object.transformToPosition(transform)
-    return Vector(--[[---@not nil]] transform.posX, --[[---@not nil]] transform.posY, --[[---@not nil]] transform.posZ)
+  return Vector(--[[---@not nil]] transform.posX, --[[---@not nil]] transform.posY, --[[---@not nil]] transform.posZ)
 end
 
 ---@param transform tts__ObjectState_Transform
 ---@return tts__Vector
 function Object.transformToRotation(transform)
-    return Vector(--[[---@not nil]] transform.rotX, --[[---@not nil]] transform.rotY, --[[---@not nil]] transform.rotZ)
+  return Vector(--[[---@not nil]] transform.rotX, --[[---@not nil]] transform.rotY, --[[---@not nil]] transform.rotZ)
 end
 
 ---@param transform tts__ObjectState_Transform
 ---@return tts__Vector
 function Object.transformToScale(transform)
-    return Vector(--[[---@not nil]] transform.scaleX, --[[---@not nil]] transform.scaleY, --[[---@not nil]] transform.scaleZ)
+  return Vector(--[[---@not nil]] transform.scaleX, --[[---@not nil]] transform.scaleY, --[[---@not nil]] transform.scaleZ)
 end
 
 ---@overload fun(state: tts__ObjectState): void
 ---@param state tts__ObjectState
 ---@param callback tts__ObjectCallbackFunction
 function Object.respawn(state, callback)
-    if state.GUID then
-        local obj = getObjectFromGUID(--[[---@not nil]] state.GUID)
-        if obj then
-            (--[[---@not nil]] obj).destruct()
-        end
+  if state.GUID then
+    local obj = getObjectFromGUID(--[[---@not nil]] state.GUID)
+    if obj then
+      (--[[---@not nil]] obj).destruct()
     end
-    spawnObjectData({
-        data = state,
-        callback_function = callback
-    })
+  end
+  spawnObjectData({
+    data = state,
+    callback_function = callback
+  })
 end
 
 return Object
