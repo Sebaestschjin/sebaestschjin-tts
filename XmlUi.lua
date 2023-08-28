@@ -126,10 +126,14 @@ local function new(object)
   end
 
   ---@param elementId string
-        ---@param attribute string
-        ---@param value string | number | boolean
+  ---@param attribute string
+  ---@param value string | number | boolean
   function self.setAttribute(elementId, attribute, value)
     boundObject.UI.setAttribute(elementId, attribute, value)
+  end
+
+  function self.clearElements()
+    children = {}
   end
 
   ---@param element seb_XmlUi_Element
