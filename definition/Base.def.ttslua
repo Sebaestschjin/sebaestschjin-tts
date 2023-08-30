@@ -9,26 +9,31 @@
 ---@shape tuple<A, B>
 ---@field [1] A
 ---@field [2] B
+---@field [any] nil
 
 ---@shape triple<A, B, C>
 ---@field [1] A
 ---@field [2] B
 ---@field [3] C
+---@field [any] nil
 
 ---@shape seb_Vector2
 ---@field [1] number
 ---@field [2] number
+---@field [any] nil
 
 ---@shape seb_Vector3
 ---@field [1] number
 ---@field [2] number
 ---@field [3] number
+---@field [any] nil
 
 ---@shape seb_Vector4
 ---@field [1] number
 ---@field [2] number
 ---@field [3] number
 ---@field [4] number
+---@field [any] nil
 
 ---@shape seb_Version
 ---@field [1] integer
