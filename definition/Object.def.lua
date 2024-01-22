@@ -1,3 +1,5 @@
+---@meta
+
 ---@alias seb_Object_Identifiable tts__Object | tts__ObjectState | tts__IndexedSimpleObjectState
 ---@alias seb_Object_Identifiable_Array tts__Object[] | tts__ObjectState[] | tts__IndexedSimpleObjectState[]
 

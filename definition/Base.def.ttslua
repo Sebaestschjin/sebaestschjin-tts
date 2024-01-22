@@ -1,41 +1,42 @@
+---@meta
+
 ---@alias URL string
 ---@alias GUID string
----@alias integer number
 ---@alias float number
 
 ---@alias set<T> table<T, boolean>
 ---@alias optional<T> nil | T
 
----@shape tuple<A, B>
+---@class tuple<A, B>
 ---@field [1] A
 ---@field [2] B
 ---@field [any] nil
 
----@shape triple<A, B, C>
+---@class triple<A, B, C>
 ---@field [1] A
 ---@field [2] B
 ---@field [3] C
 ---@field [any] nil
 
----@shape seb_Vector2
+---@class seb_Vector2
 ---@field [1] number
 ---@field [2] number
 ---@field [any] nil
 
----@shape seb_Vector3
+---@class seb_Vector3
 ---@field [1] number
 ---@field [2] number
 ---@field [3] number
 ---@field [any] nil
 
----@shape seb_Vector4
+---@class seb_Vector4
 ---@field [1] number
 ---@field [2] number
 ---@field [3] number
 ---@field [4] number
 ---@field [any] nil
 
----@shape seb_Version
+---@class seb_Version
 ---@field [1] integer
 ---@field [2] integer
 ---@field [3] nil | integer
